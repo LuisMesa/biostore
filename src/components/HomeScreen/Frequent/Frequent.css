@@ -1,0 +1,35 @@
+.Frequent {
+    padding-left: 5vw;
+    padding-right: 5vw;
+    margin-top: 10vh;
+    max-width: 100vw;
+    display: block;
+}
+
+.Frequent:after {
+    content: " ";
+    display: block;
+    clear: both;
+}
+
+.Frequent .FrequentProducts {
+    max-width: 65vw!important;
+    display: inline-block;
+    float: left;
+}
+.Frequent .FrequentBaskets {
+    display: inline-block;
+    float: right;
+    max-width: 20vw!important;
+}
+
+@media (max-width: 500px) {
+    .Frequent .FrequentProducts {
+        min-width: 90vw;
+        display: block;
+    }
+    .Frequent .FrequentBaskets {
+        display: block;
+        min-width: 90vw!important;
+    }
+}

@@ -1,0 +1,57 @@
+.Title{
+    width: 100%;
+}
+.Title .title{
+    display: block;
+    text-align: center;
+    font-size: 2vw;
+    font-weight: 300;
+    font-family: Roboto,Helvetica,Arial,sans-serif;
+    line-height: 20px;
+    color:rgba(0,0,0,.87);
+    margin-bottom: 20px;
+}
+.Title .niceBorder{
+    width: 100px;
+    background-image: initial;
+    background-position-x: initial;
+    background-position-y: initial;
+    background-size: initial;
+    background-repeat-x: initial;
+    background-repeat-y: initial;
+    background-attachment: initial;
+    background-origin: initial;
+    background-clip: initial;
+    background-color: rgb(233, 30, 99);
+    position: relative;
+    left: calc(50% - 50px);
+    height: 1px!important;
+}
+@media (max-width : 500px) {
+    .Title .title{
+        display: block;
+        text-align: center;
+        font-size: 5vw;
+        font-weight: 300;
+        font-family: Roboto,Helvetica,Arial,sans-serif;
+        line-height: 20px;
+        color:rgba(0,0,0,.87);
+        margin-bottom: 5px;
+    }
+    .Title .niceBorder{
+        width: 100px;
+        background-image: initial;
+        background-position-x: initial;
+        background-position-y: initial;
+        background-size: initial;
+        background-repeat-x: initial;
+        background-repeat-y: initial;
+        background-attachment: initial;
+        background-origin: initial;
+        background-clip: initial;
+        background-color: rgb(233, 30, 99);
+        position: absolute;
+        left: calc(50% - 50px);
+        height: 1px!important;
+    }
+}

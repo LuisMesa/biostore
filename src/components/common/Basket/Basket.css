@@ -1,0 +1,59 @@
+.Product{
+    max-width: 20vw!important;
+    margin-bottom: 25px;
+}
+.Product .CardActions{
+    display: inline-block!important;
+    float: right!important;
+}
+.Product .CardMedia .CardTitle {
+    padding-top: 0!important;
+    padding-bottom: 5px!important;
+}
+/*title inside CardMedia and  CardTitle*/
+.Product .CardMedia .CardTitle span:first-child{
+    font-size: 2vw!important;
+    line-height: 2vw!important;
+}
+/*subtitle inside CardMedia and  CardTitle*/
+.Product .CardMedia>div:nth-child(2)>div>div {
+    max-height: 50%!important;
+}
+/*title inside CardTitle*/
+.Product>div>.CardTitle span:first-child{
+    font-size: 2vw!important;
+}
+.Product>div>.CardTitle span:nth-child(2){
+    font-size: 1.5vw!important;
+}
+
+@media (max-width: 500px) {
+    .Product{
+        max-width: 40vw!important;
+        margin-bottom: 25px;
+    }
+    .Product .CardActions{
+        display: block!important;
+        float: none!important;
+    }
+    /*title inside CardMedia and CardTitle*/
+    .Product .CardMedia .CardTitle span:first-child{
+        font-size: 5vw!important;
+        line-height: 4vw!important;
+    }
+    /*subtitle inside CardMedia and  CardTitle*/
+    .Product .CardMedia .CardTitle span:nth-child(2){
+        font-size: 3vw!important;
+        line-height: 3vw!important;
+    }
+    /*title inside CardTitle*/
+    .Product>div>.CardTitle span:first-child{
+        display: inline-block!important;
+        font-size: 5vw!important;
+    }
+    /*subtitle inside CardTitle*/
+    .Product>div>.CardTitle span:nth-child(2){
+        display: inline-block!important;
+        font-size: 3vw!important;
+    }
+}
