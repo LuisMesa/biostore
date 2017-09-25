@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Card, CardActions, CardMedia, CardTitle, CardText} from 'material-ui/Card';
+import {Card, CardActions, CardMedia, CardTitle} from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import AddShoppingCartIcon from 'material-ui/svg-icons/action/add-shopping-cart';
 

@@ -1,6 +1,9 @@
 import React, {Component} from 'react';
-import NavBar from './NavBar/NavBar';
+import {Route} from 'react-router-dom'
+import NavBar from './common/NavBar/NavBar';
 import HomeScreen from './HomeScreen/HomeScreen';
+import ProductsScreen from './ProductsScreen/ProductsScreen';
+
 import './App.css';
 
 class App extends Component {
@@ -10,7 +13,8 @@ class App extends Component {
     return (
         <div className="App">
           <NavBar/>
-          <HomeScreen/>
+            <Route exact path="/" component={HomeScreen}/>
+            <Route path="/products" component={ProductsScreen}/>
         </div>
     );
   }

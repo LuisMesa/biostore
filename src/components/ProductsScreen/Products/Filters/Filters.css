@@ -1,0 +1,5 @@
+.Filters {
+    display: inline-block;
+    float: left;
+    max-width: 20vw!important;
+}

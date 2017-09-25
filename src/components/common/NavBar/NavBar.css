@@ -1,0 +1,22 @@
+.NavBar {
+    margin: 0;
+    padding: 0;
+    text-decoration: none!important;
+}
+
+.NavBar .MenuItem {
+    color: #5e5e5e;
+    text-decoration: none;
+}
+
+.NavBar .MenuItem a:link, .NavBar .MenuItem a:visited {
+    color: #5e5e5e;
+    text-decoration: none;
+}
+
+.NavBar .MenuItem a:link:active, .NavBar .MenuItem a:visited:active {
+    color: #5e5e5e;
+}
+.NavBar a:-webkit-any-link{
+    text-decoration: none;
+}

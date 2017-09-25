@@ -12,23 +12,23 @@
     clear: both;
 }
 
-.Frequent .FrequentProducts {
+.Frequent .frequentProducts {
     max-width: 65vw!important;
     display: inline-block;
     float: left;
 }
-.Frequent .FrequentBaskets {
+.Frequent .frequentBaskets {
     display: inline-block;
     float: right;
     max-width: 20vw!important;
 }
 
 @media (max-width: 500px) {
-    .Frequent .FrequentProducts {
+    .Frequent .frequentProducts {
         min-width: 90vw;
         display: block;
     }
-    .Frequent .FrequentBaskets {
+    .Frequent .frequentBaskets {
         display: block;
         min-width: 90vw!important;
     }
