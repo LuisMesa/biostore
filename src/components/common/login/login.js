@@ -3,9 +3,6 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 
-/**
- * A modal dialog can only be closed by selecting one of the actions.
- */
 class login extends React.Component {
     state = {
         open: false,
