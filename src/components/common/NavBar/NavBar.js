@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom'
 import AppBar from 'material-ui/AppBar';
 import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
-import FlatButton from 'material-ui/FlatButton';
+import Login from './../login/login.js'
 
 import './NavBar.css';
 
@@ -18,9 +18,6 @@ class NavBar extends Component {
   signUp(){
     console.log('signUp')
   }
-  signIn(){
-    console.log('signIn')
-  }
 
   render() {
     return (
@@ -28,9 +25,8 @@ class NavBar extends Component {
                 onLeftIconButtonTouchTap={this.handleToggle}
                 style={styles.navBar}
                 iconElementRight={
-                  <div style={{marginTop:'7px'}}>
-                    <FlatButton style={{color:'rgb(255, 255, 255)'}} label="Inicio" onClick={()=>this.signIn()}/>
-                    <FlatButton style={{color:'rgb(255, 255, 255)'}} label="Registro" onClick={()=>this.signUp()}/>
+                  <div style={{marginTop:'5%'}}>
+                    <Login />
                   </div>
                 }
         >
