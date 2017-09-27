@@ -1,46 +1,30 @@
-import React from 'react';
+import React, {Component} from 'react';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 
-/**
- * A modal dialog can only be closed by selecting one of the actions.
- */
-class login extends React.Component {
-    state = {
-        open: false,
-    };
-
-    handleOpen = () => {
-        this.setState({open: true});
-    };
-
-    handleClose = () => {
-        this.setState({open: false});
-    };
-
+class Login extends Component {
     render() {
         const actions = [
             <FlatButton
                 label="Cancelar"
                 primary={true}
-                onClick={this.handleClose}
+                onClick={this.props.handleClose}
             />,
             <FlatButton
                 label="Enviar"
                 primary={true}
-                onClick={this.handleClose}
+                onClick={this.props.handleClose}
             />,
         ];
 
         return (
             <div>
-                <FlatButton style={{color:'rgb(255, 255, 255)', display:'inline'}} label="Iniciar Sesión" onClick={this.handleOpen} />
                 <Dialog
                     title="Iniciar Sesión"
                     actions={actions}
                     modal={true}
-                    open={this.state.open}
+                    open={this.props.open}
                     autoDetectWindowHeight={true}
                 >
                     <div>
@@ -62,4 +46,4 @@ class login extends React.Component {
     }
 }
 
-export default login;
+export default Login;

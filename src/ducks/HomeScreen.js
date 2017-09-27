@@ -1,9 +1,36 @@
-import React, {Component} from 'react';
-import Group from '../../common/Group/Group';
-import Product from '../../common/Product/Product';
-import Filters from './Filters/Filters';
+import axios from 'axios';
+import {BASE_URL} from './constants';
 
-import './Products.css';
+//Constants
+const CHANGE_RECENT_PRODUCTS = 'CHANGE_RECENT_PRODUCTS';
+
+//Actions Creators
+export const getRecentProducts = () => async dispatch => {
+  const products = (await axios.get(BASE_URL + 'products/baseproducts/?format=json')).data;
+
+  dispatch({
+    type: CHANGE_RECENT_PRODUCTS,
+    payload: products
+  });
+};
+
+
+//Reducer's Initial state
+const INITIAL_STATE = {
+  user: null,
+  recentProducts: []
+};
+//Reducer
+export default function HomeScreen(state = INITIAL_STATE, action){
+  switch (action.type) {
+    case CHANGE_RECENT_PRODUCTS:
+      // TODO return {...state, recentProducts: action.payload};
+      return {...state, recentProducts: products};
+    default:
+      return state;
+  }
+};
+//TODO This array is temporal it will be deleted soon
 const products = [
   {src: './img/items/manzana.jpg', nombre: 'Manzana', categoria: 'Frutas', precio: '2500', unidad: 'Libra'},
   {src: './img/items/arveja.jpg', nombre: 'Arveja', categoria: 'Verduras', precio: '2500', unidad: 'Libra'},
@@ -16,22 +43,3 @@ const products = [
   {src: './img/items/pera.jpg', nombre: 'Pera', categoria: 'Frutas', precio: '1500', unidad: 'Libra'},
 ];
 
-class Frequent extends Component {
-  render() {
-    return (
-        <div className="Products">
-          <Filters/>
-          <div className="products">
-            <Group>
-              {products.map((product, index) => {
-                return <Product src={product.src} name={product.nombre} category={product.categoria} price={product.precio} unit={product.unidad} key={product.src + index}/>
-              })}
-            </Group>
-          </div>
-        </div>
-    )
-  }
-
-}
-
-export default Frequent;

@@ -1,9 +1,16 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import {getRecentProducts} from '../../ducks/HomeScreen';
 import Banner from './Banner/Banner';
 import CategoryRow from './CategoryRow/CategoryRow';
 import Frequent from './Frequent/Frequent';
 
 class HomeScreen extends Component {
+
+  componentWillMount(){
+    this.props.getRecentProducts();
+  }
+
   render() {
     return (
         <div className="HomeScreen">
@@ -21,4 +28,4 @@ const categories = [
   {title:'Granja',subtitle:'Huevos, Miel, Queso, Harina, ...',src:'./img/category3.jpg'},
 ];
 
-export default HomeScreen;
+export default connect(null, {getRecentProducts})(HomeScreen);

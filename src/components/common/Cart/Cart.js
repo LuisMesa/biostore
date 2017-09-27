@@ -34,13 +34,14 @@ class Cart extends Component {
               <div className="title">Carrito</div>
               <Divider/>
               <List className="list">
-                {products.map((product)=>{
+                {products.map((product,index)=>{
                   return <ListItem
                       className="cartItem"
                       leftAvatar={<Avatar src={product.src} />}
                       rightIcon={<Close/>}
                       primaryText={product.nombre}
                       secondaryText={product.precio}
+                      key={index}
                   >
                     <div className="extraInfo">
                       <div className="quantity">
