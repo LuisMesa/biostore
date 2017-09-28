@@ -5,6 +5,7 @@ import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
 import FlatButton from 'material-ui/FlatButton';
 import Login from '../Login/Login';
+import SignUp from '../Login/SignUp';
 
 import './NavBar.css';
 
@@ -42,6 +43,7 @@ class NavBar extends Component {
             <Link to="/products"><MenuItem onTouchTap={() => this.handleToggle()}>Productos</MenuItem></Link>
           </Drawer>
           <Login open = {this.state.logInOpen} handleClose={() =>this.setState({logInOpen: false})}/>
+          <SignUp open = {this.state.signUpOpen} handleClose={() =>this.setState({signUpOpen: false})}/>
         </AppBar>
     )
   }
