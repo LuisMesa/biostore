@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import FloatingActionButton from 'material-ui/FloatingActionButton';
+import Badge from 'material-ui/Badge';
 import ShoppingCartIcon from 'material-ui/svg-icons/action/shopping-cart';
 import FlatButton from 'material-ui/FlatButton';
 import Drawer from 'material-ui/Drawer';
@@ -29,15 +30,15 @@ class Cart extends Component {
   render() {
     return (
         <div className="Cart">
-          <Drawer docked={false} openSecondary={true} width={300} onRequestChange={(open) => this.setState({open})} open={this.state.open} >
+          <Drawer docked={false} openSecondary={true} width={300} onRequestChange={(open) => this.setState({open})} open={this.state.open}>
             <div className="cartDrawer">
               <div className="title">Carrito</div>
               <Divider/>
               <List className="list">
-                {products.map((product,index)=>{
+                {products.map((product, index) => {
                   return <ListItem
                       className="cartItem"
-                      leftAvatar={<Avatar src={product.src} />}
+                      leftAvatar={<Avatar src={product.src}/>}
                       rightIcon={<Close/>}
                       primaryText={product.nombre}
                       secondaryText={product.precio}
@@ -46,10 +47,10 @@ class Cart extends Component {
                     <div className="extraInfo">
                       <div className="quantity">
                         <div className="number">
-5
+                          5
                         </div>
                         <div className="unit">
-Lb
+                          Lb
                         </div>
                       </div>
                     </div>
@@ -65,27 +66,31 @@ Lb
                 </div>
                 <Divider/>
                 <div className="buttons">
-                  <FlatButton label="Descartar" secondary={true} />
-                  <FlatButton label="Comprar" primary={true} />
+                  <FlatButton label="Descartar" secondary={true}/>
+                  <FlatButton label="Comprar" primary={true}/>
                 </div>
               </div>
 
             </div>
           </Drawer>
-          <FloatingActionButton style={styles.button} onClick={()=>{this.handleToggle()}}>
-            <ShoppingCartIcon />
-          </FloatingActionButton>
+          <Badge badgeContent={4} primary={true} style={styles.button}>
+            <FloatingActionButton  onClick={() => {
+              this.handleToggle()
+            }}>
+              <ShoppingCartIcon />
+            </FloatingActionButton>
+          </Badge>
         </div>
     );
   }
 }
 
-const styles ={
-  button:{
-    position:'fixed',
-    bottom:'20px',
-    right:'20px',
-    zIndex:'100'
+const styles = {
+  button: {
+    position: 'fixed',
+    bottom: '20px',
+    right: '20px',
+    zIndex: '100'
   }
 };
 

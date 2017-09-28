@@ -6,7 +6,7 @@ const CHANGE_RECENT_PRODUCTS = 'CHANGE_RECENT_PRODUCTS';
 
 //Actions Creators
 export const getRecentProducts = () => async dispatch => {
-  const products = (await axios.get(BASE_URL + 'products/baseproducts/?format=json')).data;
+  const products = (await axios.get(BASE_URL + 'products/baseproducts/')).data;
 
   dispatch({
     type: CHANGE_RECENT_PRODUCTS,

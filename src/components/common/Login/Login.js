@@ -3,19 +3,7 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 
-
 class Login extends Component {
-  state = {
-    open: false,
-  };
-
-  handleOpen = () => {
-    this.setState({open: true});
-  };
-
-  handleClose = () => {
-    this.setState({open: false});
-  };
 
   render() {
     const actions = [
@@ -65,8 +53,8 @@ export default Login;
 /*
  Nombre del Componente: Login
  Descripcion:           Captura datos de usuario para validarlos contra la base de datos y
-                        permitir el aceso a usuarios con una cuenta creada.
+                        permitir el acceso a usuarios con una cuenta creada.
  Estado:                En desarollo
  Desarrollador:         Steven Alexander Erira Fierro
-                        Luis Andres mesa Fajardo
+                        Luis Andres Mesa Fajardo
  */
