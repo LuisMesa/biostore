@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import {getCorrectUnit} from '../../../others/usefulFunctions';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import Badge from 'material-ui/Badge';
 import ShoppingCartIcon from 'material-ui/svg-icons/action/shopping-cart';
@@ -11,13 +12,6 @@ import Avatar from 'material-ui/Avatar';
 
 import './Cart.css';
 
-const products = [
-  {src: './img/items/manzana.jpg', nombre: 'Manzana', categoria: 'Frutas', precio: '2500', unidad: 'Libra'},
-  {src: './img/items/arveja.jpg', nombre: 'Arveja', categoria: 'Verduras', precio: '2500', unidad: 'Libra'},
-  {src: './img/items/huevo.jpg', nombre: 'Huevo', categoria: 'Granja', precio: '300', unidad: 'Unidad'},
-  {src: './img/items/durazno.jpg', nombre: 'Durazno', categoria: 'Frutas', precio: '2500', unidad: 'Libra'},
-];
-
 class Cart extends Component {
   constructor(props) {
     super(props);
@@ -25,7 +19,6 @@ class Cart extends Component {
   }
 
   handleToggle = () => this.setState({open: !this.state.open});
-
 
   render() {
     return (
@@ -35,22 +28,22 @@ class Cart extends Component {
               <div className="title">Carrito</div>
               <Divider/>
               <List className="list">
-                {products.map((product, index) => {
+                {this.props.products.map((product, index) => {
                   return <ListItem
                       className="cartItem"
                       leftAvatar={<Avatar src={product.src}/>}
                       rightIcon={<Close/>}
-                      primaryText={product.nombre}
-                      secondaryText={product.precio}
+                      primaryText={product.name}
+                      secondaryText={product.price}
                       key={index}
                   >
                     <div className="extraInfo">
                       <div className="quantity">
                         <div className="number">
-                          5
+                          {product.amount}
                         </div>
                         <div className="unit">
-                          Lb
+                          {getCorrectUnit(product.unit,product.amount)}
                         </div>
                       </div>
                     </div>
@@ -60,7 +53,7 @@ class Cart extends Component {
               <div className="bottom">
 
                 <div className="totalPrice">
-                  <div className="price">$154000</div>
+                  <div className="price">${this.props.products.reduce((a, b) => a + b.price*b.amount, 0)}</div>
                   <div className="title">total</div>
                 </div>
                 <Divider/>
@@ -72,7 +65,7 @@ class Cart extends Component {
 
             </div>
           </Drawer>
-          <Badge className="Badge" badgeContent={products.length} primary={true} style={styles.button}>
+          <Badge className="Badge" badgeContent={this.props.products.length} primary={true} style={styles.button}>
             <FloatingActionButton  onClick={() => {
               this.handleToggle()
             }}>

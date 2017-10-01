@@ -16,7 +16,7 @@ class HomeScreen extends Component {
         <div className="HomeScreen">
           <Banner/>
           <CategoryRow categories={categories}/>
-          <Frequent/>
+          <Frequent products = {this.props.products}/>
         </div>
     )
   }
@@ -28,4 +28,12 @@ const categories = [
   {title:'Granja',subtitle:'Huevos, Miel, Queso, Harina, ...',src:'./img/category3.jpg'},
 ];
 
-export default connect(null, {getRecentProducts})(HomeScreen);
+
+function mapStateToProps(state) {
+  const products = state.HomeScreen.recentProducts;
+  return {
+    products
+  }
+}
+
+export default connect(mapStateToProps, {getRecentProducts})(HomeScreen);

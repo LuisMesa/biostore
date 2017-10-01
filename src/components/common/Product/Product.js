@@ -1,4 +1,7 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import {addProductToCart} from '../../../ducks/common';
+import {getCorrectUnit} from '../../../others/usefulFunctions';
 import {Card, CardActions, CardMedia, CardTitle} from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import Slider from 'material-ui/Slider';
@@ -13,33 +16,25 @@ class Product extends Component {
     super(props);
     this.state = {
       buying: false,
-      slider: Math.floor(Math.random()*50)+1
+      slider: Math.floor(Math.random() * 50) + 1
     }
   }
 
   onClickCartButton = () => {
-    if (this.state.buying)
-      this.setState({slider: 0});
-
     this.setState({buying: true})
   };
 
   onClickDoneButton = () => {
-    this.setState({buying: false})
+    this.setState({buying: false});
+    const {src, name, category, unit, price} =this.props;
+    const product = {src, name, category, unit, price, amount: this.state.slider};
+    this.props.addProductToCart(product);
   };
 
   onChangeSlider = (event, value) => {
     this.setState({slider: value})
   };
 
-  getCorrectUnit() {
-    const {unit} =this.props;
-    if (unit.endsWith('a') || unit.endsWith('e') || unit.endsWith('i') || unit.endsWith('o') || unit.endsWith('u'))
-      return this.state.slider != 1 ? unit + 's' : unit;
-    else
-      return this.state.slider != 1 ? unit + 'es' : unit;
-
-  }
 
   render() {
     return (
@@ -50,7 +45,7 @@ class Product extends Component {
             <img src={this.props.src} alt={this.props.name}/>
           </CardMedia>
           <CardTitle className="CardTitle" style={styles.cardTitle}
-                     title={this.state.buying ? this.state.slider + ' ' + this.getCorrectUnit(this.props.unit) : '$' + this.props.price + ' /'}
+                     title={this.state.buying ? this.state.slider + ' ' + getCorrectUnit(this.props.unit, this.state.slider) : '$' + this.props.price + ' /'}
                      subtitle={this.state.buying ? '$' + this.state.slider * this.props.price : this.props.unit}/>
           <CardActions className="CardActions">
             {this.state.buying ?
@@ -84,4 +79,4 @@ const styles = {
   },
 };
 
-export default Product;
+export default connect(null, {addProductToCart})(Product);

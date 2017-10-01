@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {connect} from 'react-redux';
 import Title from '../../common/Title/Title';
 import Group from '../../common/Group/Group';
 import Product from '../../common/Product/Product';
@@ -38,11 +37,5 @@ class Frequent extends Component {
 
 }
 
-function mapStateToProps(state) {
-  const products = state.HomeScreen.recentProducts;
-  return {
-    products
-  }
-}
 
-export default connect(mapStateToProps)(Frequent);
+export default Frequent;

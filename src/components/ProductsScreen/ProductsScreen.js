@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import {connect} from 'react-redux';
 import Products from './Products/Products';
 import Cart from '../common/Cart/Cart';
 
@@ -8,10 +9,16 @@ class ProductsScreen extends Component {
     return (
         <div className="ProductsScreen">
           <Products/>
-          <Cart/>
+          <Cart products = {this.props.products}/>
         </div>
     );
   }
 }
+function mapStateToProps(state){
+  const products= state.common.cart.products;
+  return{
+    products
+  }
+}
 
-export default ProductsScreen;
+export default connect(mapStateToProps)(ProductsScreen);
