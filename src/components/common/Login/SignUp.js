@@ -97,12 +97,7 @@ class SignUp extends Component {
           label="Cancelar"
           primary={true}
           onClick={this.props.handleClose}
-      />,
-      <FlatButton
-          label="Enviar"
-          primary={true}
-          onClick={this.props.handleClose}
-      />,
+      />
     ];
     const {finished, stepIndex} = this.state;
     const contentStyle = {margin: '0 16px'};
@@ -131,15 +126,7 @@ class SignUp extends Component {
               <div style={contentStyle}>
                 {finished ? (
                         <p>
-                          <a
-                              href="#"
-                              onClick={(event) => {
-                                event.preventDefault();
-                                this.setState({stepIndex: 0, finished: false});
-                              }}
-                          >
-                            Click here
-                          </a> to reset the example.
+                          Gracias por Registrarte :)
                         </p>
                     ) : (
                         <div>
