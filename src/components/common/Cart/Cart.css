@@ -58,3 +58,10 @@
     display: flex;
     justify-content: space-around
 }
+.Cart .Badge span {
+    z-index: 1!important;
+    top:32px!important;
+    right:32px!important;
+    width: 15px!important;
+    height: 15px!important;
+}

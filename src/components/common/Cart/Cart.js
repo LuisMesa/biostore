@@ -60,7 +60,6 @@ class Cart extends Component {
               <div className="bottom">
 
                 <div className="totalPrice">
-                  <Divider/>
                   <div className="price">$154000</div>
                   <div className="title">total</div>
                 </div>
@@ -73,7 +72,7 @@ class Cart extends Component {
 
             </div>
           </Drawer>
-          <Badge badgeContent={4} primary={true} style={styles.button}>
+          <Badge className="Badge" badgeContent={products.length} primary={true} style={styles.button}>
             <FloatingActionButton  onClick={() => {
               this.handleToggle()
             }}>

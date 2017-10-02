@@ -27,6 +27,11 @@
     font-size: 1.5vw!important;
 }
 
+.Product .Slider>div{
+    width:90%!important;
+    margin: 0 5% 7px 5%!important;
+}
+
 @media (max-width: 500px) {
     .Product{
         max-width: 40vw!important;
