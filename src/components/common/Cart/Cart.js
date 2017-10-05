@@ -34,7 +34,7 @@ class Cart extends Component {
                       leftAvatar={<Avatar src={product.src}/>}
                       rightIcon={<Close/>}
                       primaryText={product.name}
-                      secondaryText={product.price}
+                      secondaryText={product.price*product.amount}
                       key={index}
                   >
                     <div className="extraInfo">
