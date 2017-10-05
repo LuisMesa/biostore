@@ -22,7 +22,7 @@ class Frequent extends Component {
         <div className="Products">
           <Filters/>
           <div className="products">
-            <Group>
+            <Group width="90vw">
               {products.map((product, index) => {
                 return <Product src={product.src} name={product.nombre} category={product.categoria} price={product.precio} unit={product.unidad} key={product.src + index}/>
               })}

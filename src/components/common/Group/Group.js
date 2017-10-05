@@ -14,7 +14,7 @@ class Group extends Component{
   }
 }
 
-const styles = {
+let styles = {
   root: {
     display: 'flex',
     flexWrap: 'wrap',

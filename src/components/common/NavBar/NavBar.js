@@ -22,6 +22,7 @@ class NavBar extends Component {
   handleToggle = () => this.setState({open: !this.state.open});
 
   render() {
+
     return (
         <AppBar className="NavBar" title="BIOSTORE"
                 onLeftIconButtonTouchTap={this.handleToggle}

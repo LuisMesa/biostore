@@ -1,5 +1,25 @@
 .Filters {
-    display: inline-block;
-    float: left;
-    max-width: 20vw!important;
+    display: flex !important;
+    width: 100% !important;
+    height: 50px !important;
+    justify-content: center;
+}
+
+.Filters .filters {
+    width: 50%;
+    margin-left: 1.5%;
+}
+.Filters .filters .checkBoxGroup{
+    display: flex!important;
+    justify-content: center!important;
+}
+.Filters .filters .checkBoxGroup .checkBox {
+    margin-top: 12px;
+    width: 30%!important;
+}
+@media (max-width: 500px) {
+    .Filters .filters {
+        width: 100%;
+        margin-left: 1.5%;
+    }
 }
