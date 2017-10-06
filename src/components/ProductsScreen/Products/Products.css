@@ -13,7 +13,7 @@
 }
 
 .Products .products {
-    max-width: 65vw!important;
+    width: 90vw!important;
     display: inline-block;
     float: left;
 }

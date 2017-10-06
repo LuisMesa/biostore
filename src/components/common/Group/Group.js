@@ -3,9 +3,6 @@ import './Group.css';
 
 class Group extends Component{
   render(){
-    if(this.props.width)
-      styles.root.width=this.props.width;
-
     return(
         <div className="Group" style={styles.root}>
           {this.props.children}
