@@ -42,6 +42,8 @@ class NavBar extends Component {
 
             <Link to="/"><MenuItem onTouchTap={() => this.handleToggle()}>Home</MenuItem></Link>
             <Link to="/products"><MenuItem onTouchTap={() => this.handleToggle()}>Productos</MenuItem></Link>
+            <Link to="/admin"><MenuItem onTouchTap={() => this.handleToggle()}>Administrador</MenuItem></Link>
+            <Link to="/producer"><MenuItem onTouchTap={() => this.handleToggle()}>Productor</MenuItem></Link>
           </Drawer>
           <Login open = {this.state.logInOpen} handleClose={() =>this.setState({logInOpen: false})}/>
           <SignUp open = {this.state.signUpOpen} handleClose={() =>this.setState({signUpOpen: false})}/>

@@ -1,0 +1,22 @@
+.Table{
+    width:90vw;
+    margin-left: 5vw;
+    margin-right: 4vw;
+}
+.Table .title h3, .Table .title .DatePicker{
+    display: inline-block;
+    cursor: pointer!important;
+}
+.Table .DatePicker{
+    margin-left: 10px!important;
+    margin-right: 10px!important;
+
+}
+.Table .DatePicker, .Table .DatePicker div:first-child, .Table .DatePicker hr{
+    width: 100px!important;
+    max-width: 100px!important;
+    cursor: pointer!important;
+}
+.Table .DropDownMenu{
+    display: inline-block;
+}

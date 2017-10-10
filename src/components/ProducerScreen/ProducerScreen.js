@@ -1,9 +1,12 @@
 import React, {Component} from 'react'
+import './ProducerScreen.css';
 
 class ProducerScreen extends Component {
   render() {
     return (
-        <div>ProducerScreen</div>
+        <div className="ProducerScreen">
+          ProducerScreen
+        </div>
     );
   }
 }
