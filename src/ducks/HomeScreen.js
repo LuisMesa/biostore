@@ -5,9 +5,8 @@ import {BASE_URL} from './constants';
 const CHANGE_RECENT_PRODUCTS = 'CHANGE_RECENT_PRODUCTS';
 
 //Actions Creators
-export const getRecentProducts = () => async dispatch => {
+export const fetchRecentProducts = () => async dispatch => {
   const products = (await axios.get(BASE_URL + 'products/baseproducts/')).data;
-
   dispatch({
     type: CHANGE_RECENT_PRODUCTS,
     payload: products
@@ -30,7 +29,7 @@ export default function HomeScreen(state = INITIAL_STATE, action){
       return state;
   }
 };
-//TODO This array is temporal it will be deleted soon
+
 const products = [
   {src: './img/items/manzana.jpg', nombre: 'Manzana', categoria: 'Frutas', precio: '2500', unidad: 'Libra'},
   {src: './img/items/arveja.jpg', nombre: 'Arveja', categoria: 'Verduras', precio: '2500', unidad: 'Libra'},

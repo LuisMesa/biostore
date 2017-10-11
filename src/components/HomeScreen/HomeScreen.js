@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {getRecentProducts} from '../../ducks/HomeScreen';
+import {fetchRecentProducts} from '../../ducks/HomeScreen';
 import Banner from './Banner/Banner';
 import CategoryRow from './CategoryRow/CategoryRow';
 import Frequent from './Frequent/Frequent';
@@ -8,7 +8,7 @@ import Frequent from './Frequent/Frequent';
 class HomeScreen extends Component {
 
   componentWillMount(){
-    this.props.getRecentProducts();
+    this.props.fetchRecentProducts();
   }
 
   render() {
@@ -36,4 +36,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps, {getRecentProducts})(HomeScreen);
+export default connect(mapStateToProps, {fetchRecentProducts})(HomeScreen);

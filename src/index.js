@@ -11,7 +11,6 @@ import ducks from './ducks'
 import App from './components/App';
 import './index.css'
 
-
 injectTapEventPlugin();
 const store = createStore(ducks, applyMiddleware(thunk));
 

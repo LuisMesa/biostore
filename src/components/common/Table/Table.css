@@ -5,7 +5,6 @@
 }
 .Table .title h3, .Table .title .DatePicker{
     display: inline-block;
-    cursor: pointer!important;
 }
 .Table .DatePicker{
     margin-left: 10px!important;

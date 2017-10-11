@@ -1,101 +1,108 @@
 import React, {Component} from 'react'
-import {DatePicker, MenuItem, Popover, Menu, DropDownMenu} from 'material-ui';
-import ArrowIcon from 'material-ui/svg-icons/navigation/arrow-drop-down';
-import Table from '../common/Table/Table';
+import {connect} from 'react-redux';
+import ProducersOffersTable from './ProducersOffersTable/ProducersOffersTable';
+import {fetchProducersOffers} from '../../ducks/AdminScreen';
 
 import './AdminScreen.css';
 
 class AdminScreen extends Component {
-
   state = {
-    filterDate1: new Date(Date.now() - 6048000100),
-    filterDate2: new Date(),
-    popoverOpen: false,
-    currentTable: 'Ofertas de Productores'
-
+    producersOffersTable: true,
+    adminOffersTable: true,
+    producersOrdersTable: false,
+    customersOrdersTable: false,
   };
 
-
-  handleChange = (event, index, value) => this.setState({value});
-
-  handleTouchTap = (event) => {
-    // This prevents ghost click.
-    event.preventDefault();
-
-    this.setState({
-      popoverOpen: true,
-      anchorEl: event.currentTarget,
-    });
+  addTable = (newTable) => {
+    switch (newTable) {
+      case names[0]: {
+        this.setState({producersOffersTable: true});
+        break;
+      }
+      case names[1]: {
+        this.setState({adminOffersTable: true});
+        break;
+      }
+      case names[2]: {
+        this.setState({producersOrdersTable: true});
+        break;
+      }
+      case names[3]: {
+        this.setState({customersOrdersTable: true});
+        break;
+      }
+      default: {
+        break;
+      }
+    }
   };
 
-  handleRequestClose = (newTable) => {
-    this.setState({
-      popoverOpen: false,
-      currentTable: newTable
-    });
+  deleteTable = (tableName)=>{
+    switch (tableName) {
+      case names[0]: {
+        this.setState({producersOffersTable: false});
+        break;
+      }
+      case names[1]: {
+        this.setState({adminOffersTable: false});
+        break;
+      }
+      case names[2]: {
+        this.setState({producersOrdersTable: false});
+        break;
+      }
+      case names[3]: {
+        this.setState({customersOrdersTable: false});
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+  }
+  getAvailableNames = () => {
+    const availableNames = [];
+    if (!this.state.producersOffersTable)
+      availableNames.push(names[0]);
+    if (!this.state.adminOffersTable)
+      availableNames.push(names[1]);
+    if (!this.state.producersOrdersTable)
+      availableNames.push(names[2]);
+    if (!this.state.customersOrdersTable)
+      availableNames.push(names[3]);
+    return availableNames;
   };
 
+  componentWillMount() {
+    this.props.fetchProducersOffers();
+  }
 
   render() {
     return (
         <div className="AdminScreen">
-          <Table columns={columns} data={data}>
-            <div>
-              <h3 onClick={this.handleTouchTap}>{this.state.currentTable} <ArrowIcon/></h3>
-              <Popover
-                  open={this.state.popoverOpen}
-                  anchorEl={this.state.anchorEl}
-                  anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
-                  targetOrigin={{horizontal: 'left', vertical: 'top'}}
-                  onRequestClose={this.handleRequestClose}
-              >
-                <Menu>
-                  <MenuItem primaryText="Ofertas del Admin" onClick={()=>this.handleRequestClose('Ofertas del Admin')}/>
-                  <MenuItem primaryText="Pedidos a Productores" onClick={()=>this.handleRequestClose('Pedidos a Productores')}/>
-                  <MenuItem primaryText="Pedidos de Clientes" onClick={()=>this.handleRequestClose('Pedidos de Clientes')}/>
-                </Menu>
-              </Popover>
-              <DatePicker className='DatePicker' name='filterDate1' value={this.state.filterDate1}
-                          onChange={(event, date) => {
-                            this.setState({filterDate1: date})
-                          }}
-              />
-              <span> - </span>
-              <DatePicker className='DatePicker' name='filterDate2' value={this.state.filterDate2}
-                          onChange={(event, date) => {
-                            this.setState({filterDate2: date})
-                          }}
-              />
-            </div>
-          </Table>
+          {this.state.producersOffersTable ? <ProducersOffersTable data={this.props.producersOffers} names={this.getAvailableNames()} addTable={this.addTable} name={names[0]} deleteTable={this.deleteTable}/> : ''}
+          {this.state.adminOffersTable?<ProducersOffersTable data={this.props.adminOffers} names={this.getAvailableNames()} addTable={this.addTable} name={names[1]} deleteTable={this.deleteTable}/> : ''}
+          {this.state.producersOrdersTable?<ProducersOffersTable data={this.props.producersOrders} names={this.getAvailableNames()} addTable={this.addTable} name={names[2]} deleteTable={this.deleteTable}/> : ''}
+          {this.state.customersOrdersTable?<ProducersOffersTable data={this.props.customersOrders} names={this.getAvailableNames()} addTable={this.addTable} name={names[3]} deleteTable={this.deleteTable}/> : ''}
         </div>
     );
   }
 }
-
-const columns = [
-  {name: 'Producto'},
-  {name: 'Cantidad'},
-  {name: 'Precio'},
-  {name: 'Productor'},
-  {name: 'Creación'},
-  {name: 'Entrega'},
-  {name: 'Modificable'},
-  {name: 'Estado'},
-];
-const data = [
-  {product: 'Producto1', amount: '2', price: '34400', producer: 'Productor1', createdAt: '09/10/2017', deliveryAt: '09/10/2017', editable: true, state: 'Pendiente'},
-  {product: 'Producto2', amount: '12', price: '44400', producer: 'Productor1', createdAt: '09/10/2017', deliveryAt: '09/10/2017', editable: true, state: 'Aceptado'},
-  {product: 'Producto3', amount: '22', price: '35400', producer: 'Productor1', createdAt: '09/10/2017', deliveryAt: '09/10/2017', editable: true, state: 'Entregado'},
-  {product: 'Producto3', amount: '22', price: '35400', producer: 'Productor1', createdAt: '09/10/2017', deliveryAt: '09/10/2017', editable: true, state: 'Entregado'},
-  {product: 'Producto3', amount: '22', price: '35400', producer: 'Productor1', createdAt: '09/10/2017', deliveryAt: '09/10/2017', editable: true, state: 'Entregado'},
-  {product: 'Producto3', amount: '22', price: '35400', producer: 'Productor1', createdAt: '09/10/2017', deliveryAt: '09/10/2017', editable: true, state: 'Entregado'},
-  {product: 'Producto3', amount: '22', price: '35400', producer: 'Productor1', createdAt: '09/10/2017', deliveryAt: '09/10/2017', editable: true, state: 'Entregado'},
-  {product: 'Producto3', amount: '22', price: '35400', producer: 'Productor1', createdAt: '09/10/2017', deliveryAt: '09/10/2017', editable: true, state: 'Entregado'},
-  {product: 'Producto3', amount: '22', price: '35400', producer: 'Productor1', createdAt: '09/10/2017', deliveryAt: '09/10/2017', editable: true, state: 'Entregado'},
-  {product: 'Producto3', amount: '22', price: '35400', producer: 'Productor1', createdAt: '09/10/2017', deliveryAt: '09/10/2017', editable: true, state: 'Entregado'},
-
-
+const names=[
+  'Ofertas de Productores',
+  'Ofertas del Admin',
+  'Pedidos a Productores',
+  'Pedidos de Clientes'
 ];
 
-export default AdminScreen;
+function mapStateToProps(state) {
+  const {producersOffers, adminOffers, producersOrders, customersOrders} = state.AdminScreen;
+  return {
+    producersOffers,
+    adminOffers,
+    producersOrders,
+    customersOrders
+  }
+}
+
+export default connect(mapStateToProps, {fetchProducersOffers})(AdminScreen);
