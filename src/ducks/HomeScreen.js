@@ -6,7 +6,17 @@ const CHANGE_RECENT_PRODUCTS = 'CHANGE_RECENT_PRODUCTS';
 
 //Actions Creators
 export const fetchRecentProducts = () => async dispatch => {
-  const products = (await axios.get(BASE_URL + 'products/baseproducts/')).data;
+  // const products = (await axios.get(BASE_URL + '/allproducts')).data.map(product=>{
+    const products=[];
+  //   return {
+  //     src: product.productType.url,
+  //     nombre: product.productType.title,
+  //     categoria: product.category.title,
+  //     precio: product.unit_price,
+  //     unidad: product.unit_type
+  //   }
+  // });
+
   dispatch({
     type: CHANGE_RECENT_PRODUCTS,
     payload: products
@@ -23,7 +33,7 @@ const INITIAL_STATE = {
 export default function HomeScreen(state = INITIAL_STATE, action){
   switch (action.type) {
     case CHANGE_RECENT_PRODUCTS:
-      // TODO return {...state, recentProducts: action.payload};
+      // return {...state, recentProducts: action.payload};
       return {...state, recentProducts: products};
     default:
       return state;

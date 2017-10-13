@@ -1,11 +1,13 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-
+import {setStateSomeProducersOffers, saveProducersOffers} from '../../../ducks/AdminScreen';
 import LockIcon from 'material-ui/svg-icons/action/lock';
 import LockOpenIcon from 'material-ui/svg-icons/action/lock-open';
 import ClearIcon from 'material-ui/svg-icons/content/clear';
-import InfoIcon from 'material-ui/svg-icons/action/info';
-import HighlightOffIcon from 'material-ui/svg-icons/action/highlight-off';
+import HighLightIcon from 'material-ui/svg-icons/action/highlight-off';
+import InfoIcon from 'material-ui/svg-icons/action/info-outline';
+import CheckIcon from 'material-ui/svg-icons/navigation/check';
+import CheckCircleIcon from 'material-ui/svg-icons/action/check-circle';
 import {DatePicker, MenuItem, Popover, Menu, DropDownMenu} from 'material-ui';
 import ArrowIcon from 'material-ui/svg-icons/navigation/arrow-drop-down';
 import {cyan500, pinkA200} from 'material-ui/styles/colors';
@@ -47,7 +49,7 @@ class ProducersOffersTable extends Component {
   getFilteredData() {
     return this.props.data.filter(row => {
       let approve = false;
-      row.forEach(item => {
+      row.items.forEach(item => {
         if (!approve) {
           for (const property in item) {
             if (item.hasOwnProperty(property) && property === 'filter' && this.state.filterDate1.getTime() < item.data && this.state.filterDate2.getTime() > item.data) {
@@ -61,39 +63,46 @@ class ProducersOffersTable extends Component {
     })
   }
 
+  getFilteredData2() {
+    return this.props.data.filter(offer => {
+      return this.state.filterDate1.getTime() < offer.deliveryDate && this.state.filterDate2.getTime() > offer.deliveryDate
+    })
+  }
+
   onRowSelection = (selectedRows) => {
     this.setState({selectedRows});
-
   };
 
-  renderItem(item, index) {
-    switch (item.type) {
-      case 'lock':
-        return <TableRowColumn key={index}>{item.data ? <LockIcon style={{paddingLeft: 'calc(50% - 12px)'}}/> : <LockOpenIcon style={{paddingLeft: 'calc(50% - 12px)'}}/>}</TableRowColumn>;
-      case 'close-check-info':
-        return <TableRowColumn key={index}>{item.data === 'Pendiente' ? <InfoIcon style={{paddingLeft: 'calc(50% - 12px)'}}/> : item.data === 'Cancelada' ? <ClearIcon style={{paddingLeft: 'calc(50% - 12px)'}}/> : <HighlightOffIcon style={{paddingLeft: 'calc(50% - 12px)'}}/>}</TableRowColumn>;
-      case 'date':
-        return <TableRowColumn key={index}>{item.data.toISOString().split('T')[0]}</TableRowColumn>;
-      case 'ID':
+  renderItem(value, type, index) {
+    switch (type) {
+      case 'editable':
+        return <TableRowColumn key={index}>{value ? <LockIcon style={{paddingLeft: 'calc(50% - 12px)'}}/> : <LockOpenIcon style={{paddingLeft: 'calc(50% - 12px)'}}/>}</TableRowColumn>;
+      case 'state':
+        return <TableRowColumn key={index}>{value === 'Pendiente' ? <InfoIcon style={{paddingLeft: 'calc(50% - 12px)'}}/> : value === 'Cancelada' ? <HighLightIcon style={{paddingLeft: 'calc(50% - 12px)'}} color={pinkA200}/> : <CheckCircleIcon style={{paddingLeft: 'calc(50% - 12px)'}} color={cyan500}/>}</TableRowColumn>;
+      case 'createdAt':
+        return <TableRowColumn key={index}>{value.toISOString().split('T')[0]}</TableRowColumn>;
+      case 'deliveryDate':
+        return <TableRowColumn key={index}>{value.toISOString().split('T')[0]}</TableRowColumn>;
+      case 'id':
         break;
       default:
-        return <TableRowColumn key={index}>{item.data + ''}</TableRowColumn>
+        return <TableRowColumn key={index}>{value + ''}</TableRowColumn>
     }
   }
 
   render() {
     return (
         <div className="ProducersOffersTable">
-          <Table columns={columns} data={this.getFilteredData()} renderItem={(item, index) => this.renderItem(item, index)} onRowSelection={this.onRowSelection} selectedRows={this.state.selectedRows}>
+          <Table columns={columns} data={this.getFilteredData2()} renderItem={(value, type, index) => this.renderItem(value, type, index)} onRowSelection={this.onRowSelection} selectedRows={this.state.selectedRows}>
             <div>
               <h3>{this.props.name}</h3>
               <RaisedButton
-                  style={{display:'block-inline',float:'right',marginTop:'3vh', marginRight:'12px',minWidth:'44px'}}
-                  onClick={()=>this.props.deleteTable(this.props.name)}
+                  style={{display: 'block-inline', float: 'right', marginTop: '3vh', marginRight: '12px', minWidth: '44px'}}
+                  onClick={() => this.props.deleteTable(this.props.name)}
                   icon={<RemoveIcon color={pinkA200}/>}
               />
               <RaisedButton
-                  style={{display:'block-inline',float:'right',marginTop:'3vh', marginRight:'12px',minWidth:'44px'}}
+                  style={{display: 'block-inline', float: 'right', marginTop: '3vh', marginRight: '12px', minWidth: '44px'}}
                   onClick={this.handleTouchTap}
                   icon={<AddIcon color={cyan500}/>}
               />
@@ -105,7 +114,7 @@ class ProducersOffersTable extends Component {
                   onRequestClose={this.handleRequestClose}
               >
                 <Menu>
-                  {this.props.names.map((name, index)=>{
+                  {this.props.names.map((name, index) => {
                     return <MenuItem primaryText={name} onClick={() => this.handleRequestClose(name)} key={index}/>
                   })}
                 </Menu>
@@ -127,17 +136,38 @@ class ProducersOffersTable extends Component {
           <div className="tableActions">
             <RaisedButton label={"Aceptar Ofertas (" + this.state.selectedRows.length + ")"} primary={true} disabled={this.state.selectedRows.length === 0} style={{float: 'left', margin: '12px'}}
                           onClick={() => {
-                            console.log('Button works! :D');
-                            this.setState({selectedRows:[]});
+                            const ids = [];
+                            const filteredRows = this.getFilteredData2();
+                            this.state.selectedRows.forEach((index) => {
+                              ids.push(filteredRows[index].id);
+                            });
+                            this.props.setStateSomeProducersOffers(ids, 'Aceptada');
+                            this.setState({selectedRows: []});
                           }
                           }/>
             <RaisedButton label={"Cancelar Ofertas (" + this.state.selectedRows.length + ")"} secondary={true} disabled={this.state.selectedRows.length === 0} style={{float: 'left', margin: '12px'}}
                           onClick={() => {
-                            console.log('Button works! :D');
-                            this.setState({selectedRows:[]});
+                            const ids = [];
+                            const filteredRows = this.getFilteredData2();
+                            this.state.selectedRows.forEach((index) => {
+                              ids.push(filteredRows[index].id);
+                            });
+                            this.props.setStateSomeProducersOffers(ids, 'Cancelada');
+                            this.setState({selectedRows: []});
                           }
                           }/>
-            <RaisedButton label="Guardar" primary={true} style={{float: 'right', margin: '12px'}}/>
+            <RaisedButton label="Guardar" primary={true} style={{float: 'right', margin: '12px'}}
+                          onClick={() => {
+                            const acceptedIds = [];
+                            const canceledIds = [];
+                            this.props.data.map(offer => {
+                              if (offer.editable && offer.state === 'Aceptada')
+                                acceptedIds.push({id: offer.id, state: 'Aceptada'});
+                              else if (offer.editable && offer.state === 'Cancelada')
+                                canceledIds.push({id: offer.id, state: 'Cancelada'})
+                            });
+                            this.props.saveProducersOffers(acceptedIds, canceledIds);
+                          }}/>
             <RaisedButton label="Cancelar" style={{float: 'right', margin: '12px'}}/>
           </div>
         </div>
@@ -156,4 +186,4 @@ const columns = [
   {name: 'Estado'},
 ];
 
-export default ProducersOffersTable;
+export default connect(null, {setStateSomeProducersOffers, saveProducersOffers})(ProducersOffersTable);
