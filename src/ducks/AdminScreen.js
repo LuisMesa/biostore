@@ -2,6 +2,9 @@ import axios from 'axios';
 import {BASE_URL} from './constants';
 
 const CHANGE_PRODUCERS_OFFERS = 'CHANGE_PRODUCERS_OFFERS';
+const CHANGE_ADMIN_OFFERS = 'CHANGE_ADMIN_OFFERS';
+const CHANGE_CUSTOMER_ORDERS = 'CHANGE_CUSTOMER_ORDERS';
+const CHANGE_PRODUCERS_ORDERS = 'CHANGE_PRODUCERS_ORDERS';
 const SET_STATE_SOME_PRODUCERS_OFFERS = 'SET_STATE_SOME_PRODUCERS_OFFERS';
 const NOTIFICATION = 'NOTIFICATION';
 const DELETE_NOTIFICATION = 'DELETE_NOTIFICATION';
@@ -11,6 +14,20 @@ export const fetchProducersOffers = () => async dispatch => {
   const offers = (await axios.get(BASE_URL + '/producersoffers')).data;
   dispatch({
     type: CHANGE_PRODUCERS_OFFERS,
+    payload: offers
+  });
+};
+export const fetchAdminOffers = () => async dispatch => {
+  const offers = (await axios.get(BASE_URL + '/adminoffers')).data;
+  dispatch({
+    type: CHANGE_ADMIN_OFFERS,
+    payload: offers
+  });
+};
+export const fetchCustomerOffers = () => async dispatch => {
+  const offers = (await axios.get(BASE_URL + '/orders')).data;
+  dispatch({
+    type: CHANGE_CUSTOMER_ORDERS,
     payload: offers
   });
 };
@@ -51,9 +68,9 @@ export const deleteNotification = () => {
   }
 };
 
-export const createOffer = (newOffer) => async dispatch => {
+export const createAdminOffer = (newOffer) => async dispatch => {
   const object = newOffer;
-  await axios.post(BASE_URL + '/prueba/', object).then(response => {
+  await axios.post(BASE_URL + '/addadminoffer/', object).then(response => {
     if (response.data.estado === 'ok') {
       dispatch({
         type: CREATE_OFFER,
@@ -85,7 +102,13 @@ const INITIAL_STATE = {
 export default function AdminScreen(state = INITIAL_STATE, action) {
   switch (action.type) {
     case CHANGE_PRODUCERS_OFFERS: {
-      return {...state, producersOffers: clearData(action.payload)};
+      return {...state, producersOffers: clearProducersOffers(action.payload)};
+    }
+    case CHANGE_ADMIN_OFFERS: {
+      return {...state, adminOffers: clearAdminOffers(action.payload)};
+    }
+    case CHANGE_CUSTOMER_ORDERS: {
+      return {...state, customersOrders: clearCustomersOrders(action.payload)};
     }
     case SET_STATE_SOME_PRODUCERS_OFFERS: {
       const stateCopy = {...state};
@@ -111,21 +134,50 @@ export default function AdminScreen(state = INITIAL_STATE, action) {
   }
 };
 
-const clearData = (oldData) => {
-  // console.log(oldData);
+const clearProducersOffers = (oldData) => {
+  return oldData.map((item, index) => {
+    const fixed = {
+      id: item.id,
+      name: item.productType.title,
+      amount: item.count,
+      price: item.unit_price,
+      producer: item.producer.name,
+      createdAt: new Date(item.create_at),
+      deliveryDate: new Date(item.available_at),
+      editable: item.editable,
+      state: item.state
+    };
+    return fixed;
+  })
+};
+
+const clearAdminOffers = (oldData) => {
   return oldData.map((item, index) => {
     const fixed = {
       id: item.pk,
       name: item.pk,
       amount: item.fields.count,
+      unit:item.fields.unit_type,
       price: item.fields.unit_price,
-      producer: item.fields.producer,
       createdAt: new Date(item.fields.create_at),
-      deliveryDate: new Date(item.fields.available_at),
-      editable: item.fields.editable,
-      state: item.fields.state
+      deliveryDate: new Date(item.fields.delivery_date),
     };
-    // console.log(fixed,item.create_at);
+    return fixed;
+  })
+};
+
+const clearCustomersOrders = (oldData) => {
+  return oldData.map((item, index) => {
+    const fixed = {
+      id: item.order.id,
+      name: item.offer.productType.title,
+      amount: item.count,
+      unit: item.offer.unit_type,
+      price: item.offer.unit_price,
+      deliveryDate: new Date(item.order.delivery_at),
+      client: item.order.consumer.name,
+      phone: item.order.consumer.phone_number,
+    };
     return fixed;
   })
 };

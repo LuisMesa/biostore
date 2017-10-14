@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {Link} from 'react-router-dom'
 import Title from '../../common/Title/Title';
 import Group from '../../common/Group/Group';
 import Product from '../../common/Product/Product';
@@ -22,6 +23,7 @@ class Frequent extends Component {
                 return <Product src={product.src} name={product.nombre} category={product.categoria} price={product.precio} unit={product.unidad} key={product.src+index}/>
               })}
             </Group>
+            <Link to={{pathname: "/products"}} ><Title title="Ver todos..."/></Link>
           </div>
           <div className="frequentBaskets">
             <Title title="Canastas Frecuentes"/>
@@ -31,6 +33,7 @@ class Frequent extends Component {
               })}
             </Group>
           </div>
+
         </div>
     )
   }

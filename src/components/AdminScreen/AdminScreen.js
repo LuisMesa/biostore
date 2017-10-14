@@ -3,15 +3,17 @@ import {connect} from 'react-redux';
 import Snackbar from 'material-ui/Snackbar';
 import FlatButton from 'material-ui/FlatButton';
 import ProducersOffersTable from './ProducersOffersTable/ProducersOffersTable';
-import {fetchProducersOffers, deleteNotification, createOffer} from '../../ducks/AdminScreen';
+import AdminOffersTable from './AdminOffersTable/AdminOffersTable';
+import CustomersOrdersTable from './CustomersOrdersTable/CustomersOrdersTable';
+import {fetchProducersOffers, deleteNotification} from '../../ducks/AdminScreen';
 
 import './AdminScreen.css';
 
 class AdminScreen extends Component {
   state = {
     producersOffersTable: true,
-    adminOffersTable: true,
-    producersOrdersTable: false,
+    adminOffersTable: false,
+    // producersOrdersTable: true,
     customersOrdersTable: false,
     openSnackBar: false,
     idProductNewOffer: '1',
@@ -90,14 +92,6 @@ class AdminScreen extends Component {
     return availableNames;
   };
 
-  createOffer = () => {
-    const {idProductNewOffer, amountNewOffer, priceNewOffer, deliveryDateNewOffer} = this.state;
-    const unit = 'Libra';
-    const createdAt = Date.now();
-    const offer = {idProductNewOffer, amountNewOffer, priceNewOffer, deliveryDateNewOffer, unit, createdAt};
-    this.props.createOffer(offer);
-  };
-
 
   componentWillMount() {
     this.props.fetchProducersOffers();
@@ -107,16 +101,17 @@ class AdminScreen extends Component {
     return (
         <div className="AdminScreen">
           {this.state.producersOffersTable ? <ProducersOffersTable data={this.props.producersOffers} names={this.getAvailableNames()} addTable={this.addTable} name={names[0]} deleteTable={this.deleteTable}/> : ''}
-          {this.state.adminOffersTable ? <ProducersOffersTable data={this.props.adminOffers} names={this.getAvailableNames()} addTable={this.addTable} name={names[1]} deleteTable={this.deleteTable}/> : ''}
-          {this.state.producersOrdersTable ? <ProducersOffersTable data={this.props.producersOrders} names={this.getAvailableNames()} addTable={this.addTable} name={names[2]} deleteTable={this.deleteTable}/> : ''}
-          {this.state.customersOrdersTable ? <ProducersOffersTable data={this.props.customersOrders} names={this.getAvailableNames()} addTable={this.addTable} name={names[3]} deleteTable={this.deleteTable}/> : ''}
+          {this.state.adminOffersTable ? <AdminOffersTable names={this.getAvailableNames()} addTable={this.addTable} name={names[1]} deleteTable={this.deleteTable}/> : ''}
+          {this.state.customersOrdersTable ? <CustomersOrdersTable names={this.getAvailableNames()} addTable={this.addTable} name={names[2]} deleteTable={this.deleteTable}/> : ''}
+          {/*{this.state.producersOrdersTable ? <ProducersOffersTable data={this.props.customersOrders} names={this.getAvailableNames()} addTable={this.addTable} name={names[3]} deleteTable={this.deleteTable}/> : ''}*/}
+
+
           <Snackbar
               open={this.state.openSnackBar}
               message={this.props.notifications[0]?this.props.notifications[0]:''}
               autoHideDuration={4000}
               onRequestClose={this.handleRequestCloseSnackBar}
           />
-          <FlatButton label='Nueva Oferta' onClick={this.createOffer}/>
         </div>
     );
   }
@@ -124,7 +119,7 @@ class AdminScreen extends Component {
 const names = [
   'Ofertas de Productores',
   'Ofertas del Admin',
-  'Pedidos a Productores',
+  // 'Pedidos a Productores',
   'Pedidos de Clientes'
 ];
 
@@ -139,4 +134,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps, {fetchProducersOffers, deleteNotification, createOffer})(AdminScreen);
+export default connect(mapStateToProps, {fetchProducersOffers, deleteNotification})(AdminScreen);

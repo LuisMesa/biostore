@@ -65,7 +65,7 @@ class ProducerScreen extends Component {
     return (
         <div className="ProducerScreen">
           {this.state.offersTable ? <OffersTable name={names[0]} names={this.getAvailableNames()} addTable={this.addTable} deleteTable={this.deleteTable} /> : ''}
-          {this.state.ordersTable ? <OffersTable name={names[0]} names={this.getAvailableNames()} addTable={this.addTable} deleteTable={this.deleteTable} /> : ''}
+          {this.state.ordersTable ? <OffersTable name={names[1]} names={this.getAvailableNames()} addTable={this.addTable} deleteTable={this.deleteTable} /> : ''}
           {/*<Snackbar*/}
               {/*open={this.state.openSnackBar}*/}
               {/*message={this.props.notifications[0]?this.props.notifications[0]:''}*/}
