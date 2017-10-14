@@ -46,23 +46,6 @@ class ProducersOffersTable extends Component {
     this.props.addTable(newTable);
   };
 
-  getFilteredData() {
-    return this.props.data.filter(row => {
-      let approve = false;
-      row.items.forEach(item => {
-        if (!approve) {
-          for (const property in item) {
-            if (item.hasOwnProperty(property) && property === 'filter' && this.state.filterDate1.getTime() < item.data && this.state.filterDate2.getTime() > item.data) {
-              approve = true;
-              break;
-            }
-          }
-        }
-      });
-      return approve;
-    })
-  }
-
   getFilteredData2() {
     return this.props.data.filter(offer => {
       return this.state.filterDate1.getTime() < offer.deliveryDate && this.state.filterDate2.getTime() > offer.deliveryDate
@@ -78,7 +61,7 @@ class ProducersOffersTable extends Component {
       case 'editable':
         return <TableRowColumn key={index}>{value ? <LockIcon style={{paddingLeft: 'calc(50% - 12px)'}}/> : <LockOpenIcon style={{paddingLeft: 'calc(50% - 12px)'}}/>}</TableRowColumn>;
       case 'state':
-        return <TableRowColumn key={index}>{value === 'Pendiente' ? <InfoIcon style={{paddingLeft: 'calc(50% - 12px)'}}/> : value === 'Cancelada' ? <HighLightIcon style={{paddingLeft: 'calc(50% - 12px)'}} color={pinkA200}/> : <CheckCircleIcon style={{paddingLeft: 'calc(50% - 12px)'}} color={cyan500}/>}</TableRowColumn>;
+        return <TableRowColumn key={index}>{value.toLowerCase() === 'Pendiente'.toLowerCase() ? <InfoIcon style={{paddingLeft: 'calc(50% - 12px)'}}/> : value.toLowerCase() === 'Cancelada'.toLowerCase() ? <HighLightIcon style={{paddingLeft: 'calc(50% - 12px)'}} color={pinkA200}/> : <CheckCircleIcon style={{paddingLeft: 'calc(50% - 12px)'}} color={cyan500}/>}</TableRowColumn>;
       case 'createdAt':
         return <TableRowColumn key={index}>{value.toISOString().split('T')[0]}</TableRowColumn>;
       case 'deliveryDate':

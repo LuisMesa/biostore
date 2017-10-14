@@ -1,39 +1,90 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux';
-import {createOffer} from '../../ducks/ProducerScreen';
+import Snackbar from 'material-ui/Snackbar';
 import FlatButton from 'material-ui/FlatButton';
+import OffersTable from'./OffersTable/OffersTable';
 import './ProducerScreen.css';
 
 class ProducerScreen extends Component {
   state = {
-    idProductNewOffer: '1',
-    amountNewOffer: '5',
-    priceNewOffer: '2000',
-    deliveryDateNewOffer: Date.now()
+    offersTable: true,
+    ordersTable: false,
+    openSnackBar: false,
   };
 
-  createOffer = () => {
-    const {idProductNewOffer, amountNewOffer, priceNewOffer, deliveryDateNewOffer} = this.state;
-    const idProducer = '1';
-    const unit = 'Libra';
-    const createdAt = Date.now();
-    const offer = {idProductNewOffer, amountNewOffer, priceNewOffer, deliveryDateNewOffer, idProducer, unit, createdAt};
-    this.props.createOffer(offer);
+  handleRequestCloseSnackBar = () => {
+    this.setState({
+      openSnackBar: false,
+    });
+    if (this.props.notifications.length > 0) {
+      this.props.deleteNotification();
+    }
+  };
+
+  addTable = (newTable) => {
+    switch (newTable) {
+      case names[0]: {
+        this.setState({offersTable: true});
+        break;
+      }
+      case names[1]: {
+        this.setState({ordersTable: true});
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+  };
+
+  deleteTable = (tableName) => {
+    switch (tableName) {
+      case names[0]: {
+        this.setState({offersTable: false});
+        break;
+      }
+      case names[1]: {
+        this.setState({ordersTable: false});
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+  };
+  getAvailableNames = () => {
+    const availableNames = [];
+    if (!this.state.offersTable)
+      availableNames.push(names[0]);
+    if (!this.state.ordersTable)
+      availableNames.push(names[1]);
+    return availableNames;
   };
 
   render() {
     return (
         <div className="ProducerScreen">
-          ProducerScreen
-          <FlatButton label='Nueva Oferta' onClick={this.createOffer}/>
+          {this.state.offersTable ? <OffersTable name={names[0]} names={this.getAvailableNames()} addTable={this.addTable} deleteTable={this.deleteTable} /> : ''}
+          {this.state.ordersTable ? <OffersTable name={names[0]} names={this.getAvailableNames()} addTable={this.addTable} deleteTable={this.deleteTable} /> : ''}
+          {/*<Snackbar*/}
+              {/*open={this.state.openSnackBar}*/}
+              {/*message={this.props.notifications[0]?this.props.notifications[0]:''}*/}
+              {/*autoHideDuration={4000}*/}
+              {/*onRequestClose={this.handleRequestCloseSnackBar}*/}
+          {/*/>*/}
         </div>
     );
   }
 }
-function mapStateToProps(state){
-  const {offers} = state;
-  return{
+const names = [
+  'Ofertas',
+  'Pedidos',
+];
+
+function mapStateToProps(state) {
+  const {offers} = state.ProducerScreen;
+  return {
     offers
   }
 }
-export default connect(mapStateToProps, {createOffer})(ProducerScreen);
+export default connect(mapStateToProps, {})(ProducerScreen);

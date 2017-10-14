@@ -10,6 +10,8 @@ class SignUp extends Component {
     open: false,
     finished: false,
     stepIndex: 0,
+    nombre:'',
+    nombreReal:''
   };
 
   handleNext = () => {
@@ -35,6 +37,8 @@ class SignUp extends Component {
               <TextField
                   hintText="Ingrese su nombre de usuario"
                   floatingLabelText="Ingrese su nombre de usuario"
+                  onChange={(event)=>this.setState({nombre:event.target.value})}
+                  value={this.state.nombre}
               /><br />
               <TextField
                   hintText="Ingrese su contraseña"
@@ -53,6 +57,8 @@ class SignUp extends Component {
               <TextField
                   hintText="Ingrese su nombre"
                   floatingLabelText="Nombre"
+                  onChange={(event)=>this.setState({nombreReal:event.target.value})}
+                  value={this.state.nombreReal}
               /><br />
               <TextField
                   hintText="Ingrese su apellido"

@@ -1,7 +1,6 @@
 const CHANGE_FARM_FILTER = 'CHANGE_FARM_FILTER';
 const CHANGE_VEGETABLES_FILTER = 'CHANGE_VEGETABLE_FILTER';
 const CHANGE_FRUITS_FILTER = 'CHANGE_FRUITS_FILTER';
-const NOTIFICATION='NOTIFICATION';
 
 export const changeFarmFilter = (exclusive) => {
   return {
@@ -23,15 +22,6 @@ export const changeFruitsFilter = (exclusive) => {
     payload: exclusive
   }
 };
-//
-// export const createOrder = (idClient, shippingAddress, delivery_at, items) => {
-// //   //fechas, direccion, idCliente y arreglo (idOferta, cantidad)
-// //created_at, delivery_at, shipping_address, consumer_id, order_items, (count, offer_id)
-//   return {
-//     type: CHANGE_FRUITS_FILTER,
-//     payload: exclusive
-//   }
-// };
 
 const INITIAL_STATE = {
   filters: {

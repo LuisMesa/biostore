@@ -59,7 +59,7 @@ class Cart extends Component {
                 <Divider/>
                 <div className="buttons">
                   <FlatButton label="Descartar" secondary={true}/>
-                  <FlatButton label="Comprar" primary={true}/>
+                  <FlatButton label="Comprar" primary={true} onClick={()=>this.props.buy()}/>
                 </div>
               </div>
 

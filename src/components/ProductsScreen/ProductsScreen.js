@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux';
+import {createOrder} from '../../ducks/common';
 import Products from './Products/Products';
 import Cart from '../common/Cart/Cart';
 
@@ -17,11 +18,16 @@ const products = [
 ];
 
 class ProductsScreen extends Component {
+
+  buy = ()=>{
+    this.props.createOrder(1,'dirección', 1231234, [{offer_id:1, count: 5},{offer_id:2,count:3}]);
+  };
+
   render() {
     return (
         <div className="ProductsScreen">
           <Products products = {products} filters={this.props.filters}/>
-          <Cart products = {this.props.products}/>
+          <Cart products = {this.props.products} buy = {this.buy}/>
         </div>
     );
   }
@@ -35,4 +41,4 @@ function mapStateToProps(state){
   }
 }
 
-export default connect(mapStateToProps)(ProductsScreen);
+export default connect(mapStateToProps, {createOrder})(ProductsScreen);
