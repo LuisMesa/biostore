@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {fetchAdminOffers, createAdminOffer } from '../../../ducks/AdminScreen';
+import {fetchOrders,} from '../../../ducks/ProducerScreen';
 import LockIcon from 'material-ui/svg-icons/action/lock';
 import LockOpenIcon from 'material-ui/svg-icons/action/lock-open';
 import HighLightIcon from 'material-ui/svg-icons/action/highlight-off';
@@ -12,23 +12,19 @@ import AddIcon from 'material-ui/svg-icons/content/add';
 import RemoveIcon from 'material-ui/svg-icons/content/clear';
 import {TableRowColumn,} from 'material-ui/Table';
 import RaisedButton from 'material-ui/RaisedButton';
-import TextField from 'material-ui/TextField';
-import FlatButton from 'material-ui/FlatButton';
-import Dialog from '../../common/Dialog/Dialog';
 import Table from '../../common/Table/Table';
 
-import './AdminOffersTable.css'
+import './OrdersTable.css';
 
-class AdminOfferTable  extends Component {
+class OrdersTable extends Component {
 
   state = {
     filterDate1: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
     filterDate2: new Date(),
     popoverOpen: false,
     selectedRows: [],
-    dialogOpen:false,
     idProductNewOffer: '1',
-    amountNewOffer: '',
+    amountNewOffer: '5',
     priceNewOffer: '2000',
     deliveryDateNewOffer: Date.now()
   };
@@ -82,20 +78,19 @@ class AdminOfferTable  extends Component {
     const idProducer = '1';
     const unit = 'Libra';
     const createdAt = Date.now();
-    const offer = {idProductNewOffer, amountNewOffer, priceNewOffer, deliveryDateNewOffer: new Date(deliveryDateNewOffer).getTime(), idProducer, unit, createdAt};
-    await this.props.createAdminOffer(offer);
-    this.props.fetchAdminOffers();
-    this.setState({dialogOpen:false})
+    const offer = {idProductNewOffer, amountNewOffer, priceNewOffer, deliveryDateNewOffer, idProducer, unit, createdAt};
+    await this.props.createOffer(offer);
+    this.props.fetchOffers();
   };
 
   componentWillMount() {
-    this.props.fetchAdminOffers()
+    this.props.fetchOrders()
   }
 
   render() {
     return (
-        <div className="AdminOffersTable">
-          <Table columns={columns} data={this.props.adminOffers} renderItem={(value, type, index) => this.renderItem(value, type, index)} onRowSelection={this.onRowSelection} selectedRows={this.state.selectedRows}>
+        <div className="OffersTable">
+          <Table columns={columns} data={this.props.orders} renderItem={(value, type, index) => this.renderItem(value, type, index)} onRowSelection={this.onRowSelection} selectedRows={this.state.selectedRows}>
             <div>
               <h3>{this.props.name}</h3>
               <RaisedButton
@@ -141,67 +136,26 @@ class AdminOfferTable  extends Component {
             </div>
           </Table>
           <div className="tableActions">
-            <RaisedButton label="Crear Oferta" primary={true} style={{float: 'right', margin: '12px'}}
-                          onClick={()=>this.setState({dialogOpen:true})}/>
-            <RaisedButton label="Cancelar" style={{float: 'right', margin: '12px'}}/>
+            <RaisedButton label="Actualizar" primary={true} style={{float: 'right', margin: '12px'}}
+                          onClick={()=>this.props.fetchOrders()}/>
           </div>
-          <Dialog title='Crear Oferta' open={this.state.dialogOpen}
-                  handleClose={()=>{this.setState({dialogOpen:false})}}
-                  actions={[
-                    <FlatButton
-                        label="Cancel"
-                        primary={true}
-                        onClick={()=>{this.setState({dialogOpen:false})}}
-                    />,
-                    <FlatButton
-                        label="Guardar"
-                        primary={true}
-                        onClick={this.createOffer}
-                    />]}
-          >
-            <TextField
-                hintText="Tomate"
-                floatingLabelText="Producto"
-            /><br />
-            <TextField
-                hintText="15"
-                floatingLabelText="Cantidad"
-                onChange={(event)=>{this.setState({amountNewOffer:event.target.value})}}
-            /><br />
-            <TextField
-                hintText="Libra"
-                floatingLabelText="Unidad"
-                onChange={(event)=>{this.setState({unitNewOffer:event.target.value})}}
-            /><br />
-            <TextField
-                hintText="2500"
-                floatingLabelText="Precio"
-                onChange={(event)=>{this.setState({priceNewOffer:event.target.value})}}
-            /><br />
-            <TextField
-                hintText="2017-10-20"
-                floatingLabelText="Fecha Entrega"
-                onChange={(event)=>{this.setState({deliveryDateNewOffer:event.target.value})}}
-            /><br />
-          </Dialog>
         </div>
     );
   }
 }
 const columns = [
-  {name: 'Id Producto'},
+  {name: 'Producto'},
   {name: 'Cantidad'},
-  {name: 'Unidad'},
   {name: 'Precio'},
-  {name: 'Creación'},
   {name: 'Entrega'},
+  {name: 'Lugar Entrega'},
 ];
 
-function mapStateToProps(state) {
-  const {adminOffers} = state.AdminScreen;
+function mapStateToProps(status) {
+  const {orders} = status.ProducerScreen;
   return {
-    adminOffers
+    orders
   }
 }
 
-export default connect(mapStateToProps, {fetchAdminOffers, createAdminOffer})(AdminOfferTable);
+export default connect(mapStateToProps, {fetchOrders})(OrdersTable);

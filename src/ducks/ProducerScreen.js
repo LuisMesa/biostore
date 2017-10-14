@@ -3,6 +3,7 @@ import {BASE_URL} from './constants';
 
 const CREATE_OFFER = 'CREATE_OFFER';
 const CHANGE_OFFERS = 'CHANGE_OFFERS';
+const CHANGE_ORDERS = 'CHANGE_ORDERS';
 const NOTIFICATION = 'NOTIFICATION';
 
 export const fetchOffers = () => async dispatch => {
@@ -10,6 +11,14 @@ export const fetchOffers = () => async dispatch => {
   dispatch({
     type: CHANGE_OFFERS,
     payload: offers
+  });
+};
+export const fetchOrders = () => async dispatch => {
+  const orders = (await axios.get(BASE_URL + '/ordersbyproducer/1/')).data;
+  // const orders =[];
+  dispatch({
+    type: CHANGE_ORDERS,
+    payload: orders
   });
 };
 
@@ -36,13 +45,17 @@ export const createOffer = (newOffer) => async dispatch => {
   });
 };
 const INITIAL_STATE = {
-  offers: []
+  offers: [],
+  orders: []
 };
 
 export default function ProducerScreen(state = INITIAL_STATE, action) {
   switch (action.type) {
     case CHANGE_OFFERS: {
       return {...state, offers: clearData(action.payload)};
+    }
+    case CHANGE_ORDERS: {
+      return {...state, orders: clearOrdersData(action.payload)};
     }
     case CREATE_OFFER: {
       return {...state, offers: [...state.offers, action.payload]};
@@ -56,8 +69,8 @@ export default function ProducerScreen(state = INITIAL_STATE, action) {
 };
 
 const clearData = (oldData) => {
-  // console.log(oldData);
   return oldData.map((item, index) => {
+    console.log(item)
     const fixed = {
       id: item.pk,
       name: item.pk,
@@ -68,22 +81,22 @@ const clearData = (oldData) => {
       editable: item.fields.editable,
       state: item.fields.state
     };
-    // console.log(fixed,item.create_at);
     return fixed;
   })
 };
 
-const max = 2 * 7 * 24 * 60 * 60 * 1000;
-const min = 0;
-const tempOffers = [
-  {id: '1', name: 'Producto12', amount: '2', price: '34400', createdAt: new Date(Date.now() - Math.floor((Math.random() * max) + min)), deliveryDate: new Date(Date.now() - Math.floor((Math.random() * max) + min)), editable: true, state: 'Pendiente'},
-  {id: '2', name: 'Producto12', amount: '2', price: '34400', createdAt: new Date(Date.now() - Math.floor((Math.random() * max) + min)), deliveryDate: new Date(Date.now() - Math.floor((Math.random() * max) + min)), editable: true, state: 'Pendiente'},
-  {id: '3', name: 'Producto12', amount: '2', price: '34400', createdAt: new Date(Date.now() - Math.floor((Math.random() * max) + min)), deliveryDate: new Date(Date.now() - Math.floor((Math.random() * max) + min)), editable: true, state: 'Pendiente'},
-  {id: '4', name: 'Producto12', amount: '2', price: '34400', createdAt: new Date(Date.now() - Math.floor((Math.random() * max) + min)), deliveryDate: new Date(Date.now() - Math.floor((Math.random() * max) + min)), editable: true, state: 'Pendiente'},
-  {id: '5', name: 'Producto12', amount: '2', price: '34400', createdAt: new Date(Date.now() - Math.floor((Math.random() * max) + min)), deliveryDate: new Date(Date.now() - Math.floor((Math.random() * max) + min)), editable: true, state: 'Pendiente'},
-  {id: '6', name: 'Producto12', amount: '2', price: '34400', createdAt: new Date(Date.now() - Math.floor((Math.random() * max) + min)), deliveryDate: new Date(Date.now() - Math.floor((Math.random() * max) + min)), editable: true, state: 'Pendiente'},
-  {id: '7', name: 'Producto12', amount: '2', price: '34400', createdAt: new Date(Date.now() - Math.floor((Math.random() * max) + min)), deliveryDate: new Date(Date.now() - Math.floor((Math.random() * max) + min)), editable: true, state: 'Pendiente'},
-  {id: '8', name: 'Producto12', amount: '2', price: '34400', createdAt: new Date(Date.now() - Math.floor((Math.random() * max) + min)), deliveryDate: new Date(Date.now() - Math.floor((Math.random() * max) + min)), editable: true, state: 'Pendiente'},
-  {id: '9', name: 'Producto12', amount: '2', price: '34400', createdAt: new Date(Date.now() - Math.floor((Math.random() * max) + min)), deliveryDate: new Date(Date.now() - Math.floor((Math.random() * max) + min)), editable: true, state: 'Pendiente'},
-  {id: '10', name: 'Producto12', amount: '2', price: '34400', createdAt: new Date(Date.now() - Math.floor((Math.random() * max) + min)), deliveryDate: new Date(Date.now() - Math.floor((Math.random() * max) + min)), editable: true, state: 'Pendiente'},
-];
+const clearOrdersData = (oldData) => {
+  return oldData.map((item, index) => {
+    const fixed = {
+      id: item.order.id,
+      name: item.offer.productType.title,
+      amount: item.count,
+      price: item.offer.unit_price,
+      // createdAt: new Date(item.fields.create_at),
+      deliveryDate: new Date(item.order.delivery_at),
+      address: item.order.shipping_address,
+      // state: item.fields.state
+    };
+    return fixed;
+  })
+};

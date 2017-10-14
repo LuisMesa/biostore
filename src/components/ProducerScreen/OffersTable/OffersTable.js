@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {fetchOffers, createOffer } from '../../../ducks/ProducerScreen';
+import {fetchOffers, createOffer} from '../../../ducks/ProducerScreen';
 import LockIcon from 'material-ui/svg-icons/action/lock';
 import LockOpenIcon from 'material-ui/svg-icons/action/lock-open';
 import HighLightIcon from 'material-ui/svg-icons/action/highlight-off';
@@ -12,7 +12,12 @@ import AddIcon from 'material-ui/svg-icons/content/add';
 import RemoveIcon from 'material-ui/svg-icons/content/clear';
 import {TableRowColumn,} from 'material-ui/Table';
 import RaisedButton from 'material-ui/RaisedButton';
+import TextField from 'material-ui/TextField';
+import FlatButton from 'material-ui/FlatButton';
 import Table from '../../common/Table/Table';
+import Dialog from '../../common/Dialog/Dialog';
+
+import './OffersTable.css';
 
 class OffersTable extends Component {
 
@@ -21,10 +26,13 @@ class OffersTable extends Component {
     filterDate2: new Date(),
     popoverOpen: false,
     selectedRows: [],
+    dialogOpen:false,
     idProductNewOffer: '1',
-    amountNewOffer: '5',
-    priceNewOffer: '2000',
-    deliveryDateNewOffer: Date.now()
+    productNewOffer:'',
+    amountNewOffer: '',
+    unitNewOffer:'',
+    priceNewOffer: '',
+    deliveryDateNewOffer: ''
   };
 
   handleTouchTap = (event) => {
@@ -59,7 +67,7 @@ class OffersTable extends Component {
       case 'editable':
         return <TableRowColumn key={index}>{value ? <LockIcon style={{paddingLeft: 'calc(50% - 12px)'}}/> : <LockOpenIcon style={{paddingLeft: 'calc(50% - 12px)'}}/>}</TableRowColumn>;
       case 'state':
-        return <TableRowColumn key={index}>{value === 'Pendiente' || value === 'PENDIENTE' ? <InfoIcon style={{paddingLeft: 'calc(50% - 12px)'}}/> : value === 'Cancelada'|| value === 'CANCELADA' ? <HighLightIcon style={{paddingLeft: 'calc(50% - 12px)'}} color={pinkA200}/> : <CheckCircleIcon style={{paddingLeft: 'calc(50% - 12px)'}} color={cyan500}/>}</TableRowColumn>;
+        return <TableRowColumn key={index}>{value === 'Pendiente' || value === 'PENDIENTE' ? <InfoIcon style={{paddingLeft: 'calc(50% - 12px)'}}/> : value === 'Cancelada' || value === 'CANCELADA' ? <HighLightIcon style={{paddingLeft: 'calc(50% - 12px)'}} color={pinkA200}/> : <CheckCircleIcon style={{paddingLeft: 'calc(50% - 12px)'}} color={cyan500}/>}</TableRowColumn>;
       case 'createdAt':
         return <TableRowColumn key={index}>{value.toISOString().split('T')[0]}</TableRowColumn>;
       case 'deliveryDate':
@@ -71,14 +79,15 @@ class OffersTable extends Component {
     }
   }
 
-  createOffer = async () => {
-    const {idProductNewOffer, amountNewOffer, priceNewOffer, deliveryDateNewOffer} = this.state;
+  createOffer = async() => {
+    const {idProductNewOffer, amountNewOffer, priceNewOffer, deliveryDateNewOffer, unitNewOffer} = this.state;
     const idProducer = '1';
-    const unit = 'Libra';
+    const unit = unitNewOffer;
     const createdAt = Date.now();
-    const offer = {idProductNewOffer, amountNewOffer, priceNewOffer, deliveryDateNewOffer, idProducer, unit, createdAt};
+    const offer = {idProductNewOffer, amountNewOffer, priceNewOffer, deliveryDateNewOffer: new Date(deliveryDateNewOffer).getTime(), idProducer, unit, createdAt};
     await this.props.createOffer(offer);
     this.props.fetchOffers();
+    this.setState({dialogOpen:false})
   };
 
   componentWillMount() {
@@ -96,7 +105,7 @@ class OffersTable extends Component {
                   onClick={() => this.props.deleteTable(this.props.name)}
                   icon={<RemoveIcon color={pinkA200}/>}
               />
-              {this.props.names.length>0?
+              {this.props.names.length > 0 ?
                   <RaisedButton
                       style={{display: 'block-inline', float: 'right', marginTop: '3vh', marginRight: '12px', minWidth: '44px'}}
                       onClick={this.handleTouchTap}
@@ -135,9 +144,48 @@ class OffersTable extends Component {
           </Table>
           <div className="tableActions">
             <RaisedButton label="Crear Oferta" primary={true} style={{float: 'right', margin: '12px'}}
-                          onClick={this.createOffer}/>
+                          onClick={()=>this.setState({dialogOpen:true})}/>
             <RaisedButton label="Cancelar" style={{float: 'right', margin: '12px'}}/>
           </div>
+          <Dialog title='Crear Oferta' open={this.state.dialogOpen}
+                  handleClose={()=>{this.setState({dialogOpen:false})}}
+                  actions={[
+                    <FlatButton
+                      label="Cancel"
+                      primary={true}
+                      onClick={()=>{this.setState({dialogOpen:false})}}
+                  />,
+                  <FlatButton
+                    label="Guardar"
+                    primary={true}
+                    onClick={this.createOffer}
+                    />]}
+          >
+            <TextField
+                hintText="Tomate"
+                floatingLabelText="Producto"
+            /><br />
+            <TextField
+                hintText="15"
+                floatingLabelText="Cantidad"
+                onChange={(event)=>{this.setState({amountNewOffer:event.target.value})}}
+            /><br />
+            <TextField
+                hintText="Libra"
+                floatingLabelText="Unidad"
+                onChange={(event)=>{this.setState({unitNewOffer:event.target.value})}}
+            /><br />
+            <TextField
+                hintText="2500"
+                floatingLabelText="Precio"
+                onChange={(event)=>{this.setState({priceNewOffer:event.target.value})}}
+            /><br />
+            <TextField
+                hintText="2017-10-20"
+                floatingLabelText="Fecha Entrega"
+                onChange={(event)=>{this.setState({deliveryDateNewOffer:event.target.value})}}
+            /><br />
+          </Dialog>
         </div>
     );
   }

@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import Snackbar from 'material-ui/Snackbar';
 import FlatButton from 'material-ui/FlatButton';
 import OffersTable from'./OffersTable/OffersTable';
+import OrdersTable from'./OrdersTable/OrdersTable';
 import './ProducerScreen.css';
 
 class ProducerScreen extends Component {
@@ -65,7 +66,7 @@ class ProducerScreen extends Component {
     return (
         <div className="ProducerScreen">
           {this.state.offersTable ? <OffersTable name={names[0]} names={this.getAvailableNames()} addTable={this.addTable} deleteTable={this.deleteTable} /> : ''}
-          {this.state.ordersTable ? <OffersTable name={names[1]} names={this.getAvailableNames()} addTable={this.addTable} deleteTable={this.deleteTable} /> : ''}
+          {this.state.ordersTable ? <OrdersTable name={names[1]} names={this.getAvailableNames()} addTable={this.addTable} deleteTable={this.deleteTable} /> : ''}
           {/*<Snackbar*/}
               {/*open={this.state.openSnackBar}*/}
               {/*message={this.props.notifications[0]?this.props.notifications[0]:''}*/}

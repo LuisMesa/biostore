@@ -41,11 +41,11 @@ class AdminScreen extends Component {
         this.setState({adminOffersTable: true});
         break;
       }
+      // case names[2]: {
+      //   this.setState({producersOrdersTable: true});
+      //   break;
+      // }
       case names[2]: {
-        this.setState({producersOrdersTable: true});
-        break;
-      }
-      case names[3]: {
         this.setState({customersOrdersTable: true});
         break;
       }
@@ -65,11 +65,11 @@ class AdminScreen extends Component {
         this.setState({adminOffersTable: false});
         break;
       }
+      // case names[2]: {
+      //   this.setState({producersOrdersTable: false});
+      //   break;
+      // }
       case names[2]: {
-        this.setState({producersOrdersTable: false});
-        break;
-      }
-      case names[3]: {
         this.setState({customersOrdersTable: false});
         break;
       }
@@ -85,10 +85,10 @@ class AdminScreen extends Component {
       availableNames.push(names[0]);
     if (!this.state.adminOffersTable)
       availableNames.push(names[1]);
-    if (!this.state.producersOrdersTable)
-      availableNames.push(names[2]);
+    // if (!this.state.producersOrdersTable)
+    //   availableNames.push(names[2]);
     if (!this.state.customersOrdersTable)
-      availableNames.push(names[3]);
+      availableNames.push(names[2]);
     return availableNames;
   };
 
@@ -103,7 +103,7 @@ class AdminScreen extends Component {
           {this.state.producersOffersTable ? <ProducersOffersTable data={this.props.producersOffers} names={this.getAvailableNames()} addTable={this.addTable} name={names[0]} deleteTable={this.deleteTable}/> : ''}
           {this.state.adminOffersTable ? <AdminOffersTable names={this.getAvailableNames()} addTable={this.addTable} name={names[1]} deleteTable={this.deleteTable}/> : ''}
           {this.state.customersOrdersTable ? <CustomersOrdersTable names={this.getAvailableNames()} addTable={this.addTable} name={names[2]} deleteTable={this.deleteTable}/> : ''}
-          {/*{this.state.producersOrdersTable ? <ProducersOffersTable data={this.props.customersOrders} names={this.getAvailableNames()} addTable={this.addTable} name={names[3]} deleteTable={this.deleteTable}/> : ''}*/}
+
 
 
           <Snackbar
@@ -116,12 +116,14 @@ class AdminScreen extends Component {
     );
   }
 }
+{/*{this.state.producersOrdersTable ? <ProducersOffersTable data={this.props.customersOrders} names={this.getAvailableNames()} addTable={this.addTable} name={names[3]} deleteTable={this.deleteTable}/> : ''}*/}
+
 const names = [
   'Ofertas de Productores',
   'Ofertas del Admin',
-  // 'Pedidos a Productores',
   'Pedidos de Clientes'
 ];
+// 'Pedidos a Productores',
 
 function mapStateToProps(state) {
   const {producersOffers, adminOffers, producersOrders, customersOrders, notifications} = state.AdminScreen;

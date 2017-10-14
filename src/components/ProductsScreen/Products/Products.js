@@ -5,7 +5,7 @@ import Filters from './Filters/Filters';
 
 import './Products.css';
 
-class Frequent extends Component {
+class Products extends Component {
   render() {
     return (
         <div className="Products">
@@ -33,4 +33,4 @@ class Frequent extends Component {
 
 }
 
-export default Frequent;
+export default Products;
