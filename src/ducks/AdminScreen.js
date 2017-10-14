@@ -154,13 +154,13 @@ const clearProducersOffers = (oldData) => {
 const clearAdminOffers = (oldData) => {
   return oldData.map((item, index) => {
     const fixed = {
-      id: item.pk,
-      name: item.pk,
-      amount: item.fields.count,
-      unit:item.fields.unit_type,
-      price: item.fields.unit_price,
-      createdAt: new Date(item.fields.create_at),
-      deliveryDate: new Date(item.fields.delivery_date),
+      id: item.id,
+      name: item.productType.title,
+      amount: item.count,
+      unit:item.unit_type,
+      price: item.unit_price,
+      createdAt: new Date(item.create_at),
+      deliveryDate: new Date(item.delivery_date),
     };
     return fixed;
   })

@@ -97,11 +97,8 @@ const clearOffersData = (oldData) => {
       src: item.productType.url,
       nombre: item.productType.title,
       categoria: item.productType.description,
-      precio: item.fields.unit_price,
-      createdAt: new Date(item.fields.create_at),
-      deliveryDate: new Date(item.fields.available_at),
-      editable: item.fields.editable,
-      state: item.fields.state
+      precio: item.unit_price,
+      unidad: item.unit_type
     };
     return fixed;
   })

@@ -36,7 +36,7 @@ class ProductsScreen extends Component {
     console.log('Offers',this.props.offers);
     return (
         <div className="ProductsScreen">
-          <Products products = {products} filters={this.props.filters}/>
+          <Products products = {this.props.offers} filters={this.props.filters}/>
           <Cart products = {this.props.products} buy = {this.buy}/>
         </div>
     );
