@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {fetchOffers, createOffer} from '../../../ducks/ProducerScreen';
+import {productsNames, units} from '../../../others/usefulFunctions';
 import LockIcon from 'material-ui/svg-icons/action/lock';
 import LockOpenIcon from 'material-ui/svg-icons/action/lock-open';
 import HighLightIcon from 'material-ui/svg-icons/action/highlight-off';
@@ -13,6 +14,7 @@ import RemoveIcon from 'material-ui/svg-icons/content/clear';
 import {TableRowColumn,} from 'material-ui/Table';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
+import SelectField from 'material-ui/SelectField';
 import FlatButton from 'material-ui/FlatButton';
 import Table from '../../common/Table/Table';
 import Dialog from '../../common/Dialog/Dialog';
@@ -26,13 +28,13 @@ class OffersTable extends Component {
     filterDate2: new Date(),
     popoverOpen: false,
     selectedRows: [],
-    dialogOpen:false,
-    idProductNewOffer: '1',
-    productNewOffer:'',
-    amountNewOffer: '',
-    unitNewOffer:'',
-    priceNewOffer: '',
-    deliveryDateNewOffer: ''
+    dialogOpen: false,
+    idProductNewOffer: 1,
+    productNewOffer: '',
+    amountNewOffer: 15,
+    unitNewOffer: 'Libra',
+    priceNewOffer: 2500,
+    deliveryDateNewOffer: new Date(Date.now() + 1000*60*60*24*5)
   };
 
   handleTouchTap = (event) => {
@@ -87,7 +89,7 @@ class OffersTable extends Component {
     const offer = {idProductNewOffer, amountNewOffer, priceNewOffer, deliveryDateNewOffer: new Date(deliveryDateNewOffer).getTime(), idProducer, unit, createdAt};
     await this.props.createOffer(offer);
     this.props.fetchOffers();
-    this.setState({dialogOpen:false})
+    this.setState({dialogOpen: false})
   };
 
   componentWillMount() {
@@ -144,47 +146,68 @@ class OffersTable extends Component {
           </Table>
           <div className="tableActions">
             <RaisedButton label="Crear Oferta" primary={true} style={{float: 'right', margin: '12px'}}
-                          onClick={()=>this.setState({dialogOpen:true})}/>
+                          onClick={() => this.setState({dialogOpen: true})}/>
             <RaisedButton label="Cancelar" style={{float: 'right', margin: '12px'}}/>
           </div>
           <Dialog title='Crear Oferta' open={this.state.dialogOpen}
-                  handleClose={()=>{this.setState({dialogOpen:false})}}
+                  handleClose={() => {
+                    this.setState({dialogOpen: false})
+                  }}
                   actions={[
                     <FlatButton
-                      label="Cancel"
-                      primary={true}
-                      onClick={()=>{this.setState({dialogOpen:false})}}
-                  />,
-                  <FlatButton
-                    label="Guardar"
-                    primary={true}
-                    onClick={this.createOffer}
+                        label="Cancel"
+                        primary={true}
+                        onClick={() => {
+                          this.setState({dialogOpen: false})
+                        }}
+                    />,
+                    <FlatButton
+                        label="Guardar"
+                        primary={true}
+                        onClick={this.createOffer}
                     />]}
           >
-            <TextField
-                hintText="Tomate"
+            <SelectField
                 floatingLabelText="Producto"
-            /><br />
+                value={this.state.idProductNewOffer}
+                onChange={(event, index, value) => this.setState({idProductNewOffer: value})}
+                maxHeight={200}
+            >
+              {productsNames.map((name, i) => <MenuItem value={i} key={i} primaryText={name}/>)}
+            </SelectField><br />
+            <SelectField
+                floatingLabelText="Unidad de Medida"
+                value={this.state.unitNewOffer}
+                onChange={(event, index, value) => this.setState({unitNewOffer: value})}
+                maxHeight={200}
+            >
+              {units.map((name, i) => <MenuItem value={name} key={i} primaryText={name}/>)}
+            </SelectField><br />
             <TextField
                 hintText="15"
                 floatingLabelText="Cantidad"
-                onChange={(event)=>{this.setState({amountNewOffer:event.target.value})}}
-            /><br />
-            <TextField
-                hintText="Libra"
-                floatingLabelText="Unidad"
-                onChange={(event)=>{this.setState({unitNewOffer:event.target.value})}}
+                value={this.state.amountNewOffer}
+                onChange={(event) => {
+                  this.setState({amountNewOffer: event.target.value})
+                }}
+                type='number'
             /><br />
             <TextField
                 hintText="2500"
-                floatingLabelText="Precio"
-                onChange={(event)=>{this.setState({priceNewOffer:event.target.value})}}
+                floatingLabelText="Precio por Unidad"
+                value={this.state.priceNewOffer}
+                onChange={(event) => {
+                  this.setState({priceNewOffer: event.target.value})
+                }}
+                type='number'
             /><br />
-            <TextField
-                hintText="2017-10-20"
-                floatingLabelText="Fecha Entrega"
-                onChange={(event)=>{this.setState({deliveryDateNewOffer:event.target.value})}}
-            /><br />
+            <DatePicker
+                floatingLabelText="Fecha de Entrega"
+                value={this.state.deliveryDateNewOffer}
+                onChange={(event, date) => {
+                  this.setState({deliveryDateNewOffer: date})
+                }}
+            />
           </Dialog>
         </div>
     );

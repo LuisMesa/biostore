@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {BASE_URL} from './constants';
+import {getProductName} from '../others/usefulFunctions';
 
 const CREATE_OFFER = 'CREATE_OFFER';
 const CHANGE_OFFERS = 'CHANGE_OFFERS';
@@ -24,6 +25,7 @@ export const fetchOrders = () => async dispatch => {
 
 export const createOffer = (newOffer) => async dispatch => {
   const object = newOffer;
+  // console.log(object);
   await axios.post(BASE_URL + '/addproduceroffer/', object).then(response => {
     if (response.data.estado === 'ok') {
       dispatch({
@@ -70,10 +72,9 @@ export default function ProducerScreen(state = INITIAL_STATE, action) {
 
 const clearData = (oldData) => {
   return oldData.map((item, index) => {
-    // console.log(item)
     const fixed = {
       id: item.pk,
-      name: item.fields.productType,
+      name: getProductName(item.fields.productType),
       amount: item.fields.count,
       price: item.fields.unit_price,
       createdAt: new Date(item.fields.create_at),
@@ -81,6 +82,7 @@ const clearData = (oldData) => {
       editable: item.fields.editable,
       state: item.fields.state
     };
+    // console.log(fixed)
     return fixed;
   })
 };
