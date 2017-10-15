@@ -70,10 +70,10 @@ export default function ProducerScreen(state = INITIAL_STATE, action) {
 
 const clearData = (oldData) => {
   return oldData.map((item, index) => {
-    console.log(item)
+    // console.log(item)
     const fixed = {
       id: item.pk,
-      name: item.pk,
+      name: item.fields.productType,
       amount: item.fields.count,
       price: item.fields.unit_price,
       createdAt: new Date(item.fields.create_at),

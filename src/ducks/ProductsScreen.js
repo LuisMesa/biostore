@@ -101,7 +101,7 @@ const clearOffersData = (oldData) => {
       unidad: item.unit_type
     };
     return fixed;
-  })
+  });
   // const array = [];
   // oldData.forEach(item =>{
   //   if(item.pk ==='1')

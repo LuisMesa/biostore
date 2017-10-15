@@ -6,9 +6,9 @@ import Product from '../../common/Product/Product';
 
 import './Frequent.css';
 const canastas = [
-  {src: './img/items/manzana.jpg', nombre: 'Manzana', categoria: 'Frutas', precio: '2500', unidad: 'Libra'},
-  {src: './img/items/arveja.jpg', nombre: 'Arveja', categoria: 'Verduras', precio: '2500', unidad: 'Libra'},
-  {src: './img/items/huevo.jpg', nombre: 'Huevo', categoria: 'Granja', precio: '300', unidad: 'Unidad'},
+  {src: './img/items/canastaLonchera.jpg', nombre: 'Lonchera', categoria: 'Bananos, Uvas y Manzanas', precio: '10000', unidad: 'Unidad'},
+  {src: './img/items/canastaDesayuno.jpg', nombre: 'Desayuno', categoria: 'Huevos, Leche y Queso', precio: '20000', unidad: 'Unidad'},
+  {src: './img/items/canastaSandwich.jpg', nombre: 'Onces', categoria: 'Jamon, Lechuga y Tomate', precio: '15000', unidad: 'Unidad'},
 
 ];
 

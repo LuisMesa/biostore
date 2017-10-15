@@ -84,11 +84,15 @@ class ProducersOffersTable extends Component {
                   onClick={() => this.props.deleteTable(this.props.name)}
                   icon={<RemoveIcon color={pinkA200}/>}
               />
-              <RaisedButton
-                  style={{display: 'block-inline', float: 'right', marginTop: '3vh', marginRight: '12px', minWidth: '44px'}}
-                  onClick={this.handleTouchTap}
-                  icon={<AddIcon color={cyan500}/>}
-              />
+              {this.props.names.length > 0 ?
+                  <RaisedButton
+                      style={{display: 'block-inline', float: 'right', marginTop: '3vh', marginRight: '12px', minWidth: '44px'}}
+                      onClick={this.handleTouchTap}
+                      icon={<AddIcon color={cyan500}/>}
+                  />
+                  :
+                  ''
+              }
               <Popover
                   open={this.state.popoverOpen}
                   anchorEl={this.state.anchorEl}
