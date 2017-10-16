@@ -79,7 +79,7 @@ const clearData = (oldData) => {
       price: item.fields.unit_price,
       createdAt: new Date(item.fields.create_at),
       deliveryDate: new Date(item.fields.available_at),
-      editable: item.fields.editable,
+      // editable: item.fields.editable,
       state: item.fields.state
     };
     // console.log(fixed)

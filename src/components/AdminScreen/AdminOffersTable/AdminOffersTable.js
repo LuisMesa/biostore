@@ -23,7 +23,7 @@ class AdminOfferTable  extends Component {
 
   state = {
     filterDate1: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
-    filterDate2: new Date(),
+    filterDate2: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
     popoverOpen: false,
     selectedRows: [],
     dialogOpen:false,

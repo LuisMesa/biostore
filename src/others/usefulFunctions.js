@@ -10,5 +10,5 @@ export const getCorrectUnit = (unit, amount) => {
 export const getProductName = (id) => {
   return productsNames[id];
 };
-export const productsNames = ['Manzana','Tomate','Durazno','Frambuesa','Arveja', 'Huevo', 'Queso', 'Papa', 'Ciruela','Pera'];
+export const productsNames = ['Pera','Tomate','Manzana','Ciruela','Durazno', 'Frambuesa', 'Arveja', 'Huevo', 'Queso','Papa'];
 export const units = ['Libra','Unidad','Litro'];

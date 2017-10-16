@@ -103,15 +103,6 @@ class AdminScreen extends Component {
           {this.state.producersOffersTable ? <ProducersOffersTable data={this.props.producersOffers} names={this.getAvailableNames()} addTable={this.addTable} name={names[0]} deleteTable={this.deleteTable}/> : ''}
           {this.state.adminOffersTable ? <AdminOffersTable names={this.getAvailableNames()} addTable={this.addTable} name={names[1]} deleteTable={this.deleteTable}/> : ''}
           {this.state.customersOrdersTable ? <CustomersOrdersTable names={this.getAvailableNames()} addTable={this.addTable} name={names[2]} deleteTable={this.deleteTable}/> : ''}
-
-
-
-          <Snackbar
-              open={this.state.openSnackBar}
-              message={this.props.notifications[0]?this.props.notifications[0]:''}
-              autoHideDuration={4000}
-              onRequestClose={this.handleRequestCloseSnackBar}
-          />
         </div>
     );
   }

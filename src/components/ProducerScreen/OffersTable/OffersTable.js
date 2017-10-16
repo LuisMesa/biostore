@@ -25,7 +25,7 @@ class OffersTable extends Component {
 
   state = {
     filterDate1: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
-    filterDate2: new Date(),
+    filterDate2: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
     popoverOpen: false,
     selectedRows: [],
     dialogOpen: false,
@@ -57,8 +57,8 @@ class OffersTable extends Component {
     this.setState({selectedRows});
   };
 
-  getFilteredData() {
-    return this.props.data.filter(item => {
+  getFilteredData(data) {
+    return data.filter(item => {
       return this.state.filterDate1.getTime() < item.deliveryDate && this.state.filterDate2.getTime() > item.deliveryDate
     })
   }
@@ -99,7 +99,7 @@ class OffersTable extends Component {
   render() {
     return (
         <div className="OffersTable">
-          <Table columns={columns} data={this.props.offers} renderItem={(value, type, index) => this.renderItem(value, type, index)} onRowSelection={this.onRowSelection} selectedRows={this.state.selectedRows}>
+          <Table columns={columns} data={this.getFilteredData(this.props.offers)} renderItem={(value, type, index) => this.renderItem(value, type, index)} onRowSelection={this.onRowSelection} selectedRows={this.state.selectedRows}>
             <div>
               <h3>{this.props.name}</h3>
               <RaisedButton
