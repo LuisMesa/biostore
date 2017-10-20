@@ -1,4 +1,6 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import {signUp, login} from '../../../ducks/common';
 import {Link} from 'react-router-dom'
 import AppBar from 'material-ui/AppBar';
 import Drawer from 'material-ui/Drawer';
@@ -21,17 +23,29 @@ class NavBar extends Component {
 
   handleToggle = () => this.setState({open: !this.state.open});
 
-  render() {
+  register = (newUser) => {
+    this.props.signUp(newUser)
+  };
 
+  login = (authData) => {
+    this.props.login(authData);
+  };
+
+
+  render() {
     return (
         <AppBar className="NavBar" title="BIOSTORE"
                 onLeftIconButtonTouchTap={this.handleToggle}
                 style={styles.navBar}
-                iconElementRight={
-                  <div style={{marginTop: '7px'}}>
-                    <FlatButton style={{color: 'rgb(255, 255, 255)'}} label="Inicio" onClick={() =>this.setState({logInOpen: !this.state.logInOpen})}/>
-                    <FlatButton style={{color: 'rgb(255, 255, 255)'}} label="Registro" onClick={() => this.setState({signUpOpen: !this.state.signUpOpen})}/>
-                  </div>
+                iconElementRight={this.props.user ?
+                    <div style={{marginTop: '7px'}}>
+                      <FlatButton style={{color: 'rgb(255, 255, 255)'}} label={this.props.user.name} onClick={() => this.setState({logInOpen: !this.state.logInOpen})}/>
+                    </div>
+                    :
+                    <div style={{marginTop: '7px'}}>
+                      <FlatButton style={{color: 'rgb(255, 255, 255)'}} label="Inicio" onClick={() => this.setState({logInOpen: !this.state.logInOpen})}/>
+                      <FlatButton style={{color: 'rgb(255, 255, 255)'}} label="Registro" onClick={() => this.setState({signUpOpen: !this.state.signUpOpen})}/>
+                    </div>
                 }
         >
           <Drawer
@@ -45,8 +59,8 @@ class NavBar extends Component {
             <Link to="/admin"><MenuItem onTouchTap={() => this.handleToggle()}>Administrador</MenuItem></Link>
             <Link to="/producer"><MenuItem onTouchTap={() => this.handleToggle()}>Productor</MenuItem></Link>
           </Drawer>
-          <Login open = {this.state.logInOpen} handleClose={() =>this.setState({logInOpen: false})}/>
-          <SignUp open = {this.state.signUpOpen} handleClose={() =>this.setState({signUpOpen: false})}/>
+          <Login open={this.state.logInOpen} handleClose={() => this.setState({logInOpen: false})} login={this.login}/>
+          <SignUp open={this.state.signUpOpen} handleClose={() => this.setState({signUpOpen: false})} register={this.register}/>
         </AppBar>
     )
   }
@@ -58,4 +72,11 @@ const styles = {
     left: '0px'
   }
 };
-export default NavBar;
+
+function mapStateToProps(state) {
+  const {user} = state.common;
+  return {
+    user
+  }
+}
+export default connect(mapStateToProps, {signUp, login})(NavBar);

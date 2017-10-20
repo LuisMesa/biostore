@@ -7,11 +7,16 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 class SignUp extends Component {
   state = {
-    open: false,
     finished: false,
     stepIndex: 0,
-    nombre:'',
-    nombreReal:''
+    email:'',
+    password1:'',
+    password2:'',
+    name:'',
+    lastName:'',
+    id:'',
+    address:'',
+    phone:''
   };
 
   handleNext = () => {
@@ -29,25 +34,41 @@ class SignUp extends Component {
     }
   };
 
+  finish = () =>{
+    this.props.register({
+      uid:  this.state.id,
+      name:  this.state.name,
+      email:  this.state.email,
+      lastname:  this.state.lastName,
+      password:  this.state.password1,
+      address:  this.state.address,
+      phone_number: this.state.phone
+    });
+    this.handleClose();
+  };
+
   getStepContent(stepIndex) {
     switch (stepIndex) {
       case 0:
         return (
             <div>
               <TextField
-                  hintText="Ingrese su nombre de usuario"
-                  floatingLabelText="Ingrese su nombre de usuario"
-                  onChange={(event)=>this.setState({nombre:event.target.value})}
-                  value={this.state.nombre}
+                  hintText="Juan123@gmail.com"
+                  floatingLabelText="Correo"
+                  onChange={(event)=>this.setState({email:event.target.value})}
+                  value={this.state.email}
               /><br />
               <TextField
-                  hintText="Ingrese su contraseña"
-                  floatingLabelText="Contraseña"
-                  type="password"
+                  floatingLabelText="Clave"
+                  onChange={(event)=>this.setState({password1:event.target.value})}
+                  value={this.state.password1}
+                  type='password'
               /><br />
               <TextField
-                  hintText="Confirme su contraseña"
-                  floatingLabelText="Confirme su Contraseña"
+                  floatingLabelText="Confirmar Clave"
+                  onChange={(event)=>this.setState({password2:event.target.value})}
+                  value={this.state.password2}
+                  type='password'
               /><br />
             </div>
         );
@@ -55,19 +76,22 @@ class SignUp extends Component {
         return (
             <div>
               <TextField
-                  hintText="Ingrese su nombre"
+                  hintText="Juan"
                   floatingLabelText="Nombre"
-                  onChange={(event)=>this.setState({nombreReal:event.target.value})}
-                  value={this.state.nombreReal}
+                  onChange={(event)=>this.setState({name:event.target.value})}
+                  value={this.state.name}
               /><br />
               <TextField
-                  hintText="Ingrese su apellido"
+                  hintText="Corredor"
                   floatingLabelText="Apellido"
+                  onChange={(event)=>this.setState({lastName:event.target.value})}
+                  value={this.state.lastName}
               /><br />
               <TextField
-                  hintText="Ingrese su número de cedula"
+                  hintText="1052407234"
                   floatingLabelText="Cedula"
-                  type="password"
+                  onChange={(event)=>this.setState({id:event.target.value})}
+                  value={this.state.id}
               /><br />
             </div>
         );
@@ -75,12 +99,16 @@ class SignUp extends Component {
         return (
             <div>
               <TextField
-                  hintText="Dirección de entrega de pedidos"
-                  floatingLabelText="Dirección de entrega de pedidos"
+                  hintText="Cll 4a # 7a - 23"
+                  floatingLabelText="Dirección de Entrega"
+                  onChange={(event)=>this.setState({address:event.target.value})}
+                  value={this.state.address}
               /><br />
               <TextField
-                  hintText="Ingrese su número de telefono"
+                  hintText="3138256821"
                   floatingLabelText="Número telefonico"
+                  onChange={(event)=>this.setState({phone:event.target.value})}
+                  value={this.state.phone}
               /><br />
             </div>
         );
@@ -94,7 +122,7 @@ class SignUp extends Component {
   };
 
   handleClose = () => {
-    this.setState({open: false});
+    this.props.handleClose();
   };
 
   render() {
@@ -138,15 +166,15 @@ class SignUp extends Component {
                         <div>
                           <div style={{fontSize: '12px'}}>{this.getStepContent(stepIndex)}</div>
                           <FlatButton
-                              label="Back"
+                              label="Anterior"
                               disabled={stepIndex === 0}
                               onClick={this.handlePrev}
                               style={{marginRight: 12}}
                           />
                           <RaisedButton
-                              label={stepIndex === 2 ? 'Finish' : 'Next'}
+                              label={stepIndex === 2 ? 'Finalizar' : 'Siguiente'}
                               primary={true}
-                              onClick={this.handleNext}
+                              onClick={stepIndex === 2 ? this.finish : this.handleNext}
                           /></div>
                     )}
               </div>

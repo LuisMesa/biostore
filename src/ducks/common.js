@@ -7,23 +7,50 @@ const LOGIN_FAILED = 'LOGIN_FAILED';
 const ADD_PRODUCT_TO_CART = 'ADD_PRODUCT_TO_CART';
 const NOTIFICATION = 'NOTIFICATION';
 
-//Actions Creators
-export const doLogin = () => async dispatch => {
-  //Do Login and get a response with a user inside
-  //TODO complete this with the correct url
-  // const response = await axios.get(BASE_URL + 'FIXFIXFIX');
-  const response = {user: {name: 'Name1'}, state: true};
-  if (response.state) {
+export const login = (authData) => async dispatch => {
+  const object = authData;
+  await axios.post(BASE_URL + '/login/', object).then(response => {
+    if (response.data.estado === 'ok') {
+      dispatch({
+        type: CHANGE_USER,
+        payload: response.data.data
+      });
+    }
+    else {
+      dispatch({
+        type: NOTIFICATION,
+        payload: 'El servidor ha rechazado los datos.'
+      });
+    }
+  }).catch(error => {
     dispatch({
-      type: CHANGE_USER,
-      payload: response.user
+      type: NOTIFICATION,
+      payload: 'No se pudo conectar con el servidor, no se han guardado los datos.'
     });
-  }
-  else {
+  });
+};
+
+export const signUp = (newUser) => async dispatch => {
+  const object = newUser;
+  await axios.post(BASE_URL + '/user/', object).then(response => {
+    if (response.data.estado === 'ok') {
+      dispatch({
+        type: CHANGE_USER,
+        payload: object
+      });
+    }
+    else {
+      dispatch({
+        type: NOTIFICATION,
+        payload: 'El servidor ha rechazado los datos.'
+      });
+    }
+  }).catch(error => {
     dispatch({
-      type: LOGIN_FAILED,
+      type: NOTIFICATION,
+      payload: 'No se pudo conectar con el servidor, no se han guardado los datos.'
     });
-  }
+  });
 };
 
 export const addProductToCart = (product) => {
@@ -74,8 +101,10 @@ const INITIAL_STATE = {
 //Reducer
 export default function common(state = INITIAL_STATE, action) {
   switch (action.type) {
-    case CHANGE_USER:
+    case CHANGE_USER: {
+      console.log('user',action.payload);
       return {...state, user: action.payload};
+    }
     case ADD_PRODUCT_TO_CART:
       return Object.assign({},state,{cart:{products:[...state.cart.products,action.payload]}});
     case NOTIFICATION:{
