@@ -19,6 +19,24 @@ class SignUp extends Component {
     phone:''
   };
 
+  validaCorreo = (correo)  => {
+      if (!/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/.test(correo)) {
+        alert("La dirección de email " + correo + "es incorrecta.");
+        document.getElementById("correo").style.color="RED";
+    } else {
+        document.getElementById("correo").style.color="BLACK";
+    }
+  }
+
+  validaPassword = (contraseña) => {
+      if (this.state.password1 !== this.state.password2){
+          alert ("las contraseñas no coinciden")
+          document.getElementById("clave1").style.color="RED";
+      } else {
+          document.getElementById("clave1").style.color="BLACK";
+      }
+  }
+
   handleNext = () => {
     const {stepIndex} = this.state;
     this.setState({
@@ -55,18 +73,25 @@ class SignUp extends Component {
               <TextField
                   hintText="Juan123@gmail.com"
                   floatingLabelText="Correo"
+                  id="correo"
+                  type="email"
+                  onBlur={ (event) =>this.validaCorreo(event.target.value)}
                   onChange={(event)=>this.setState({email:event.target.value})}
                   value={this.state.email}
+                  //pattern = "([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+"
               /><br />
               <TextField
                   floatingLabelText="Clave"
+                  id="clave"
                   onChange={(event)=>this.setState({password1:event.target.value})}
                   value={this.state.password1}
                   type='password'
               /><br />
               <TextField
                   floatingLabelText="Confirmar Clave"
+                  id="clave1"
                   onChange={(event)=>this.setState({password2:event.target.value})}
+                  onBlur = {(event)=>this.validaPassword()}
                   value={this.state.password2}
                   type='password'
               /><br />
@@ -92,6 +117,7 @@ class SignUp extends Component {
                   floatingLabelText="Cedula"
                   onChange={(event)=>this.setState({id:event.target.value})}
                   value={this.state.id}
+                  type="number"
               /><br />
             </div>
         );
@@ -172,7 +198,9 @@ class SignUp extends Component {
                               style={{marginRight: 12}}
                           />
                           <RaisedButton
+                              id = "nextBtn"
                               label={stepIndex === 2 ? 'Finalizar' : 'Siguiente'}
+                              disabled = {this.state.error === 0 ? true : false}
                               primary={true}
                               onClick={stepIndex === 2 ? this.finish : this.handleNext}
                           /></div>
@@ -192,5 +220,5 @@ export default SignUp;
  Descripción:            Captura datos de usuario para crear cuenta de usuario.
  Estado:                 En desarollo
  Desarrollador:          Steven Alexander Erira Fierro
- Luis Andres mesa Fajardo
+                         Luis Andres mesa Fajardo
  */
