@@ -62,11 +62,15 @@ class ProducerScreen extends Component {
     return availableNames;
   };
 
+  isCloseAvailable = () => {
+    return this.state.adminOffersTable+ this.state.customersOrdersTable+ this.state.producersOffersTable;
+  };
+
   render() {
     return (
         <div className="ProducerScreen">
-          {this.state.offersTable ? <OffersTable name={names[0]} names={this.getAvailableNames()} addTable={this.addTable} deleteTable={this.deleteTable} /> : ''}
-          {this.state.ordersTable ? <OrdersTable name={names[1]} names={this.getAvailableNames()} addTable={this.addTable} deleteTable={this.deleteTable} /> : ''}
+          {this.state.offersTable ? <OffersTable name={names[0]} names={this.getAvailableNames()} addTable={this.addTable} deleteTable={this.deleteTable} isCloseAvailable={this.isCloseAvailable()}/> : ''}
+          {this.state.ordersTable ? <OrdersTable name={names[1]} names={this.getAvailableNames()} addTable={this.addTable} deleteTable={this.deleteTable} isCloseAvailable={this.isCloseAvailable()}/> : ''}
           {/*<Snackbar*/}
               {/*open={this.state.openSnackBar}*/}
               {/*message={this.props.notifications[0]?this.props.notifications[0]:''}*/}

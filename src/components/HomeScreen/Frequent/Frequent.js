@@ -20,7 +20,7 @@ class Frequent extends Component {
             <Title title="Productos Frecuentes"/>
             <Group>
               {this.props.products.map((product,index) => {
-                return <Product src={product.src} name={product.nombre} category={product.categoria} price={product.precio} unit={product.unidad} key={product.src+index}/>
+                return <Product src={product.src} name={product.nombre} category={product.categoria} price={product.precio} unit={product.unidad} key={product.src+index} deliveryDate={product.fechaEntrega} count={product.cantidad} id={product.id}/>
               })}
             </Group>
             <Link to={{pathname: "/products"}} ><Title title="Ver todos..."/></Link>

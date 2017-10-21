@@ -2,11 +2,13 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {addProductToCart} from '../../../ducks/common';
 import {getCorrectUnit} from '../../../others/usefulFunctions';
+import ReactTooltip from 'react-tooltip';
 import {Card, CardActions, CardMedia, CardTitle} from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import Slider from 'material-ui/Slider';
 import AddShoppingCartIcon from 'material-ui/svg-icons/action/add-shopping-cart';
 import DoneIcon from 'material-ui/svg-icons/action/done';
+import InfoIcon from 'material-ui/svg-icons/action/info-outline';
 
 import './Product.css';
 
@@ -26,8 +28,9 @@ class Product extends Component {
 
   onClickDoneButton = () => {
     this.setState({buying: false});
-    const {src, name, category, unit, price} =this.props;
-    const product = {src, name, category, unit, price, amount: this.state.slider};
+
+    const {src, name, category, unit, price, id} =this.props;
+    const product = {src, name, category, unit, price, amount: this.state.slider, id};
     this.props.addProductToCart(product);
   };
 
@@ -40,7 +43,12 @@ class Product extends Component {
     return (
         <Card className="Product">
           <CardMedia className="CardMedia"
-                     overlay={<CardTitle className="CardTitle" title={this.props.name} subtitle={this.props.category}/>}
+                     overlay={
+                       <CardTitle className="CardTitle" title={this.props.name} subtitle={this.props.category}>
+                         <InfoIcon className="InfoIcon tooltip" data-tip={'Entrega: '+new Date(this.props.deliveryDate?this.props.deliveryDate:Date.now()).toISOString().split('T')[0] +'<br>' +'Quedan: ' +this.props.count+' '+getCorrectUnit(this.props.unit, this.props.count)}>
+                         </InfoIcon>
+                         <ReactTooltip place="left" type="dark" effect="float" multiline={true} style={{fontSize:'10px'}}/>
+                       </CardTitle>}
           >
             <img src={this.props.src} alt={this.props.name}/>
           </CardMedia>

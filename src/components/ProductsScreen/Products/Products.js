@@ -23,7 +23,8 @@ class Products extends Component {
                 else
                   return false
               }).map((product, index) => {
-                return <Product src={product.src} name={product.nombre} category={product.categoria} price={product.precio} unit={product.unidad} key={product.src + index}/>
+                //console.log('product',product);
+                return <Product src={product.src} name={product.nombre} category={product.categoria} price={product.precio} unit={product.unidad} key={product.src + index} deliveryDate={product.fechaEntrega} count={product.cantidad} id={product.id}/>
               })}
             </Group>
           </div>

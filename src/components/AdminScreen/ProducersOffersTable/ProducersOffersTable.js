@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import {setStateSomeProducersOffers, saveProducersOffers} from '../../../ducks/AdminScreen';
 import LockIcon from 'material-ui/svg-icons/action/lock';
 import LockOpenIcon from 'material-ui/svg-icons/action/lock-open';
+import ReactTooltip from 'react-tooltip';
 import ClearIcon from 'material-ui/svg-icons/content/clear';
 import HighLightIcon from 'material-ui/svg-icons/action/highlight-off';
 import InfoIcon from 'material-ui/svg-icons/action/info-outline';
@@ -79,17 +80,27 @@ class ProducersOffersTable extends Component {
           <Table columns={columns} data={this.getFilteredData2()} renderItem={(value, type, index) => this.renderItem(value, type, index)} onRowSelection={this.onRowSelection} selectedRows={this.state.selectedRows}>
             <div>
               <h3>{this.props.name}</h3>
-              <RaisedButton
-                  style={{display: 'block-inline', float: 'right', marginTop: '3vh', marginRight: '12px', minWidth: '44px'}}
-                  onClick={() => this.props.deleteTable(this.props.name)}
-                  icon={<RemoveIcon color={pinkA200}/>}
-              />
+              {this.props.isCloseAvailable>1?
+                  <RaisedButton
+                      style={{display: 'block-inline', float: 'right', marginTop: '3vh', marginRight: '12px', minWidth: '44px'}}
+                      onClick={() => this.props.deleteTable(this.props.name)}
+                      icon={<RemoveIcon color={pinkA200}/>}
+                      data-tip="Eliminar esta tabla"
+                  >
+                    <ReactTooltip place="bottom" type="dark" effect="float" multiline={true} style={{fontSize:'10px'}}/>
+                  </RaisedButton>
+                  :
+                  ''
+              }
               {this.props.names.length > 0 ?
                   <RaisedButton
                       style={{display: 'block-inline', float: 'right', marginTop: '3vh', marginRight: '12px', minWidth: '44px'}}
                       onClick={this.handleTouchTap}
                       icon={<AddIcon color={cyan500}/>}
-                  />
+                      data-tip="Agregar tabla"
+                  >
+                    <ReactTooltip place="bottom" type="dark" effect="float" multiline={true} style={{fontSize:'10px'}}/>
+                  </RaisedButton>
                   :
                   ''
               }

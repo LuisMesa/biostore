@@ -1,15 +1,24 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {fetchRecentProducts} from '../../ducks/HomeScreen';
+import {createOrder} from '../../ducks/common';
 import Banner from './Banner/Banner';
 import CategoryRow from './CategoryRow/CategoryRow';
 import Frequent from './Frequent/Frequent';
+import Cart from '../common/Cart/Cart';
 
 class HomeScreen extends Component {
 
   componentWillMount(){
     this.props.fetchRecentProducts();
   }
+  buy = ()=>{
+    const array = this.props.cartProducts.map((product =>{
+      console.log(product);
+      return {offer_id:product.id, count: product.amount, idProducer:'1'}
+    }));
+    this.props.createOrder(1,'dirección', 1231234, [{offer_id:1, count: 5, idProducer:'1'},{offer_id:2,count:3, idProducer:'2'},]);
+  };
 
   render() {
     return (
@@ -17,6 +26,7 @@ class HomeScreen extends Component {
           <Banner/>
           <CategoryRow categories={categories}/>
           <Frequent products = {this.props.products}/>
+          <Cart products = {this.props.cartProducts} buy = {this.buy}/>
         </div>
     )
   }
@@ -31,9 +41,11 @@ const categories = [
 
 function mapStateToProps(state) {
   const products = state.HomeScreen.recentProducts;
+  const cartProducts= state.common.cart.products;
   return {
-    products
+    products,
+    cartProducts
   }
 }
 
-export default connect(mapStateToProps, {fetchRecentProducts})(HomeScreen);
+export default connect(mapStateToProps, {fetchRecentProducts, createOrder})(HomeScreen);

@@ -22,59 +22,68 @@ class Cart extends Component {
 
   render() {
     return (
+
         <div className="Cart">
-          <Drawer docked={false} openSecondary={true} width={300} onRequestChange={(open) => this.setState({open})} open={this.state.open}>
-            <div className="cartDrawer">
-              <div className="title">Carrito</div>
-              <Divider/>
-              <List className="list">
-                {this.props.products.map((product, index) => {
-                  return <ListItem
-                      className="cartItem"
-                      leftAvatar={<Avatar src={product.src}/>}
-                      rightIcon={<Close/>}
-                      primaryText={product.name}
-                      secondaryText={product.price*product.amount}
-                      key={index}
-                  >
-                    <div className="extraInfo">
-                      <div className="quantity">
-                        <div className="number">
-                          {product.amount}
+              <Drawer docked={false} openSecondary={true} width={300} onRequestChange={(open) => this.setState({open})} open={this.state.open}>
+                <div className="cartDrawer">
+                  <div className="title">Carrito</div>
+                  <Divider/>
+                  <List className="list">
+                    {this.props.products.map((product, index) => {
+                      return <ListItem
+                          className="cartItem"
+                          leftAvatar={<Avatar src={product.src}/>}
+                          rightIcon={<Close/>}
+                          primaryText={product.name}
+                          secondaryText={product.price * product.amount}
+                          key={index}
+                      >
+                        <div className="extraInfo">
+                          <div className="quantity">
+                            <div className="number">
+                              {product.amount}
+                            </div>
+                            <div className="unit">
+                              {getCorrectUnit(product.unit, product.amount)}
+                            </div>
+                          </div>
                         </div>
-                        <div className="unit">
-                          {getCorrectUnit(product.unit,product.amount)}
-                        </div>
-                      </div>
+                      </ListItem>
+                    })}
+                  </List>
+                  <div className="bottom">
+
+                    <div className="totalPrice">
+                      <div className="price">${this.props.products.reduce((a, b) => a + b.price * b.amount, 0)}</div>
+                      <div className="title">total</div>
                     </div>
-                  </ListItem>
-                })}
-              </List>
-              <div className="bottom">
+                    <Divider/>
+                    <div className="buttons">
+                      <FlatButton label="Descartar" secondary={true}/>
+                      <FlatButton label="Comprar" primary={true} onClick={() => this.props.buy()}/>
+                    </div>
+                  </div>
 
-                <div className="totalPrice">
-                  <div className="price">${this.props.products.reduce((a, b) => a + b.price*b.amount, 0)}</div>
-                  <div className="title">total</div>
                 </div>
-                <Divider/>
-                <div className="buttons">
-                  <FlatButton label="Descartar" secondary={true}/>
-                  <FlatButton label="Comprar" primary={true} onClick={()=>this.props.buy()}/>
-                </div>
-              </div>
+              </Drawer>
 
-            </div>
-          </Drawer>
+          {this.props.products.length > 0 ?
           <Badge className="Badge" badgeContent={this.props.products.length} primary={true} style={styles.button}>
-            <FloatingActionButton  onClick={() => {
+            <FloatingActionButton onClick={() => {
               this.handleToggle()
             }}>
               <ShoppingCartIcon />
             </FloatingActionButton>
           </Badge>
+              :
+              ''
+          }
         </div>
-    );
+
+    )
+        ;
   }
+
 }
 
 const styles = {

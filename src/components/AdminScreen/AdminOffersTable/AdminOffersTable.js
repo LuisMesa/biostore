@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {fetchAdminOffers, createAdminOffer } from '../../../ducks/AdminScreen';
+import ReactTooltip from 'react-tooltip';
 import LockIcon from 'material-ui/svg-icons/action/lock';
 import LockOpenIcon from 'material-ui/svg-icons/action/lock-open';
 import HighLightIcon from 'material-ui/svg-icons/action/highlight-off';
@@ -93,22 +94,34 @@ class AdminOfferTable  extends Component {
   }
 
   render() {
+
     return (
         <div className="AdminOffersTable">
           <Table columns={columns} data={this.props.adminOffers} renderItem={(value, type, index) => this.renderItem(value, type, index)} onRowSelection={this.onRowSelection} selectedRows={this.state.selectedRows}>
             <div>
               <h3>{this.props.name}</h3>
-              <RaisedButton
-                  style={{display: 'block-inline', float: 'right', marginTop: '3vh', marginRight: '12px', minWidth: '44px'}}
-                  onClick={() => this.props.deleteTable(this.props.name)}
-                  icon={<RemoveIcon color={pinkA200}/>}
-              />
+              {this.props.isCloseAvailable>1?
+                  <RaisedButton
+                      style={{display: 'block-inline', float: 'right', marginTop: '3vh', marginRight: '12px', minWidth: '44px'}}
+                      onClick={() => this.props.deleteTable(this.props.name)}
+                      icon={<RemoveIcon color={pinkA200}/>}
+                      data-tip="Eliminar esta tabla"
+                  >
+                    <ReactTooltip place="bottom" type="dark" effect="float" multiline={true} style={{fontSize:'10px'}}/>
+                  </RaisedButton>
+                  :
+                  ''
+              }
+
               {this.props.names.length>0?
                   <RaisedButton
                       style={{display: 'block-inline', float: 'right', marginTop: '3vh', marginRight: '12px', minWidth: '44px'}}
                       onClick={this.handleTouchTap}
                       icon={<AddIcon color={cyan500}/>}
-                  />
+                      data-tip="Agregar tabla"
+                  >
+                    <ReactTooltip place="bottom" type="dark" effect="float" multiline={true} style={{fontSize:'10px'}}/>
+                  </RaisedButton>
                   :
                   ''
               }
@@ -189,7 +202,7 @@ class AdminOfferTable  extends Component {
   }
 }
 const columns = [
-  {name: 'Id Producto'},
+  {name: 'Producto'},
   {name: 'Cantidad'},
   {name: 'Unidad'},
   {name: 'Precio'},

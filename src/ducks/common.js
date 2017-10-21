@@ -83,7 +83,7 @@ export const createOrder = (idClient, shippingAddress, delivery_at, items) => as
       });
     }
   }).catch(error => {
-    console.log(error);
+    //console.log(error);
     dispatch({
       type: NOTIFICATION,
       payload: 'No se pudo conectar con el servidor, no se han guardado los datos.'
@@ -102,7 +102,7 @@ const INITIAL_STATE = {
 export default function common(state = INITIAL_STATE, action) {
   switch (action.type) {
     case CHANGE_USER: {
-      console.log('user',action.payload);
+      //console.log('user',action.payload);
       return {...state, user: action.payload};
     }
     case ADD_PRODUCT_TO_CART:

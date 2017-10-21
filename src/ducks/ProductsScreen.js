@@ -90,7 +90,7 @@ export default function ProductsScreen(state = INITIAL_STATE, action) {
 }
 
 const clearOffersData = (oldData) => {
-  console.log(oldData);
+  // console.log(oldData);
   return oldData.map((item, index) => {
     const fixed = {
       id: item.id,
@@ -98,7 +98,9 @@ const clearOffersData = (oldData) => {
       nombre: item.productType.title,
       categoria: item.productType.description,
       precio: item.unit_price,
-      unidad: item.unit_type
+      unidad: item.unit_type,
+      fechaEntrega: item.delivery_date,
+      cantidad: item.count
     };
     return fixed;
   });

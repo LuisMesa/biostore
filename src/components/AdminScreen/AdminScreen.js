@@ -92,6 +92,10 @@ class AdminScreen extends Component {
     return availableNames;
   };
 
+  isCloseAvailable = () => {
+    return this.state.adminOffersTable+ this.state.customersOrdersTable+ this.state.producersOffersTable;
+  };
+
 
   componentWillMount() {
     this.props.fetchProducersOffers();
@@ -100,9 +104,9 @@ class AdminScreen extends Component {
   render() {
     return (
         <div className="AdminScreen">
-          {this.state.producersOffersTable ? <ProducersOffersTable data={this.props.producersOffers} names={this.getAvailableNames()} addTable={this.addTable} name={names[0]} deleteTable={this.deleteTable}/> : ''}
-          {this.state.adminOffersTable ? <AdminOffersTable names={this.getAvailableNames()} addTable={this.addTable} name={names[1]} deleteTable={this.deleteTable}/> : ''}
-          {this.state.customersOrdersTable ? <CustomersOrdersTable names={this.getAvailableNames()} addTable={this.addTable} name={names[2]} deleteTable={this.deleteTable}/> : ''}
+          {this.state.producersOffersTable ? <ProducersOffersTable data={this.props.producersOffers} names={this.getAvailableNames()} addTable={this.addTable} name={names[0]} deleteTable={this.deleteTable} isCloseAvailable={this.isCloseAvailable()}/> : ''}
+          {this.state.adminOffersTable ? <AdminOffersTable names={this.getAvailableNames()} addTable={this.addTable} name={names[1]} deleteTable={this.deleteTable} isCloseAvailable={this.isCloseAvailable()}/> : ''}
+          {this.state.customersOrdersTable ? <CustomersOrdersTable names={this.getAvailableNames()} addTable={this.addTable} name={names[2]} deleteTable={this.deleteTable} isCloseAvailable={this.isCloseAvailable()}/> : ''}
         </div>
     );
   }

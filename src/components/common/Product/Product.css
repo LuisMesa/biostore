@@ -11,7 +11,7 @@
     padding-bottom: 5px!important;
 }
 /*title inside CardMedia and  CardTitle*/
-.Product .CardMedia .CardTitle span:first-child{
+.Product .CardMedia .CardTitle>span:first-child{
     font-size: 2vw!important;
     line-height: 2vw!important;
 }
@@ -20,7 +20,7 @@
     max-height: 50%!important;
 }
 /*title inside CardTitle*/
-.Product>div>.CardTitle span:first-child{
+.Product>div>.CardTitle>span:first-child{
     font-size: 2vw!important;
 }
 .Product>div>.CardTitle span:nth-child(2){
@@ -30,6 +30,18 @@
 .Product .Slider>div{
     width:90%!important;
     margin: 0 5% 7px 5%!important;
+}
+
+.Product .InfoIcon {
+    color: rgba(255, 255, 255, 0.87) !important;
+    position: absolute !important;
+    top: 0 !important;
+    right: 5px !important;
+    display: none !important;
+}
+
+.Product:hover .InfoIcon{
+    display: inherit!important;
 }
 
 @media (max-width: 500px) {
@@ -42,12 +54,12 @@
         float: none!important;
     }
     /*title inside CardMedia and CardTitle*/
-    .Product .CardMedia .CardTitle span:first-child{
+    .Product .CardMedia .CardTitle>span:first-child{
         font-size: 5vw!important;
         line-height: 4vw!important;
     }
     /*subtitle inside CardMedia and  CardTitle*/
-    .Product .CardMedia .CardTitle span:nth-child(2){
+    .Product .CardMedia .CardTitle>span:nth-child(2){
         font-size: 3vw!important;
         line-height: 3vw!important;
     }

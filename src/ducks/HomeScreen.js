@@ -6,20 +6,10 @@ const CHANGE_RECENT_PRODUCTS = 'CHANGE_RECENT_PRODUCTS';
 
 //Actions Creators
 export const fetchRecentProducts = () => async dispatch => {
-  // const products = (await axios.get(BASE_URL + '/allproducts')).data.map(product=>{
-    const products=[];
-  //   return {
-  //     src: product.productType.url,
-  //     nombre: product.productType.title,
-  //     categoria: product.category.title,
-  //     precio: product.unit_price,
-  //     unidad: product.unit_type
-  //   }
-  // });
-
+  const offers = (await axios.get(BASE_URL + '/adminoffers/')).data;
   dispatch({
     type: CHANGE_RECENT_PRODUCTS,
-    payload: products
+    payload: offers
   });
 };
 
@@ -34,11 +24,28 @@ export default function HomeScreen(state = INITIAL_STATE, action){
   switch (action.type) {
     case CHANGE_RECENT_PRODUCTS:
       // return {...state, recentProducts: action.payload};
-      return {...state, recentProducts: products};
+      return {...state, recentProducts: clearOffersData(action.payload).slice(0,9)};
     default:
       return state;
   }
 };
+
+const clearOffersData = (oldData) => {
+  console.log('oldData',oldData);
+  return oldData.map((item, index) => {
+    const fixed = {
+      id: item.id,
+      src: item.productType.url,
+      nombre: item.productType.title,
+      categoria: item.productType.description,
+      precio: item.unit_price,
+      unidad: item.unit_type,
+      fechaEntrega: item.delivery_date,
+      cantidad: item.count
+    };
+    return fixed;
+  });
+}
 
 const products = [
   {src: './img/items/manzana.jpg', nombre: 'Manzana', categoria: 'Frutas', precio: '2500', unidad: 'Libra'},
