@@ -16,24 +16,24 @@ class SignUp extends Component {
     lastName:'',
     id:'',
     address:'',
-    phone:''
+    phone:'',
+    emailErrorMessage:'',
+    passwordErrorMessage:''
   };
 
   validaCorreo = (correo)  => {
       if (!/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/.test(correo)) {
-        alert("La dirección de email " + correo + "es incorrecta.");
-        document.getElementById("correo").style.color="RED";
+        this.setState({emailErrorMessage:"La dirección de email " + correo + "es incorrecta."});
     } else {
-        document.getElementById("correo").style.color="BLACK";
+        this.setState ({emailErrorMessage:""})
     }
   }
 
-  validaPassword = (contraseña) => {
-      if (this.state.password1 !== this.state.password2){
-          alert ("las contraseñas no coinciden")
-          document.getElementById("clave1").style.color="RED";
+  validaPassword = (password) => {
+      if (this.state.password1 !== password){
+          this.setState ({passwordErrorMessage:"las contraseñas no coinciden"})
       } else {
-          document.getElementById("clave1").style.color="BLACK";
+        this.setState ({passwordErrorMessage:""})
       }
   }
 
@@ -75,9 +75,9 @@ class SignUp extends Component {
                   floatingLabelText="Correo"
                   id="correo"
                   type="email"
-                  onBlur={ (event) =>this.validaCorreo(event.target.value)}
-                  onChange={(event)=>this.setState({email:event.target.value})}
+                  onChange={(event)=>{this.setState({email:event.target.value} ); this.validaCorreo(event.target.value)}}
                   value={this.state.email}
+                  errorText={this.state.emailErrorMessage}
                   //pattern = "([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+"
               /><br />
               <TextField
@@ -90,10 +90,10 @@ class SignUp extends Component {
               <TextField
                   floatingLabelText="Confirmar Clave"
                   id="clave1"
-                  onChange={(event)=>this.setState({password2:event.target.value})}
-                  onBlur = {(event)=>this.validaPassword()}
+                  onChange={(event)=>{this.setState({password2:event.target.value});this.validaPassword(event.target.value)}}
                   value={this.state.password2}
                   type='password'
+                  errorText={this.state.passwordErrorMessage}
               /><br />
             </div>
         );

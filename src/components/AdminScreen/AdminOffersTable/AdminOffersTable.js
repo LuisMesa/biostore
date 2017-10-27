@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {fetchAdminOffers, createAdminOffer } from '../../../ducks/AdminScreen';
+import {productsNames, units} from '../../../others/usefulFunctions';
 import ReactTooltip from 'react-tooltip';
 import LockIcon from 'material-ui/svg-icons/action/lock';
 import LockOpenIcon from 'material-ui/svg-icons/action/lock-open';
@@ -13,6 +14,7 @@ import AddIcon from 'material-ui/svg-icons/content/add';
 import RemoveIcon from 'material-ui/svg-icons/content/clear';
 import {TableRowColumn,} from 'material-ui/Table';
 import RaisedButton from 'material-ui/RaisedButton';
+import SelectField from 'material-ui/SelectField';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
 import Dialog from '../../common/Dialog/Dialog';
@@ -172,10 +174,15 @@ class AdminOfferTable  extends Component {
                         onClick={this.createOffer}
                     />]}
           >
-            <TextField
-                hintText="Tomate"
+            <SelectField
                 floatingLabelText="Producto"
-            /><br />
+                hintText="Tomate"
+                value={this.state.idProductNewOffer}
+                onChange={(event, index, value) => this.setState({idProductNewOffer: value})}
+                maxHeight={200}
+            >
+              {productsNames.map((name, i) => <MenuItem value={i} key={i} primaryText={name}/>)}
+            </SelectField><br />
             <TextField
                 hintText="15"
                 floatingLabelText="Cantidad"

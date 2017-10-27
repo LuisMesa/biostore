@@ -9,6 +9,7 @@ import Slider from 'material-ui/Slider';
 import AddShoppingCartIcon from 'material-ui/svg-icons/action/add-shopping-cart';
 import DoneIcon from 'material-ui/svg-icons/action/done';
 import InfoIcon from 'material-ui/svg-icons/action/info-outline';
+import ProductDetail from './ProductDetail/ProductDetail';
 
 import './Product.css';
 
@@ -18,9 +19,18 @@ class Product extends Component {
     super(props);
     this.state = {
       buying: false,
-      slider: Math.floor(Math.random() * 50) + 1
+      slider: Math.floor(Math.random() * 50) + 1,
+      detailOpen: false
     }
   }
+
+  openDetail = () => {
+    this.setState({detailOpen: true});
+  };
+
+  closeDetail = () => {
+    this.setState({detailOpen: false});
+  };
 
   onClickCartButton = () => {
     this.setState({buying: true})
@@ -40,11 +50,12 @@ class Product extends Component {
 
 
   render() {
+    const {src, name, category, unit, price, id, count} = this.props;
     return (
         <Card className="Product">
           <CardMedia className="CardMedia"
                      overlay={
-                       <CardTitle className="CardTitle" title={this.props.name} subtitle={this.props.category}>
+                       <CardTitle className="CardTitle" title={this.props.name} subtitle={this.props.category} onClick={this.openDetail}>
                          <InfoIcon className="InfoIcon tooltip" data-tip={'Entrega: '+new Date(this.props.deliveryDate?this.props.deliveryDate:Date.now()).toISOString().split('T')[0] +'<br>' +'Quedan: ' +this.props.count+' '+getCorrectUnit(this.props.unit, this.props.count)}>
                          </InfoIcon>
                          <ReactTooltip place="left" type="dark" effect="float" multiline={true} style={{fontSize:'10px'}}/>
@@ -71,6 +82,7 @@ class Product extends Component {
                                        step={1}
                                        defaultValue={this.state.slider}
               /> : ''}
+              <ProductDetail handleClose={this.closeDetail} open = {this.state.detailOpen} product={{src, name, category, unit, price, id, count}}/>
         </Card>
     )
   }

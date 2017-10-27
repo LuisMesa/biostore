@@ -1,0 +1,34 @@
+.ProductDetail .Product {
+    margin-bottom: 0 !important;
+    padding-bottom: 10px !important;
+}
+/*.ProductDetail>div>div>div>div:first-child{*/
+    /*!*border:0!important;*!*/
+/*}*/
+
+.ProductDetail .Product .CardMedia {
+    height: 60vh !important;
+}
+
+.ProductDetail .Product .CardMedia > div:first-child {
+    overflow: hidden !important;
+}
+
+.ProductDetail .Product .CardMedia > div > img {
+    max-width: 100vh !important;
+    width: auto !important;
+    height: 60vh !important;
+    position: relative !important;
+    left: -50% !important;
+}
+
+.ProductDetail .Product .Slider > div {
+    margin-bottom: 0 !important;
+}
+
+.ProductDetail .details {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding:10px;
+}
