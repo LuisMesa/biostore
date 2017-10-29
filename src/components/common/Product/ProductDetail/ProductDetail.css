@@ -1,7 +1,7 @@
 .ProductDetail .Product {
     margin-bottom: 0 !important;
     padding-bottom: 10px !important;
-    max-width: 25%!important;
+    max-width: 30%!important;
 }
 .ProductDetail .Product .CardMedia {
     height: 60vh !important;
@@ -28,5 +28,10 @@
     flex-direction: column;
     justify-content: space-between;
     padding:10px;
-    max-width: 70%;
+    max-width: 65%;
+    height: 30%;
+}
+.ProductDetail .details h3 {
+    margin-top: 5px;
+    margin-bottom: 5px;
 }

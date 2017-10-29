@@ -1,0 +1,7 @@
+.ProducersInfo{
+    /*height: 60%;*/
+}
+.ProducersInfo .FlatButton{
+    display: inline-block!important;
+    float: right!important;
+}

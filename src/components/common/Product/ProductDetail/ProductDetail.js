@@ -35,18 +35,7 @@ class ProductDetail extends Component {
   };
 
   render() {
-
-    const radios = [];
-    for (let i = 0; i < 30; i++) {
-      radios.push(
-          <RadioButton
-              key={i}
-              value={`value${i + 1}`}
-              label={`Option ${i + 1}`}
-              style={styles.radioButton}
-          />
-      );
-    }
+    const {description} = this.props.product;
 
     const actions = [];
     //<FlatButton
@@ -100,7 +89,7 @@ class ProductDetail extends Component {
           <div className="details">
             <div className="description">
               <h3>Descripción</h3>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+              <p>{description}</p>
             </div>
             <ProducersInfo/>
           </div>
