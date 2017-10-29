@@ -1,11 +1,8 @@
 .ProductDetail .Product {
     margin-bottom: 0 !important;
     padding-bottom: 10px !important;
+    max-width: 25%!important;
 }
-/*.ProductDetail>div>div>div>div:first-child{*/
-    /*!*border:0!important;*!*/
-/*}*/
-
 .ProductDetail .Product .CardMedia {
     height: 60vh !important;
 }
@@ -31,4 +28,5 @@
     flex-direction: column;
     justify-content: space-between;
     padding:10px;
+    max-width: 70%;
 }

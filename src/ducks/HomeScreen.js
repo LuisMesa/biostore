@@ -31,7 +31,7 @@ export default function HomeScreen(state = INITIAL_STATE, action){
 };
 
 const clearOffersData = (oldData) => {
-  console.log('oldData',oldData);
+  // console.log('oldData',oldData);
   return oldData.map((item, index) => {
     const fixed = {
       id: item.id,
