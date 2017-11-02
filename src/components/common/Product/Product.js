@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {addProductToCart} from '../../../ducks/common';
+import {addProductToCart, changeProductDetail} from '../../../ducks/common';
 import {getCorrectUnit} from '../../../others/usefulFunctions';
 import ReactTooltip from 'react-tooltip';
 import {Card, CardActions, CardMedia, CardTitle} from 'material-ui/Card';
@@ -82,7 +82,7 @@ class Product extends Component {
                                        step={1}
                                        defaultValue={this.state.slider}
               /> : ''}
-              <ProductDetail handleClose={this.closeDetail} open = {this.state.detailOpen} product={{src, name, category, unit, price, id, count, description}}/>
+          <ProductDetail handleClose={this.closeDetail} open = {this.state.detailOpen} product={{src, name, category, unit, price, id, count, description}}/>
         </Card>
     )
   }
@@ -98,5 +98,6 @@ const styles = {
     fontSize: '2vw'
   },
 };
+
 
 export default connect(null, {addProductToCart})(Product);

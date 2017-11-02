@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import {getCorrectUnit} from '../../../../others/usefulFunctions';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
-import {RadioButton} from 'material-ui/RadioButton';
 import ReactTooltip from 'react-tooltip';
 import {Card, CardActions, CardMedia, CardTitle} from 'material-ui/Card';
 import Slider from 'material-ui/Slider';

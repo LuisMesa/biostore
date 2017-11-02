@@ -27,17 +27,17 @@ class ProducersInfo extends Component {
           }
 
           <div style={styles.wrapper}>
-            {producers.map((producer) => {
+            {producers.map((producer, index) => {
               return (
-                  <div>
-                    <Avatar src={producer.producerImg} onClick={this.handleTouchTap} style={styles.chip} data-tip={producer.name}/>
-                    <ReactTooltip place="left" type="dark" effect="float" multiline={true} style={{fontSize: '10px'}}/>
+                  <div key={index}>
+                    <Avatar src={producer.producerImg} onClick={this.handleTouchTap} style={styles.chip} data-tip={producer.name} />
+                    <ReactTooltip place="left" type="dark" effect="float" multiline={true} style={{fontSize: '10px'}} />
                   </div>
               )
             })}
 
           </div>
-          {this.state.view == 'Photos' ? <Photos producers={producers}/> : <Map/>}
+          {this.state.view == 'Photos' ? <Photos producers={producers}/> : <Map markers={markers}/>}
         </div>
     );
   }
@@ -76,4 +76,12 @@ const producers = [
   },
 ]
 
+const markers = [
+  {
+    tooltip: 'Juan M.',
+    lat: '4.7010032',
+    lng: '-74.055497',
+    // avatar: './img/producers/producer1.jpg',
+  }
+];
 export default ProducersInfo;
