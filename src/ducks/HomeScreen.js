@@ -31,7 +31,7 @@ export default function HomeScreen(state = INITIAL_STATE, action){
 };
 
 const clearOffersData = (oldData) => {
-  // console.log('oldData',oldData);
+  console.log('oldData',oldData);
   return oldData.map((item, index) => {
     const fixed = {
       id: item.id,
@@ -42,8 +42,10 @@ const clearOffersData = (oldData) => {
       unidad: item.unit_type,
       fechaEntrega: item.delivery_date,
       cantidad: item.count,
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
+      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+      producers : item.producers
     };
+    console.log(fixed);
     return fixed;
   });
 }

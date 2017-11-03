@@ -5,6 +5,7 @@ import FlatButton from 'material-ui/FlatButton';
 import ProducersOffersTable from './ProducersOffersTable/ProducersOffersTable';
 import AdminOffersTable from './AdminOffersTable/AdminOffersTable';
 import CustomersOrdersTable from './CustomersOrdersTable/CustomersOrdersTable';
+import ProducersTable from './ProducersTable/ProducersTable';
 import {fetchProducersOffers, deleteNotification} from '../../ducks/AdminScreen';
 
 import './AdminScreen.css';
@@ -12,9 +13,10 @@ import './AdminScreen.css';
 class AdminScreen extends Component {
   state = {
     producersOffersTable: true,
-    adminOffersTable: false,
+    adminOffersTable: true,
     // producersOrdersTable: true,
-    customersOrdersTable: false,
+    customersOrdersTable: true,
+    producersTable: true,
     openSnackBar: false,
     idProductNewOffer: '1',
     amountNewOffer: '5',
@@ -41,10 +43,10 @@ class AdminScreen extends Component {
         this.setState({adminOffersTable: true});
         break;
       }
-      // case names[2]: {
-      //   this.setState({producersOrdersTable: true});
-      //   break;
-      // }
+        // case names[2]: {
+        //   this.setState({producersOrdersTable: true});
+        //   break;
+        // }
       case names[2]: {
         this.setState({customersOrdersTable: true});
         break;
@@ -65,10 +67,10 @@ class AdminScreen extends Component {
         this.setState({adminOffersTable: false});
         break;
       }
-      // case names[2]: {
-      //   this.setState({producersOrdersTable: false});
-      //   break;
-      // }
+        // case names[2]: {
+        //   this.setState({producersOrdersTable: false});
+        //   break;
+        // }
       case names[2]: {
         this.setState({customersOrdersTable: false});
         break;
@@ -93,7 +95,7 @@ class AdminScreen extends Component {
   };
 
   isCloseAvailable = () => {
-    return this.state.adminOffersTable+ this.state.customersOrdersTable+ this.state.producersOffersTable;
+    return this.state.adminOffersTable + this.state.customersOrdersTable + this.state.producersOffersTable;
   };
 
 
@@ -104,19 +106,22 @@ class AdminScreen extends Component {
   render() {
     return (
         <div className="AdminScreen">
-          {this.state.producersOffersTable ? <ProducersOffersTable data={this.props.producersOffers} names={this.getAvailableNames()} addTable={this.addTable} name={names[0]} deleteTable={this.deleteTable} isCloseAvailable={this.isCloseAvailable()}/> : ''}
-          {this.state.adminOffersTable ? <AdminOffersTable names={this.getAvailableNames()} addTable={this.addTable} name={names[1]} deleteTable={this.deleteTable} isCloseAvailable={this.isCloseAvailable()}/> : ''}
-          {this.state.customersOrdersTable ? <CustomersOrdersTable names={this.getAvailableNames()} addTable={this.addTable} name={names[2]} deleteTable={this.deleteTable} isCloseAvailable={this.isCloseAvailable()}/> : ''}
+          {this.state.producersOffersTable ? <ProducersOffersTable data={this.props.producersOffers} names={this.getAvailableNames()} addTable={this.addTable} name={names[0]} deleteTable={this.deleteTable} isCloseAvailable={true || this.isCloseAvailable()}/> : ''}
+          {this.state.adminOffersTable ? <AdminOffersTable names={this.getAvailableNames()} addTable={this.addTable} name={names[1]} deleteTable={this.deleteTable} isCloseAvailable={true || this.isCloseAvailable()}/> : ''}
+          {this.state.customersOrdersTable ? <CustomersOrdersTable names={this.getAvailableNames()} addTable={this.addTable} name={names[2]} deleteTable={this.deleteTable} isCloseAvailable={true || this.isCloseAvailable()}/> : ''}
+          {this.state.producersTable ? <ProducersTable names={this.getAvailableNames()} addTable={this.addTable} name={names[3]} deleteTable={this.deleteTable} isCloseAvailable={true || this.isCloseAvailable()}/> : ''}
         </div>
     );
   }
 }
-{/*{this.state.producersOrdersTable ? <ProducersOffersTable data={this.props.customersOrders} names={this.getAvailableNames()} addTable={this.addTable} name={names[3]} deleteTable={this.deleteTable}/> : ''}*/}
+{/*{this.state.producersOrdersTable ? <ProducersOffersTable data={this.props.customersOrders} names={this.getAvailableNames()} addTable={this.addTable} name={names[3]} deleteTable={this.deleteTable}/> : ''}*/
+}
 
 const names = [
   'Ofertas de Productores',
   'Ofertas del Admin',
-  'Pedidos de Clientes'
+  'Pedidos de Clientes',
+  'Productores'
 ];
 // 'Pedidos a Productores',
 

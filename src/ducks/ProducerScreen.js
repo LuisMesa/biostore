@@ -6,6 +6,7 @@ const CREATE_OFFER = 'CREATE_OFFER';
 const CHANGE_OFFERS = 'CHANGE_OFFERS';
 const CHANGE_ORDERS = 'CHANGE_ORDERS';
 const NOTIFICATION = 'NOTIFICATION';
+const SET_STATE_SOME_ORDERS = 'SET_STATE_SOME_ORDERS';
 
 export const fetchOffers = () => async dispatch => {
   const offers = (await axios.get(BASE_URL + '/offersbyproducer/1/')).data;
@@ -46,6 +47,14 @@ export const createOffer = (newOffer) => async dispatch => {
     });
   });
 };
+
+export const setStateSomeOrders = (ids, newState) => {
+  return {
+    type: SET_STATE_SOME_ORDERS,
+    payload: {ids, newState}
+  };
+};
+
 const INITIAL_STATE = {
   offers: [],
   orders: []
@@ -61,6 +70,17 @@ export default function ProducerScreen(state = INITIAL_STATE, action) {
     }
     case CREATE_OFFER: {
       return {...state, offers: [...state.offers, action.payload]};
+    }
+    case SET_STATE_SOME_ORDERS: {
+      const stateCopy = {...state};
+      const newArray = stateCopy.orders.map(order => {
+            if (action.payload.ids.find(id => id === order.id)) {
+              order.state = action.payload.newState;
+            }
+            return order
+          }
+      );
+      return {...state, producersOffers: newArray};
     }
     case NOTIFICATION: {
       return state;
@@ -97,7 +117,7 @@ const clearOrdersData = (oldData) => {
       // createdAt: new Date(item.fields.create_at),
       deliveryDate: new Date(item.order.delivery_at),
       address: item.order.shipping_address,
-      // state: item.fields.state
+      state: 'Pendiente'
     };
     return fixed;
   })

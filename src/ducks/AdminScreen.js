@@ -5,10 +5,12 @@ const CHANGE_PRODUCERS_OFFERS = 'CHANGE_PRODUCERS_OFFERS';
 const CHANGE_ADMIN_OFFERS = 'CHANGE_ADMIN_OFFERS';
 const CHANGE_CUSTOMER_ORDERS = 'CHANGE_CUSTOMER_ORDERS';
 const CHANGE_PRODUCERS_ORDERS = 'CHANGE_PRODUCERS_ORDERS';
+const CHANGE_PRODUCERS = 'CHANGE_PRODUCERS';
 const SET_STATE_SOME_PRODUCERS_OFFERS = 'SET_STATE_SOME_PRODUCERS_OFFERS';
 const NOTIFICATION = 'NOTIFICATION';
 const DELETE_NOTIFICATION = 'DELETE_NOTIFICATION';
 const CREATE_OFFER = 'CREATE_OFFER';
+const CREATE_PRODUCER = 'CREATE_PRODUCER';
 
 export const fetchProducersOffers = () => async dispatch => {
   const offers = (await axios.get(BASE_URL + '/producersoffers')).data;
@@ -31,6 +33,13 @@ export const fetchCustomerOffers = () => async dispatch => {
     payload: offers
   });
 };
+export const fetchProducers = () => async dispatch => {
+  const producers = (await axios.get(BASE_URL + '/producers/')).data;
+  dispatch({
+    type: CHANGE_PRODUCERS,
+    payload: producers
+  });
+};
 
 export const setStateSomeProducersOffers = (ids, newState) => {
   return {
@@ -42,6 +51,30 @@ export const setStateSomeProducersOffers = (ids, newState) => {
 export const saveProducersOffers = (acceptedIds, canceledIds) => async dispatch => {
   const object = {acceptedIds, canceledIds};
   await axios.post(BASE_URL + '/saveoffers/', object).then(response => {
+    if (response.data.estado === 'ok') {
+      dispatch({
+        type: NOTIFICATION,
+        payload: 'Datos guardados.'
+      });
+    }
+    else {
+      dispatch({
+        type: NOTIFICATION,
+        payload: 'El servidor ha rechazado los datos.'
+      });
+    }
+  }).catch(error => {
+    dispatch({
+      type: NOTIFICATION,
+      payload: 'No se pudo conectar con el servidor, no se han guardado los datos.'
+    });
+  });
+};
+
+export const createProducer = (newProducer) => async dispatch => {
+  const object = {newProducer};
+  // console.log(object);
+  await axios.post(BASE_URL + '/addproducer/', object).then(response => {
     if (response.data.estado === 'ok') {
       dispatch({
         type: NOTIFICATION,
@@ -96,6 +129,7 @@ const INITIAL_STATE = {
   adminOffers: [],
   producersOrders: [],
   customersOrders: [],
+  producers:[],
   notifications: []
 };
 
@@ -110,6 +144,9 @@ export default function AdminScreen(state = INITIAL_STATE, action) {
     case CHANGE_CUSTOMER_ORDERS: {
       return {...state, customersOrders: clearCustomersOrders(action.payload)};
     }
+    case CHANGE_PRODUCERS: {
+      return {...state, producers: clearProducers(action.payload)};
+    }
     case SET_STATE_SOME_PRODUCERS_OFFERS: {
       const stateCopy = {...state};
       const newArray = stateCopy.producersOffers.map(offer => {
@@ -120,6 +157,11 @@ export default function AdminScreen(state = INITIAL_STATE, action) {
           }
       );
       return {...state, producersOffers: newArray};
+    }
+    case CREATE_PRODUCER:{
+      // const newProducer = {id: index, mail: 'correo@cor@.com', name: 'Quemado', lastName:'Codigo', address: 'Direccion', phone: '12345678',}
+      // return {...state, producers: [...state.producers, action.payload]};
+      return state;
     }
     case NOTIFICATION: {
       return {...state, notifications: [...state.notifications, action.payload]};
@@ -177,6 +219,20 @@ const clearCustomersOrders = (oldData) => {
       deliveryDate: new Date(item.order.delivery_at),
       client: item.order.consumer.name,
       phone: item.order.consumer.phone_number,
+    };
+    return fixed;
+  })
+};
+const clearProducers = (oldData) => {
+  // console.log(oldData);
+  return oldData.map((item, index) => {
+    const fixed = {
+      id: item.fields.uid,
+      mail: item.fields.email,
+      name: item.fields.name,
+      lastName:item.fields.last_name,
+      address: item.fields.address,
+      phone: item.fields.phone_number,
     };
     return fixed;
   })

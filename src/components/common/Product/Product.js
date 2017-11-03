@@ -50,7 +50,7 @@ class Product extends Component {
 
 
   render() {
-    const {src, name, category, unit, price, id, count, description} = this.props;
+    const {src, name, category, unit, price, id, count, description, producers} = this.props;
     return (
         <Card className="Product">
           <CardMedia className="CardMedia"
@@ -82,7 +82,7 @@ class Product extends Component {
                                        step={1}
                                        defaultValue={this.state.slider}
               /> : ''}
-          <ProductDetail handleClose={this.closeDetail} open = {this.state.detailOpen} product={{src, name, category, unit, price, id, count, description}}/>
+          <ProductDetail handleClose={this.closeDetail} open = {this.state.detailOpen} product={{src, name, category, unit, price, id, count, description, producers}} addProductToCart={(product)=>{this.props.addProductToCart(product)}}/>
         </Card>
     )
   }

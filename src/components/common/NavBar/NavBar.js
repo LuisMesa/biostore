@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {signUp, login} from '../../../ducks/common';
+import {signUp, login,updateUserPosition} from '../../../ducks/common';
 import {Link} from 'react-router-dom'
 import AppBar from 'material-ui/AppBar';
 import Drawer from 'material-ui/Drawer';
@@ -19,6 +19,9 @@ class NavBar extends Component {
       logInOpen: false,
       signUpOpen: false
     };
+  }
+  componentWillMount(){
+    this.props.updateUserPosition();
   }
 
   handleToggle = () => this.setState({open: !this.state.open});
@@ -79,4 +82,4 @@ function mapStateToProps(state) {
     user
   }
 }
-export default connect(mapStateToProps, {signUp, login})(NavBar);
+export default connect(mapStateToProps, {signUp, login, updateUserPosition})(NavBar);

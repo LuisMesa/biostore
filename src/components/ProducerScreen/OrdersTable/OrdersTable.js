@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {fetchOrders,} from '../../../ducks/ProducerScreen';
+import {fetchOrders, setStateSomeOrders} from '../../../ducks/ProducerScreen';
 import ReactTooltip from 'react-tooltip';
 import LockIcon from 'material-ui/svg-icons/action/lock';
 import LockOpenIcon from 'material-ui/svg-icons/action/lock-open';
-import HighLightIcon from 'material-ui/svg-icons/action/highlight-off';
+import SendedIcon from 'material-ui/svg-icons/communication/call-made';
 import InfoIcon from 'material-ui/svg-icons/action/info-outline';
 import CheckCircleIcon from 'material-ui/svg-icons/action/check-circle';
 import {DatePicker, MenuItem, Popover, Menu, DropDownMenu} from 'material-ui';
@@ -51,9 +51,10 @@ class OrdersTable extends Component {
   };
 
   getFilteredData() {
-    return this.props.data.filter(item => {
-      return this.state.filterDate1.getTime() < item.deliveryDate && this.state.filterDate2.getTime() > item.deliveryDate
-    })
+    // return this.props.orders.filter(item => {
+    //   return this.state.filterDate1.getTime() < item.deliveryDate && this.state.filterDate2.getTime() > item.deliveryDate
+    // })
+    return this.props.orders;
   }
 
 
@@ -62,7 +63,7 @@ class OrdersTable extends Component {
       case 'editable':
         return <TableRowColumn key={index}>{value ? <LockIcon style={{paddingLeft: 'calc(50% - 12px)'}}/> : <LockOpenIcon style={{paddingLeft: 'calc(50% - 12px)'}}/>}</TableRowColumn>;
       case 'state':
-        return <TableRowColumn key={index}>{value === 'Pendiente' || value === 'PENDIENTE' ? <InfoIcon style={{paddingLeft: 'calc(50% - 12px)'}}/> : value === 'Cancelada'|| value === 'CANCELADA' ? <HighLightIcon style={{paddingLeft: 'calc(50% - 12px)'}} color={pinkA200}/> : <CheckCircleIcon style={{paddingLeft: 'calc(50% - 12px)'}} color={cyan500}/>}</TableRowColumn>;
+        return <TableRowColumn key={index}>{value === 'Pendiente' || value === 'PENDIENTE' ? <InfoIcon style={{paddingLeft: 'calc(50% - 12px)'}}/> : <SendedIcon style={{paddingLeft: 'calc(50% - 12px)'}} color={cyan500}/>}</TableRowColumn>;
       case 'createdAt':
         return <TableRowColumn key={index}>{value.toISOString().split('T')[0]}</TableRowColumn>;
       case 'deliveryDate':
@@ -147,8 +148,33 @@ class OrdersTable extends Component {
             </div>
           </Table>
           <div className="tableActions">
-            <RaisedButton label="Actualizar" primary={true} style={{float: 'right', margin: '12px'}}
-                          onClick={()=>this.props.fetchOrders()}/>
+            <RaisedButton label={"Marcar como enviado (" + this.state.selectedRows.length + ")"} primary={true} disabled={this.state.selectedRows.length === 0} style={{float: 'left', margin: '12px'}}
+                          onClick={() => {
+                            const ids = [];
+                            const filteredRows = this.getFilteredData();
+                            console.log(filteredRows);
+                            this.state.selectedRows.forEach((index) => {
+                              ids.push(filteredRows[index].id);
+                            });
+                            this.props.setStateSomeOrders(ids, 'Aceptada');
+                            this.setState({selectedRows: []});
+                          }
+                          }/>
+            <RaisedButton label="Guardar" primary={true} style={{float: 'right', margin: '12px'}}
+                          onClick={() => {
+                            const acceptedIds = [];
+                            const canceledIds = [];
+                            this.props.orders.map(offer => {
+                              if (offer.editable && offer.state === 'Aceptada')
+                                acceptedIds.push({id: offer.id, state: 'Aceptada'});
+                              else if (offer.editable && offer.state === 'Cancelada')
+                                canceledIds.push({id: offer.id, state: 'Cancelada'})
+                            });
+                            this.props.saveProducersOffers(acceptedIds, canceledIds);
+                          }}/>
+            <RaisedButton label="Cancelar" style={{float: 'right', margin: '12px'}}/>
+            {/*<RaisedButton label="Actualizar" primary={true} style={{float: 'right', margin: '12px'}}*/}
+                          {/*onClick={()=>this.props.fetchOrders()}/>*/}
           </div>
         </div>
     );
@@ -160,6 +186,7 @@ const columns = [
   {name: 'Precio'},
   {name: 'Entrega'},
   {name: 'Lugar Entrega'},
+  {name: 'Estado'}
 ];
 
 function mapStateToProps(status) {
@@ -169,4 +196,4 @@ function mapStateToProps(status) {
   }
 }
 
-export default connect(mapStateToProps, {fetchOrders})(OrdersTable);
+export default connect(mapStateToProps, {fetchOrders, setStateSomeOrders})(OrdersTable);

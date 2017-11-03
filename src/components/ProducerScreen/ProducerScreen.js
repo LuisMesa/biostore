@@ -9,8 +9,8 @@ import './ProducerScreen.css';
 class ProducerScreen extends Component {
   state = {
     offersTable: true,
-    ordersTable: false,
-    openSnackBar: false,
+    ordersTable: true,
+    openSnackBar: true,
   };
 
   handleRequestCloseSnackBar = () => {
@@ -69,8 +69,8 @@ class ProducerScreen extends Component {
   render() {
     return (
         <div className="ProducerScreen">
-          {this.state.offersTable ? <OffersTable name={names[0]} names={this.getAvailableNames()} addTable={this.addTable} deleteTable={this.deleteTable} isCloseAvailable={this.isCloseAvailable()}/> : ''}
-          {this.state.ordersTable ? <OrdersTable name={names[1]} names={this.getAvailableNames()} addTable={this.addTable} deleteTable={this.deleteTable} isCloseAvailable={this.isCloseAvailable()}/> : ''}
+          {this.state.offersTable ? <OffersTable name={names[0]} names={this.getAvailableNames()} addTable={this.addTable} deleteTable={this.deleteTable} isCloseAvailable={true||this.isCloseAvailable()}/> : ''}
+          {this.state.ordersTable ? <OrdersTable name={names[1]} names={this.getAvailableNames()} addTable={this.addTable} deleteTable={this.deleteTable} isCloseAvailable={true||this.isCloseAvailable()}/> : ''}
           {/*<Snackbar*/}
               {/*open={this.state.openSnackBar}*/}
               {/*message={this.props.notifications[0]?this.props.notifications[0]:''}*/}
