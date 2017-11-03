@@ -99,5 +99,4 @@ const styles = {
   },
 };
 
-
 export default connect(null, {addProductToCart})(Product);

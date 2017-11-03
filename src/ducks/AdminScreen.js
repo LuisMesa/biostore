@@ -72,8 +72,8 @@ export const saveProducersOffers = (acceptedIds, canceledIds) => async dispatch 
 };
 
 export const createProducer = (newProducer) => async dispatch => {
-  const object = {newProducer};
-  // console.log(object);
+  const object = newProducer;
+  console.log(object);
   await axios.post(BASE_URL + '/addproducer/', object).then(response => {
     if (response.data.estado === 'ok') {
       dispatch({

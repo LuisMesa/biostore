@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {BASE_URL} from './constants';
+import {distance} from '../others/usefulFunctions';
 
 //Constants
 const CHANGE_RECENT_PRODUCTS = 'CHANGE_RECENT_PRODUCTS';
@@ -24,14 +25,14 @@ export default function HomeScreen(state = INITIAL_STATE, action){
   switch (action.type) {
     case CHANGE_RECENT_PRODUCTS:
       // return {...state, recentProducts: action.payload};
-      return {...state, recentProducts: clearOffersData(action.payload).slice(0,9)};
+      return {...state, recentProducts: clearOffersData(action.payload, ).slice(0,9)};
     default:
       return state;
   }
 };
 
 const clearOffersData = (oldData) => {
-  console.log('oldData',oldData);
+  // console.log('oldData',oldData);
   return oldData.map((item, index) => {
     const fixed = {
       id: item.id,
@@ -45,10 +46,19 @@ const clearOffersData = (oldData) => {
       description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
       producers : item.producers
     };
-    console.log(fixed);
+    // console.log(fixed);
     return fixed;
   });
 }
+
+const filterByLocation = (oldData) =>{
+  return oldData.filter((item)=>{
+    item.producers.some((p)=>{
+      return distance(p.lat, p.lng, )
+
+    })
+  })
+};
 
 const products = [
   {src: './img/items/manzana.jpg', nombre: 'Manzana', categoria: 'Frutas', precio: '2500', unidad: 'Libra'},
