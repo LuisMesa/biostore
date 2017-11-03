@@ -17,7 +17,6 @@ export const fetchRecentProducts = () => async dispatch => {
 
 //Reducer's Initial state
 const INITIAL_STATE = {
-  user: null,
   recentProducts: []
 };
 //Reducer
@@ -25,13 +24,13 @@ export default function HomeScreen(state = INITIAL_STATE, action){
   switch (action.type) {
     case CHANGE_RECENT_PRODUCTS:
       // return {...state, recentProducts: action.payload};
-      return {...state, recentProducts: clearOffersData(action.payload, ).slice(0,9)};
+      return {...state, recentProducts: clearOffersData(action.payload, state.userPosition ).slice(0,9)};
     default:
       return state;
   }
 };
 
-const clearOffersData = (oldData) => {
+const clearOffersData = (oldData, userPosition) => {
   // console.log('oldData',oldData);
   return oldData.map((item, index) => {
     const fixed = {
@@ -51,10 +50,10 @@ const clearOffersData = (oldData) => {
   });
 }
 
-const filterByLocation = (oldData) =>{
+const filterByLocation = (oldData, userPosition) =>{
   return oldData.filter((item)=>{
     item.producers.some((p)=>{
-      return distance(p.lat, p.lng, )
+      return distance(p.lat, p.lng, userPosition.lat, userPosition.lng) < 10000
 
     })
   })
