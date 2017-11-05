@@ -50,6 +50,7 @@ export const setStateSomeProducersOffers = (ids, newState) => {
 
 export const saveProducersOffers = (acceptedIds, canceledIds) => async dispatch => {
   const object = {acceptedIds, canceledIds};
+  // console.log(object);
   await axios.post(BASE_URL + '/saveoffers/', object).then(response => {
     if (response.data.estado === 'ok') {
       dispatch({

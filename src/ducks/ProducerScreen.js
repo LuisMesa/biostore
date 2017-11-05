@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {db} from '../others/fb';
 import {BASE_URL} from './constants';
 import {getProductName} from '../others/usefulFunctions';
 
@@ -25,27 +26,52 @@ export const fetchOrders = () => async dispatch => {
 };
 
 export const createOffer = (newOffer) => async dispatch => {
-  const object = newOffer;
-  // console.log(object);
-  await axios.post(BASE_URL + '/addproduceroffer/', object).then(response => {
-    if (response.data.estado === 'ok') {
-      dispatch({
-        type: NOTIFICATION,
-        payload: object
-      });
-    }
-    else {
-      dispatch({
-        type: NOTIFICATION,
-        payload: 'El servidor ha rechazado los datos.'
-      });
-    }
-  }).catch(error => {
-    dispatch({
-      type: NOTIFICATION,
-      payload: 'No se pudo conectar con el servidor, no se han guardado los datos.'
-    });
+  console.log('create offer');
+  const newKey = db.ref().child('producersOffers').push().key;
+  let updates = {};
+  const producerId='01';
+  const productId='01';
+  const producer = (await db.ref('producer/'+producerId).once('value')).val();
+  const product = (await db.ref('products/'+productId).once('value')).val();
+  const newObject = {
+    id: newKey,
+    amount: newOffer.amountNewOffer,
+    createdAt: newOffer.createdAt,
+    deliveryDate: newOffer.deliveryDateNewOffer,
+    price: newOffer.priceNewOffer,
+    state: 'Pendiente',
+    editable: 'True',
+    product: product,
+    producer: producer
+  };
+  console.log('Create Offer:',newObject);
+  updates['/producersOffers/' + newKey] = newObject;
+  await db.ref().update(updates);
+  dispatch({
+    type: NOTIFICATION,
+    payload: newOffer
   });
+  // const object = newOffer;
+  // console.log(object);
+  // await axios.post(BASE_URL + '/addproduceroffer/', object).then(response => {
+  //   if (response.data.estado === 'ok') {
+  //     dispatch({
+  //       type: NOTIFICATION,
+  //       payload: object
+  //     });
+  //   }
+  //   else {
+  //     dispatch({
+  //       type: NOTIFICATION,
+  //       payload: 'El servidor ha rechazado los datos.'
+  //     });
+  //   }
+  // }).catch(error => {
+  //   dispatch({
+  //     type: NOTIFICATION,
+  //     payload: 'No se pudo conectar con el servidor, no se han guardado los datos.'
+  //   });
+  // });
 };
 
 export const setStateSomeOrders = (ids, newState) => {
