@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {fetchOrders, setStateSomeOrders} from '../../../ducks/ProducerScreen';
+import {fetchOrders, setStateSomeOrders, saveStateSomeOrders} from '../../../ducks/ProducerScreen';
 import ReactTooltip from 'react-tooltip';
 import LockIcon from 'material-ui/svg-icons/action/lock';
 import LockOpenIcon from 'material-ui/svg-icons/action/lock-open';
@@ -21,7 +21,7 @@ class OrdersTable extends Component {
 
   state = {
     filterDate1: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
-    filterDate2: new Date(),
+    filterDate2: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
     popoverOpen: false,
     selectedRows: [],
     idProductNewOffer: '1',
@@ -51,10 +51,10 @@ class OrdersTable extends Component {
   };
 
   getFilteredData() {
-    // return this.props.orders.filter(item => {
-    //   return this.state.filterDate1.getTime() < item.deliveryDate && this.state.filterDate2.getTime() > item.deliveryDate
-    // })
-    return this.props.orders;
+    return this.props.orders.filter(item => {
+      return this.state.filterDate1.getTime() < item.deliveryDate.getTime() && this.state.filterDate2.getTime() > item.deliveryDate.getTime()
+    })
+    // return this.props.orders;
   }
 
 
@@ -92,7 +92,7 @@ class OrdersTable extends Component {
   render() {
     return (
         <div className="OffersTable" id="OffersTable">
-          <Table columns={columns} data={this.props.orders} renderItem={(value, type, index) => this.renderItem(value, type, index)} onRowSelection={this.onRowSelection} selectedRows={this.state.selectedRows}>
+          <Table columns={columns} data={this.getFilteredData()} renderItem={(value, type, index) => this.renderItem(value, type, index)} onRowSelection={this.onRowSelection} selectedRows={this.state.selectedRows}>
             <div>
               <h3>{this.props.name}</h3>
               {this.props.isCloseAvailable>1?
@@ -152,7 +152,6 @@ class OrdersTable extends Component {
                           onClick={() => {
                             const ids = [];
                             const filteredRows = this.getFilteredData();
-                            console.log(filteredRows);
                             this.state.selectedRows.forEach((index) => {
                               ids.push(filteredRows[index].id);
                             });
@@ -164,13 +163,13 @@ class OrdersTable extends Component {
                           onClick={() => {
                             const acceptedIds = [];
                             const canceledIds = [];
-                            this.props.orders.map(offer => {
-                              if (offer.editable && offer.state === 'Aceptada')
-                                acceptedIds.push({id: offer.id, state: 'Aceptada'});
-                              else if (offer.editable && offer.state === 'Cancelada')
-                                canceledIds.push({id: offer.id, state: 'Cancelada'})
+                            this.props.orders.map(order => {
+                              if (order.state === 'Aceptada')
+                                acceptedIds.push({id: order.id, state: 'Aceptada'});
+                              {/*else if (order.editable && order.state === 'Cancelada')*/}
+                                {/*canceledIds.push({id: order.id, state: 'Cancelada'})*/}
                             });
-                            this.props.saveProducersOffers(acceptedIds, canceledIds);
+                            this.props.saveStateSomeOrders(acceptedIds,canceledIds);
                           }}/>
             <RaisedButton label="Cancelar" style={{float: 'right', margin: '12px'}}/>
             {/*<RaisedButton label="Actualizar" primary={true} style={{float: 'right', margin: '12px'}}*/}
@@ -196,4 +195,4 @@ function mapStateToProps(status) {
   }
 }
 
-export default connect(mapStateToProps, {fetchOrders, setStateSomeOrders})(OrdersTable);
+export default connect(mapStateToProps, {fetchOrders, setStateSomeOrders, saveStateSomeOrders})(OrdersTable);

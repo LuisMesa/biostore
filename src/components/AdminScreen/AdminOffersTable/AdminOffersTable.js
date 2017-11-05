@@ -218,9 +218,10 @@ const columns = [
 ];
 
 function mapStateToProps(state) {
-  const {adminOffers} = state.AdminScreen;
+  const {adminOffers, producersOrders} = state.AdminScreen;
   return {
-    adminOffers
+    adminOffers,
+    producersOrders
   }
 }
 

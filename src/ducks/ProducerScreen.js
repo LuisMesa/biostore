@@ -55,6 +55,33 @@ export const setStateSomeOrders = (ids, newState) => {
   };
 };
 
+export const saveStateSomeOrders = (acceptedIds, canceledIds) => async dispatch => {
+  const object = {acceptedIds, canceledIds};
+  // console.log(object);
+  await axios.post(BASE_URL + '/updatestateorder/', object).then(response => {
+    if (response.data.estado === 'ok') {
+      // console.log('1')
+      dispatch({
+        type: NOTIFICATION,
+        payload: 'Datos guardados.'
+      });
+    }
+    else {
+      // console.log('2')
+      dispatch({
+        type: NOTIFICATION,
+        payload: 'El servidor ha rechazado los datos.'
+      });
+    }
+  }).catch(error => {
+    // console.log('3')
+    dispatch({
+      type: NOTIFICATION,
+      payload: 'No se pudo conectar con el servidor, no se han guardado los datos.'
+    });
+  });
+};
+
 const INITIAL_STATE = {
   offers: [],
   orders: []
@@ -74,13 +101,13 @@ export default function ProducerScreen(state = INITIAL_STATE, action) {
     case SET_STATE_SOME_ORDERS: {
       const stateCopy = {...state};
       const newArray = stateCopy.orders.map(order => {
-            if (action.payload.ids.find(id => id === order.id)) {
+        if (action.payload.ids.find(id => id === order.id)) {
               order.state = action.payload.newState;
             }
             return order
           }
       );
-      return {...state, producersOffers: newArray};
+      return {...state, orders: newArray};
     }
     case NOTIFICATION: {
       return state;
@@ -108,16 +135,18 @@ const clearData = (oldData) => {
 };
 
 const clearOrdersData = (oldData) => {
+  console.log(oldData);
   return oldData.map((item, index) => {
     const fixed = {
       id: item.order.id,
       name: item.offer.productType.title,
       amount: item.count,
       price: item.offer.unit_price,
-      // createdAt: new Date(item.fields.create_at),
-      deliveryDate: new Date(item.order.delivery_at),
+      // createdAt: new Date(item.offer.create_at),
+      // deliveryDate: new Date(item.order.delivery_at),
+      deliveryDate: new Date(Date.now()+5*24*60*60*1000),
       address: item.order.shipping_address,
-      state: 'Pendiente'
+      state: item.order.state
     };
     return fixed;
   })
