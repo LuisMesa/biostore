@@ -10,7 +10,7 @@ import './ProductsScreen.css';
 class ProductsScreen extends Component {
 
   componentWillMount() {
-    this.props.fetchOffers();
+    this.props.fetchOffers(this.props.userPosition);
   }
 
   buy = ()=>{
@@ -35,10 +35,12 @@ function mapStateToProps(state){
   const {products}= state.common.cart;
   const {offers}= state.ProductsScreen;
   const {filters} = state.ProductsScreen;
+  const userPosition= state.common.userPosition;
   return{
     products,
     filters,
-    offers
+    offers,
+    userPosition
   }
 }
 

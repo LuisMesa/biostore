@@ -90,7 +90,7 @@ class ProductDetail extends Component {
               <h3>Descripción</h3>
               <p>{description}</p>
             </div>
-            <ProducersInfo/>
+            <ProducersInfo producers={this.props.product.producers}/>
           </div>
         </Dialog>
     );

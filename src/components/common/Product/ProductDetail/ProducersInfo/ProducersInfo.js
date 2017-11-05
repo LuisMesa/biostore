@@ -27,17 +27,28 @@ class ProducersInfo extends Component {
           }
 
           <div style={styles.wrapper}>
-            {producers.map((producer, index) => {
+            {this.props.producers.map((producer, index) => {
               return (
                   <div key={index}>
-                    <Avatar src={producer.producerImg} onClick={this.handleTouchTap} style={styles.chip} data-tip={producer.name} />
-                    <ReactTooltip place="left" type="dark" effect="float" multiline={true} style={{fontSize: '10px'}} />
+                    <Avatar src={producer.url} onClick={this.handleTouchTap} style={styles.chip} data-tip={producer.name}/>
+                    <ReactTooltip place="left" type="dark" effect="float" multiline={true} style={{fontSize: '10px'}}/>
                   </div>
               )
             })}
 
           </div>
-          {this.state.view == 'Photos' ? <Photos producers={producers}/> : <Map markers={markers}/>}
+          {this.state.view == 'Photos' ?
+              <Photos producers={this.props.producers}/>
+              :
+              <Map markers={this.props.producers.map(p=>{
+                return {
+                  tooltip: p.name,
+                  lat: p.latitude,
+                  lng: p.longitude,
+                  // avatar: './img/producers/producer1.jpg',
+                }
+              })}
+              />}
         </div>
     );
   }

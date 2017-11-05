@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {BASE_URL} from './constants';
+import {distance} from '../others/usefulFunctions';
 
 const CHANGE_FARM_FILTER = 'CHANGE_FARM_FILTER';
 const CHANGE_VEGETABLES_FILTER = 'CHANGE_VEGETABLE_FILTER';
@@ -27,11 +28,11 @@ export const changeFruitsFilter = (exclusive) => {
   }
 };
 
-export const fetchOffers = () => async dispatch => {
+export const fetchOffers = (userPosition) => async dispatch => {
   const offers = (await axios.get(BASE_URL + '/adminoffers/')).data;
   dispatch({
     type: CHANGE_OFFERS_PRODUCTS,
-    payload: offers
+    payload: {offers:offers,userPosition}
   });
 };
 
@@ -82,16 +83,16 @@ export default function ProductsScreen(state = INITIAL_STATE, action) {
       return {...state, filters: newFilters};
     }
     case CHANGE_OFFERS_PRODUCTS: {
-      return {...state, offers: clearOffersData(action.payload)};
+      return {...state, offers: clearOffersData(action.payload.offers, action.payload.userPosition)};
     }
     default:
       return state;
   }
 }
 
-const clearOffersData = (oldData) => {
+const clearOffersData = (oldData,userPosition) => {
   // console.log(oldData);
-  return oldData.map((item, index) => {
+  return filterByLocation(oldData,userPosition).map((item, index) => {
     const fixed = {
       id: item.id,
       src: item.productType.url,
@@ -101,7 +102,8 @@ const clearOffersData = (oldData) => {
       unidad: item.unit_type,
       fechaEntrega: item.delivery_date,
       cantidad: item.count,
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
+      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+      producers: item.producers
     };
     return fixed;
   });
@@ -111,6 +113,18 @@ const clearOffersData = (oldData) => {
   //       array.push({src: './img/items/tomate.jpg', nombre: 'Tomate', categoria: 'Frutas', precio: '2500', unidad: 'Libra'},)
   // });
   // return array;
+};
+
+const filterByLocation = (oldData, userPosition) => {
+  return oldData.filter((item) => {
+    return item.producers.some((p) => {
+      // console.log(p.latitude, p.longitude, userPosition.lat, userPosition.lng);
+      const d= distance(p.latitude, p.longitude, userPosition.lat, userPosition.lng);
+      // console.log(d);
+      return d < 1000000
+
+    })
+  })
 };
 
 // const products = [

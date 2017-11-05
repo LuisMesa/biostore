@@ -152,7 +152,10 @@ export const changeProductDetail = (newProduct) => {
 //Reducer's Initial state
 const INITIAL_STATE = {
   user: null,
-  userPosition:null,
+  userPosition:{
+    lat:4.603199,
+    lng:-74.0652
+  },
   cart: {
     products: []
   },

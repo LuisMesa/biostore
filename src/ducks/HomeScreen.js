@@ -6,11 +6,11 @@ import {distance} from '../others/usefulFunctions';
 const CHANGE_RECENT_PRODUCTS = 'CHANGE_RECENT_PRODUCTS';
 
 //Actions Creators
-export const fetchRecentProducts = () => async dispatch => {
+export const fetchRecentProducts = (userPosition) => async dispatch => {
   const offers = (await axios.get(BASE_URL + '/adminoffers/')).data;
   dispatch({
     type: CHANGE_RECENT_PRODUCTS,
-    payload: offers
+    payload: {offers:offers,userPosition}
   });
 };
 
@@ -20,11 +20,11 @@ const INITIAL_STATE = {
   recentProducts: []
 };
 //Reducer
-export default function HomeScreen(state = INITIAL_STATE, action){
+export default function HomeScreen(state = INITIAL_STATE, action) {
   switch (action.type) {
     case CHANGE_RECENT_PRODUCTS:
       // return {...state, recentProducts: action.payload};
-      return {...state, recentProducts: clearOffersData(action.payload, state.userPosition ).slice(0,9)};
+      return {...state, recentProducts: clearOffersData(action.payload.offers, action.payload.userPosition).slice(0, 9)};
     default:
       return state;
   }
@@ -32,7 +32,7 @@ export default function HomeScreen(state = INITIAL_STATE, action){
 
 const clearOffersData = (oldData, userPosition) => {
   // console.log('oldData',oldData);
-  return oldData.map((item, index) => {
+  return filterByLocation(oldData,userPosition).map((item, index) => {
     const fixed = {
       id: item.id,
       src: item.productType.url,
@@ -43,17 +43,20 @@ const clearOffersData = (oldData, userPosition) => {
       fechaEntrega: item.delivery_date,
       cantidad: item.count,
       description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-      producers : item.producers
+      producers: item.producers
     };
     // console.log(fixed);
     return fixed;
   });
 }
 
-const filterByLocation = (oldData, userPosition) =>{
-  return oldData.filter((item)=>{
-    item.producers.some((p)=>{
-      return distance(p.lat, p.lng, userPosition.lat, userPosition.lng) < 10000
+const filterByLocation = (oldData, userPosition) => {
+  return oldData.filter((item) => {
+    return item.producers.some((p) => {
+      // console.log(p.latitude, p.longitude, userPosition.lat, userPosition.lng);
+      const d= distance(p.latitude, p.longitude, userPosition.lat, userPosition.lng);
+      // console.log(d);
+      return d < 1000000
 
     })
   })

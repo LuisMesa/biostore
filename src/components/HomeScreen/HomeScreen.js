@@ -10,7 +10,7 @@ import Cart from '../common/Cart/Cart';
 class HomeScreen extends Component {
 
   componentWillMount(){
-    this.props.fetchRecentProducts();
+    this.props.fetchRecentProducts(this.props.userPosition);
   }
   buy = ()=>{
     const array = this.props.cartProducts.map((product =>{
@@ -42,9 +42,11 @@ const categories = [
 function mapStateToProps(state) {
   const products = state.HomeScreen.recentProducts;
   const cartProducts= state.common.cart.products;
+  const userPosition= state.common.userPosition;
   return {
     products,
-    cartProducts
+    cartProducts,
+    userPosition
   }
 }
 

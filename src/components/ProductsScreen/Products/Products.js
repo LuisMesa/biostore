@@ -24,7 +24,7 @@ class Products extends Component {
                   return false
               }).map((product, index) => {
                 //console.log('product',product);
-                return <Product src={product.src} name={product.nombre} category={product.categoria} price={product.precio} unit={product.unidad} key={product.src + index} deliveryDate={product.fechaEntrega} count={product.cantidad} id={product.id} description={product.description}/>
+                return <Product src={product.src} name={product.nombre} category={product.categoria} price={product.precio} unit={product.unidad} key={product.src + index} deliveryDate={product.fechaEntrega} count={product.cantidad} id={product.id} description={product.description} producers={product.producers}/>
               })}
             </Group>
           </div>
