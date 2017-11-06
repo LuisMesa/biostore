@@ -65,3 +65,8 @@
     width: 15px!important;
     height: 15px!important;
 }
+
+#payMethod {
+    font-size:  10px;
+    margin: 5px;
+}

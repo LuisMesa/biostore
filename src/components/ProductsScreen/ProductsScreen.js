@@ -21,7 +21,6 @@ class ProductsScreen extends Component {
   };
 
   render() {
-    // console.log('Offers',this.props.offers);
     return (
         <div className="ProductsScreen">
           <Products products = {this.props.offers} filters={this.props.filters}/>
@@ -31,7 +30,6 @@ class ProductsScreen extends Component {
   }
 }
 function mapStateToProps(state){
-  // console.log('state',state);
   const {products}= state.common.cart;
   const {offers}= state.ProductsScreen;
   const {filters} = state.ProductsScreen;

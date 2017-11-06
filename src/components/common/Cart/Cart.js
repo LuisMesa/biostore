@@ -9,6 +9,11 @@ import Divider from 'material-ui/Divider';
 import {List, ListItem} from 'material-ui/List';
 import Close from 'material-ui/svg-icons/navigation/close';
 import Avatar from 'material-ui/Avatar';
+import Checkbox from 'material-ui/Checkbox';
+import ActionFavorite from 'material-ui/svg-icons/action/favorite';
+import ActionFavoriteBorder from 'material-ui/svg-icons/action/favorite-border';
+import Visibility from 'material-ui/svg-icons/action/visibility';
+import VisibilityOff from 'material-ui/svg-icons/action/visibility-off';
 
 import './Cart.css';
 
@@ -16,9 +21,14 @@ class Cart extends Component {
   constructor(props) {
     super(props);
     this.state = {open: false};
+
   }
 
   handleToggle = () => this.setState({open: !this.state.open});
+
+  creditCardPay = () =>{
+      alert("Ésta función se encuentra en construcción");
+  }
 
   render() {
     return (
@@ -58,9 +68,24 @@ class Cart extends Component {
                       <div className="title">total</div>
                     </div>
                     <Divider/>
+                    <div className="payMethod">
+                        <Checkbox
+                            id="pagoEfectivo"
+                            label="Pago en efectivo"
+                        />
+                        <Checkbox
+                            disabled={true}
+                            id="pagoTarjeta"
+                            label="Pago con tarjeta de credito"
+                            onCheck={ () => this.creditCardPay()}
+                        />
+                    </div>
+                    <Divider/>
                     <div className="buttons">
-                      <FlatButton label="Descartar" secondary={true}/>
-                      <FlatButton label="Comprar" primary={true} onClick={() => this.props.buy()}/>
+                        <br/>
+                        <FlatButton label="Descartar" secondary={true}/>
+                        <FlatButton label="Comprar" primary={true} onClick={() => this.props.buy()}/>
+                        <br/>
                     </div>
                   </div>
 
