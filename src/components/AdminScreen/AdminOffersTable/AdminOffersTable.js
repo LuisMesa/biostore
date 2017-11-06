@@ -98,7 +98,7 @@ class AdminOfferTable extends Component {
 
   updateOffer = () => {
     this.props.updateAdminOffer(this.state.offerToUpdate.id, this.state.priceToUpdate);
-    this.setState({dialogEditOpen:false});
+    this.setState({dialogEditOpen: false});
     this.props.fetchAdminOffers();
   };
 

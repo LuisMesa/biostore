@@ -137,7 +137,7 @@ export const updateUserPosition = () => async dispatch => {
         console.log(error);
         dispatch({
           type: NOTIFICATION,
-          payload: 'No se ha podido acceder a la ubicación:'+error
+          payload: 'No se ha podido acceder a la ubicación:' + error
         });
       }),
       options);
@@ -153,9 +153,9 @@ export const changeProductDetail = (newProduct) => {
 //Reducer's Initial state
 const INITIAL_STATE = {
   user: null,
-  userPosition:{
-    lat:4.603199,
-    lng:-74.0652
+  userPosition: {
+    lat: 4.603199,
+    lng: -74.0652
   },
   cart: {
     products: []
