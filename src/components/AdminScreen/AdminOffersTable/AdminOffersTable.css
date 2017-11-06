@@ -4,3 +4,15 @@
     margin-right: 4vw;
     margin-bottom: 10vh;
 }
+.dialogContent{
+    display:flex;
+    justify-content: space-between;
+    flex-direction: row;
+}
+
+.dialogContent .extraInfo{
+    width:45%;
+}
+.dialogContent .inputsContainer{
+    width:45%;
+}

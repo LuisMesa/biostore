@@ -11,6 +11,7 @@ const NOTIFICATION = 'NOTIFICATION';
 const DELETE_NOTIFICATION = 'DELETE_NOTIFICATION';
 const CREATE_OFFER = 'CREATE_OFFER';
 const CREATE_PRODUCER = 'CREATE_PRODUCER';
+const UPDATE_OFFER = 'UPDATE_OFFER';
 
 export const fetchProducersOffers = () => async dispatch => {
   const offers = (await axios.get(BASE_URL + '/producersoffers')).data;
@@ -71,6 +72,30 @@ export const saveProducersOffers = (acceptedIds, canceledIds) => async dispatch 
   });
 };
 
+export const updateAdminOffer = (id, price) => async dispatch => {
+
+  const object = {id, precio:price};
+  await axios.post(BASE_URL + '/editadminoffer/', object).then(response => {
+    if (response.data.estado === 'ok') {
+      dispatch({
+        type: NOTIFICATION,
+        payload: 'Datos guardados.'
+      });
+    }
+    else {
+      dispatch({
+        type: NOTIFICATION,
+        payload: 'El servidor ha rechazado los datos.'
+      });
+    }
+  }).catch(error => {
+    dispatch({
+      type: NOTIFICATION,
+      payload: 'No se pudo conectar con el servidor, no se han guardado los datos.'
+    });
+  });
+};
+
 export const createProducer = (newProducer) => async dispatch => {
   const object = newProducer;
   console.log(object);
@@ -103,14 +128,17 @@ export const deleteNotification = () => {
 
 export const createAdminOffer = (newOffer) => async dispatch => {
   const object = newOffer;
+  console.log(object);
   await axios.post(BASE_URL + '/addadminoffer/', object).then(response => {
     if (response.data.estado === 'ok') {
+      console.log(1)
       dispatch({
         type: CREATE_OFFER,
         payload: object
       });
     }
     else {
+      console.log(2)
       dispatch({
         type: NOTIFICATION,
         payload: 'El servidor ha rechazado los datos.'
@@ -129,7 +157,7 @@ const INITIAL_STATE = {
   adminOffers: [],
   producersOrders: [],
   customersOrders: [],
-  producers:[],
+  producers: [],
   notifications: []
 };
 
@@ -158,7 +186,12 @@ export default function AdminScreen(state = INITIAL_STATE, action) {
       );
       return {...state, producersOffers: newArray};
     }
-    case CREATE_PRODUCER:{
+    case CREATE_PRODUCER: {
+      // const newProducer = {id: index, mail: 'correo@cor@.com', name: 'Quemado', lastName:'Codigo', address: 'Direccion', phone: '12345678',}
+      // return {...state, producers: [...state.producers, action.payload]};
+      return state;
+    }
+    case UPDATE_OFFER: {
       // const newProducer = {id: index, mail: 'correo@cor@.com', name: 'Quemado', lastName:'Codigo', address: 'Direccion', phone: '12345678',}
       // return {...state, producers: [...state.producers, action.payload]};
       return state;
@@ -199,7 +232,7 @@ const clearAdminOffers = (oldData) => {
       id: item.id,
       name: item.productType.title,
       amount: item.count,
-      unit:item.unit_type,
+      unit: item.unit_type,
       price: item.unit_price,
       createdAt: new Date(item.create_at),
       deliveryDate: new Date(item.delivery_date),
@@ -230,7 +263,7 @@ const clearProducers = (oldData) => {
       id: item.fields.uid,
       mail: item.fields.email,
       name: item.fields.name,
-      lastName:item.fields.last_name,
+      lastName: item.fields.last_name,
       address: item.fields.address,
       phone: item.fields.phone_number,
     };
