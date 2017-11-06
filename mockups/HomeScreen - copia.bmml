@@ -4,19 +4,7 @@
       <controlProperties>
         <text>organicMarket.com</text>
       </controlProperties>
-    </control>
-    <control controlID="2" controlTypeID="com.balsamiq.mockups::Canvas" x="144" y="234" w="701" h="40" measuredW="100" measuredH="70" zOrder="1" locked="false" isInGroup="-1"/>
-    <control controlID="3" controlTypeID="com.balsamiq.mockups::Button" x="647" y="241" w="-1" h="-1" measuredW="102" measuredH="24" zOrder="2" locked="false" isInGroup="-1">
-      <controlProperties>
-        <text>Iniciar%20Sesi%F3n</text>
-      </controlProperties>
-    </control>
-    <control controlID="4" controlTypeID="com.balsamiq.mockups::Button" x="756" y="241" w="80" h="27" measuredW="71" measuredH="24" zOrder="3" locked="false" isInGroup="-1">
-      <controlProperties>
-        <text>Registro</text>
-      </controlProperties>
-    </control>
-    <control controlID="5" controlTypeID="com.balsamiq.mockups::SearchBox" x="364" y="242" w="260" h="-1" measuredW="120" measuredH="26" zOrder="4" locked="false" isInGroup="-1"/>
+    </TypeID="com.balsamiq.mockups::SearchBox" x="364" y="242" w="260" h="-1" measuredW="120" measuredH="26" zOrder="4" locked="false" isInGroup="-1"/>
     <control controlID="6" controlTypeID="com.balsamiq.mockups::SubTitle" x="178" y="241" w="-1" h="-1" measuredW="69" measuredH="27" zOrder="5" locked="false" isInGroup="-1">
       <controlProperties>
         <text>LOGO</text>
@@ -34,27 +22,7 @@
         <text>Awesome%20Text</text>
       </controlProperties>
     </control>
-    <control controlID="10" controlTypeID="com.balsamiq.mockups::Canvas" x="194" y="540" w="170" h="98" measuredW="100" measuredH="70" zOrder="9" locked="false" isInGroup="-1"/>
-    <control controlID="12" controlTypeID="com.balsamiq.mockups::SubTitle" x="221" y="576" w="-1" h="-1" measuredW="117" measuredH="27" zOrder="10" locked="false" isInGroup="-1">
-      <controlProperties>
-        <text>Categor%EDa1</text>
-      </controlProperties>
-    </control>
-    <control controlID="13" controlTypeID="com.balsamiq.mockups::Canvas" x="409" y="540" w="170" h="98" measuredW="100" measuredH="70" zOrder="11" locked="false" isInGroup="-1"/>
-    <control controlID="15" controlTypeID="com.balsamiq.mockups::Canvas" x="624" y="540" w="170" h="98" measuredW="100" measuredH="70" zOrder="12" locked="false" isInGroup="-1"/>
-    <control controlID="24" controlTypeID="com.balsamiq.mockups::SubTitle" x="436" y="576" w="-1" h="-1" measuredW="123" measuredH="27" zOrder="13" locked="false" isInGroup="-1">
-      <controlProperties>
-        <text>Categor%EDa2</text>
-      </controlProperties>
-    </control>
-    <control controlID="25" controlTypeID="com.balsamiq.mockups::SubTitle" x="647" y="576" w="-1" h="-1" measuredW="122" measuredH="27" zOrder="14" locked="false" isInGroup="-1">
-      <controlProperties>
-        <text>Categor%EDa3</text>
-      </controlProperties>
-    </control>
-    <control controlID="106" controlTypeID="com.balsamiq.mockups::SubTitle" x="617" y="716" w="-1" h="-1" measuredW="198" measuredH="23" zOrder="15" locked="false" isInGroup="-1">
-      <controlProperties>
-        <size>20</size>
+    <control
         <text>Canastas%20Frecuentes</text>
       </controlProperties>
     </control>
@@ -80,27 +48,7 @@
     <control controlID="126" controlTypeID="com.balsamiq.mockups::Label" x="715" y="971" w="-1" h="-1" measuredW="91" measuredH="28" zOrder="21" locked="false" isInGroup="-1">
       <controlProperties>
         <size>20</size>
-        <text>Canasta2</text>
-      </controlProperties>
-    </control>
-    <control controlID="127" controlTypeID="com.balsamiq.mockups::Label" x="756" y="993" w="-1" h="-1" measuredW="46" measuredH="21" zOrder="22" locked="false" isInGroup="-1">
-      <controlProperties>
-        <text>%2412300</text>
-      </controlProperties>
-    </control>
-    <control controlID="128" controlTypeID="com.balsamiq.mockups::Canvas" x="616" y="1031" w="197" h="128" measuredW="100" measuredH="70" zOrder="23" locked="false" isInGroup="-1"/>
-    <control controlID="129" controlTypeID="com.balsamiq.mockups::Label" x="715" y="1112" w="-1" h="-1" measuredW="91" measuredH="28" zOrder="24" locked="false" isInGroup="-1">
-      <controlProperties>
-        <size>20</size>
-        <text>Canasta3</text>
-      </controlProperties>
-    </control>
-    <control controlID="130" controlTypeID="com.balsamiq.mockups::Label" x="756" y="1134" w="-1" h="-1" measuredW="46" measuredH="21" zOrder="25" locked="false" isInGroup="-1">
-      <controlProperties>
-        <text>%2412300</text>
-      </controlProperties>
-    </control>
-    <control controlID="136" controlTypeID="com.balsamiq.mockups::Canvas" x="167" y="747" w="197" h="128" measuredW="100" measuredH="70" zOrder="26" locked="false" isInGroup="-1"/>
+      D="com.balsamiq.mockups::Canvas" x="167" y="747" w="197" h="128" measuredW="100" measuredH="70" zOrder="26" locked="false" isInGroup="-1"/>
     <control controlID="137" controlTypeID="com.balsamiq.mockups::Canvas" x="167" y="842" w="197" h="33" measuredW="100" measuredH="70" zOrder="27" locked="false" isInGroup="-1"/>
     <control controlID="138" controlTypeID="com.balsamiq.mockups::Image" x="325" y="844" w="-1" h="-1" measuredW="31" measuredH="29" zOrder="28" locked="false" isInGroup="-1">
       <controlProperties>
@@ -112,36 +60,7 @@
         <text>%242000/Libra</text>
       </controlProperties>
     </control>
-    <control controlID="140" controlTypeID="com.balsamiq.mockups::Label" x="174" y="803" w="-1" h="-1" measuredW="82" measuredH="28" zOrder="30" locked="false" isInGroup="-1">
-      <controlProperties>
-        <size>20</size>
-        <text>Producto</text>
-      </controlProperties>
-    </control>
-    <control controlID="141" controlTypeID="com.balsamiq.mockups::Canvas" x="379" y="747" w="197" h="128" measuredW="100" measuredH="70" zOrder="31" locked="false" isInGroup="-1"/>
-    <control controlID="142" controlTypeID="com.balsamiq.mockups::Canvas" x="379" y="842" w="197" h="33" measuredW="100" measuredH="70" zOrder="32" locked="false" isInGroup="-1"/>
-    <control controlID="143" controlTypeID="com.balsamiq.mockups::Image" x="537" y="844" w="-1" h="-1" measuredW="31" measuredH="29" zOrder="33" locked="false" isInGroup="-1">
-      <controlProperties>
-        <src>../../../../../Documents/Documentos%2520Importantes/Universidad/Procesos%2520Agiles/Mockups%2520Proyecto/assets/MiniCartIcon.png</src>
-      </controlProperties>
-    </control>
-    <control controlID="144" controlTypeID="com.balsamiq.mockups::Label" x="386" y="848" w="-1" h="-1" measuredW="76" measuredH="21" zOrder="34" locked="false" isInGroup="-1">
-      <controlProperties>
-        <text>%242000/Libra</text>
-      </controlProperties>
-    </control>
-    <control controlID="145" controlTypeID="com.balsamiq.mockups::Label" x="386" y="803" w="-1" h="-1" measuredW="82" measuredH="28" zOrder="35" locked="false" isInGroup="-1">
-      <controlProperties>
-        <size>20</size>
-        <text>Producto</text>
-      </controlProperties>
-    </control>
-    <control controlID="146" controlTypeID="com.balsamiq.mockups::Canvas" x="167" y="890" w="197" h="128" measuredW="100" measuredH="70" zOrder="36" locked="false" isInGroup="-1"/>
-    <control controlID="147" controlTypeID="com.balsamiq.mockups::Canvas" x="167" y="985" w="197" h="33" measuredW="100" measuredH="70" zOrder="37" locked="false" isInGroup="-1"/>
-    <control controlID="148" controlTypeID="com.balsamiq.mockups::Image" x="325" y="987" w="-1" h="-1" measuredW="31" measuredH="29" zOrder="38" locked="false" isInGroup="-1">
-      <controlProperties>
-        <src>../../../../../Documents/Documentos%2520Importantes/Universidad/Procesos%2520Agiles/Mockups%2520Proyecto/assets/MiniCartIcon.png</src>
-      </controlProperties>
+    <control c
     </control>
     <control controlID="149" controlTypeID="com.balsamiq.mockups::Label" x="174" y="991" w="-1" h="-1" measuredW="76" measuredH="21" zOrder="39" locked="false" isInGroup="-1">
       <controlProperties>
