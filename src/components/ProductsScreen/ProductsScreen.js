@@ -18,6 +18,7 @@ class ProductsScreen extends Component {
       return {offer_id:1, count: 5, idProducer:'1'}
     }));
     this.props.createOrder(1,'dirección', 1231234, [{offer_id:1, count: 5, idProducer:'1'},{offer_id:2,count:3, idProducer:'2'},]);
+    alert("Gracias por su compra");
   };
 
   render() {
