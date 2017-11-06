@@ -14,20 +14,6 @@ export const changeFarmFilter = (exclusive) => {
   }
 };
 
-export const changeVegetablesFilter = (exclusive) => {
-  return {
-    type: CHANGE_VEGETABLES_FILTER,
-    payload: exclusive
-  }
-};
-
-export const changeFruitsFilter = (exclusive) => {
-  return {
-    type: CHANGE_FRUITS_FILTER,
-    payload: exclusive
-  }
-};
-
 export const fetchOffers = (userPosition) => async dispatch => {
   const offers = (await axios.get(BASE_URL + '/adminoffers/')).data;
   dispatch({
@@ -49,17 +35,6 @@ const INITIAL_STATE = {
 
 export default function ProductsScreen(state = INITIAL_STATE, action) {
   switch (action.type) {
-    case CHANGE_FARM_FILTER: {
-      let newFilters = {...state.filters};
-      if (action.payload) {
-        newFilters.farm = true;
-        newFilters.fruits = false;
-        newFilters.vegetables = false;
-      }
-      else
-        newFilters.farm = !newFilters.farm;
-      return {...state, filters: newFilters};
-    }
     case CHANGE_VEGETABLES_FILTER: {
       let newFilters = {...state.filters};
       if (action.payload) {
