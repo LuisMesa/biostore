@@ -69,8 +69,9 @@ export const createOrder = (idClient, shippingAddress, delivery_at, items) => as
     create_at: Date.now(),
     delivery_at: delivery_at,
     shipping_address: shippingAddress,
-    consumer_id: 1,
-    order_items: items
+    consumer_id: idClient,
+    order_items: items,
+    paymentType: 1
   };
   await axios.post(BASE_URL + '/createorder/', object).then(response => {
     if (response.data.estado === 'ok') {
