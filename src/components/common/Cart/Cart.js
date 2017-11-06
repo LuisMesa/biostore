@@ -20,14 +20,21 @@ import './Cart.css';
 class Cart extends Component {
   constructor(props) {
     super(props);
-    this.state = {open: false};
-
+    this.state = {
+        open: false,
+        efectivo: false
+    };
   }
 
   handleToggle = () => this.setState({open: !this.state.open});
 
   creditCardPay = () =>{
       alert("Ésta función se encuentra en construcción");
+  }
+
+  cashPay = () =>{
+      this.state.efectivo === true ? this.setState({efectivo:false}) : this.setState({efectivo:true})
+      console.log(this.state.efectivo)
   }
 
   render() {
@@ -68,24 +75,34 @@ class Cart extends Component {
                       <div className="title">total</div>
                     </div>
                     <Divider/>
-                    <div className="payMethod">
+                    <div className="payMethod" style={styles.block}>
+                        <br/>
                         <Checkbox
                             id="pagoEfectivo"
                             label="Pago en efectivo"
+                            //defaultChecked={true}
+                            onCheck={ () => this.cashPay()}
+                            style={styles.checkbox}
                         />
                         <Checkbox
                             disabled={true}
                             id="pagoTarjeta"
                             label="Pago con tarjeta de credito"
                             onCheck={ () => this.creditCardPay()}
+                            style={styles.checkbox}
                         />
+                        <br/>
                     </div>
                     <Divider/>
                     <div className="buttons">
-                        <br/>
-                        <FlatButton label="Descartar" secondary={true}/>
-                        <FlatButton label="Comprar" primary={true} onClick={() => this.props.buy()}/>
-                        <br/>
+                        <FlatButton label="Descartar" secondary={true} onClick={ () => alert("Ésta función se encuentra en construcción")}/>
+                        <FlatButton
+                            label="Comprar"
+                            primary={true}
+                            onClick={() => this.props.buy()}
+                            disabled={this.state.efectivo === true ? false : true}
+                        />
+
                     </div>
                   </div>
 
@@ -112,12 +129,18 @@ class Cart extends Component {
 }
 
 const styles = {
-  button: {
-    position: 'fixed',
-    bottom: '20px',
-    right: '20px',
-    zIndex: '100'
-  }
+    block: {
+        maxWidth: 250,
+    },
+    checkbox: {
+        marginBottom: 5,
+    },
+    button: {
+        position: 'fixed',
+        bottom: '20px',
+        right: '20px',
+        zIndex: '100'
+    }
 };
 
 export default Cart;
