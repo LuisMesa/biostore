@@ -136,7 +136,7 @@ const clearData = (oldData) => {
 
 const clearOrdersData = (oldData) => {
   // console.log(oldData);
-  return oldData.map((item, index) => {
+  return oldData.reverse().map((item, index) => {
     const fixed = {
       id: item.id,
       name: item.offer.productType.title,

@@ -11,10 +11,6 @@
     flex-direction: row;
 }
 
-.dialogContent .extraInfo {
-    width: 45%;
-}
-
-.dialogContent .inputsContainer {
+.dialogContent .extraInfo, .dialogContent .inputsContainer {
     width: 45%;
 }

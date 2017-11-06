@@ -189,6 +189,8 @@ class ProducersTable extends Component {
                         onClick={this.createProducer}
                     />]}
           >
+            <div className="dialogContent">
+              <div className="inputsContainer">
             <TextField
                 hintText="Juan"
                 floatingLabelText="Nombre"
@@ -198,7 +200,7 @@ class ProducersTable extends Component {
             /><br />
             <TextField
                 hintText="Pedraza"
-                floatingLabelText="Last Name"
+                floatingLabelText="Apellido"
                 onChange={(event) => {
                   this.setState({lastName: event.target.value})
                 }}
@@ -217,6 +219,8 @@ class ProducersTable extends Component {
                   this.setState({password: event.target.value})
                 }}
             /><br />
+              </div>
+              <div className="inputsContainer">
             <TextField
                 hintText="Cll 4a # 7 - 38"
                 floatingLabelText="Dirección"
@@ -245,6 +249,8 @@ class ProducersTable extends Component {
                   this.setState({phoneNumber: event.target.value})
                 }}
             /><br />
+              </div>
+            </div>
           </Dialog>
         </div>
     );

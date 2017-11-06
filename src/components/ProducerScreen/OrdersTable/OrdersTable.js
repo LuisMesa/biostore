@@ -1,14 +1,16 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {fetchOrders, setStateSomeOrders, saveStateSomeOrders} from '../../../ducks/ProducerScreen';
-import ReactTooltip from 'react-tooltip';
 import LockIcon from 'material-ui/svg-icons/action/lock';
 import LockOpenIcon from 'material-ui/svg-icons/action/lock-open';
+import MoneyIcon from 'material-ui/svg-icons/editor/monetization-on';
+import HighLightIcon from 'material-ui/svg-icons/action/highlight-off';
+import ReactTooltip from 'react-tooltip';
 import SendedIcon from 'material-ui/svg-icons/communication/call-made';
 import InfoIcon from 'material-ui/svg-icons/action/info-outline';
 import CheckCircleIcon from 'material-ui/svg-icons/action/check-circle';
 import {DatePicker, MenuItem, Popover, Menu, DropDownMenu} from 'material-ui';
-import {cyan500, pinkA200} from 'material-ui/styles/colors';
+import {cyan500, pinkA200, green500} from 'material-ui/styles/colors';
 import AddIcon from 'material-ui/svg-icons/content/add';
 import RemoveIcon from 'material-ui/svg-icons/content/clear';
 import {TableRowColumn,} from 'material-ui/Table';
@@ -63,7 +65,7 @@ class OrdersTable extends Component {
       case 'editable':
         return <TableRowColumn key={index}>{value ? <LockIcon style={{paddingLeft: 'calc(50% - 12px)'}}/> : <LockOpenIcon style={{paddingLeft: 'calc(50% - 12px)'}}/>}</TableRowColumn>;
       case 'state':
-        return <TableRowColumn key={index}>{value === 'Pendiente' || value === 'PENDIENTE' ? <InfoIcon style={{paddingLeft: 'calc(50% - 12px)'}}/> : <SendedIcon style={{paddingLeft: 'calc(50% - 12px)'}} color={cyan500}/>}</TableRowColumn>;
+        return <TableRowColumn key={index}>{this.getIcon(value)}</TableRowColumn>;
       case 'createdAt':
         return <TableRowColumn key={index}>{value.toISOString().split('T')[0]}</TableRowColumn>;
       case 'deliveryDate':
@@ -72,6 +74,23 @@ class OrdersTable extends Component {
         break;
       default:
         return <TableRowColumn key={index}>{value + ''}</TableRowColumn>
+    }
+  }
+
+  getIcon(value) {
+    switch (value.toLowerCase()) {
+      case 'pendiente':
+        return <div><InfoIcon style={{paddingLeft: 'calc(50% - 12px)'}} data-tip={'Pendiente'}/><ReactTooltip place="right" type="dark" effect="float"/></div>;
+      case 'cancelada':
+        return <div><HighLightIcon style={{paddingLeft: 'calc(50% - 12px)'}} color={pinkA200} data-tip={'Cancelada'}/><ReactTooltip place="right" type="dark" effect="float"/></div>;
+      // case 'aceptada':
+      //   return <div><CheckCircleIcon style={{paddingLeft: 'calc(50% - 12px)'}} color={cyan500} data-tip={'Aceptada'}/><ReactTooltip place="right" type="dark" effect="float"/></div>;
+      case 'pagada':
+        return <div><MoneyIcon style={{paddingLeft: 'calc(50% - 12px)'}} color={green500} data-tip={'Pagada'}/><ReactTooltip place="right" type="dark" effect="float"/></div>;
+      case 'aceptada':
+        return <div><SendedIcon style={{paddingLeft: 'calc(50% - 12px)'}} color={cyan500} data-tip={'Enviada'}/><ReactTooltip place="right" type="dark" effect="float"/></div>;
+      default:
+        return <div><InfoIcon style={{paddingLeft: 'calc(50% - 12px)'}} data-tip={'Pendiente'}/><ReactTooltip place="right" type="dark" effect="float"/></div>;
     }
   }
 

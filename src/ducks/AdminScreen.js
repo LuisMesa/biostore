@@ -27,7 +27,7 @@ export const fetchAdminOffers = () => async dispatch => {
     payload: offers
   });
 };
-export const fetchCustomerOffers = () => async dispatch => {
+export const fetchCustomerOrders = () => async dispatch => {
   const offers = (await axios.get(BASE_URL + '/orders')).data;
   dispatch({
     type: CHANGE_CUSTOMER_ORDERS,
@@ -242,7 +242,8 @@ const clearAdminOffers = (oldData) => {
 };
 
 const clearCustomersOrders = (oldData) => {
-  return oldData.map((item, index) => {
+  // console.log(oldData);
+  return oldData.reverse().map((item, index) => {
     const fixed = {
       id: item.order.id,
       name: item.offer.productType.title,
@@ -252,6 +253,7 @@ const clearCustomersOrders = (oldData) => {
       deliveryDate: new Date(item.order.delivery_at),
       client: item.order.consumer.name,
       phone: item.order.consumer.phone_number,
+      state: item.state
     };
     return fixed;
   })
