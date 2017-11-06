@@ -138,7 +138,6 @@ class AdminOfferTable extends Component {
                   :
                   ''
               }
-
               <Popover
                   open={this.state.popoverOpen}
                   anchorEl={this.state.anchorEl}
