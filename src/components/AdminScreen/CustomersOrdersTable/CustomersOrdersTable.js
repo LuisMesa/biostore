@@ -27,7 +27,8 @@ class CustomersOrdersTable extends Component {
     idProductNewOffer: '1',
     amountNewOffer: '5',
     priceNewOffer: '2000',
-    deliveryDateNewOffer: Date.now()
+    deliveryDateNewOffer: Date.now(),
+    expanded: true
   };
 
   handleTouchTap = (event) => {
@@ -91,32 +92,29 @@ class CustomersOrdersTable extends Component {
   render() {
     return (
         <div className="CustomersOrdersTable">
-          <Table columns={columns} data={this.props.customersOrders} renderItem={(value, type, index) => this.renderItem(value, type, index)} onRowSelection={this.onRowSelection} selectedRows={this.state.selectedRows}>
+          <Table expanded={this.state.expanded} columns={columns} data={this.props.customersOrders} renderItem={(value, type, index) => this.renderItem(value, type, index)} onRowSelection={this.onRowSelection} selectedRows={this.state.selectedRows}>
             <div>
               <h3>{this.props.name}</h3>
-              {this.props.isCloseAvailable>1?
+              {this.state.expanded ?
                   <RaisedButton
                       style={{display: 'block-inline', float: 'right', marginTop: '3vh', marginRight: '12px', minWidth: '44px'}}
-                      onClick={() => this.props.deleteTable(this.props.name)}
+                      // onClick={() => this.props.deleteTable(this.props.name)}
+                      onClick={() => this.setState({expanded: false})}
                       icon={<RemoveIcon color={pinkA200}/>}
-                      data-tip="Eliminar esta tabla"
+                      data-tip="Minimizar Tabla"
                   >
-                    <ReactTooltip place="bottom" type="dark" effect="float" multiline={true} style={{fontSize:'10px'}}/>
+                    <ReactTooltip place="bottom" type="dark" effect="float" multiline={true} style={{fontSize: '10px'}}/>
                   </RaisedButton>
                   :
-                  ''
-              }
-              {this.props.names.length>0?
                   <RaisedButton
                       style={{display: 'block-inline', float: 'right', marginTop: '3vh', marginRight: '12px', minWidth: '44px'}}
-                      onClick={this.handleTouchTap}
+                      // onClick={this.handleTouchTap}
+                      onClick={() => this.setState({expanded: true})}
                       icon={<AddIcon color={cyan500}/>}
-                      data-tip="Agregar tabla"
+                      data-tip="Expandir Tabla"
                   >
-                    <ReactTooltip place="bottom" type="dark" effect="float" multiline={true} style={{fontSize:'10px'}}/>
+                    <ReactTooltip place="bottom" type="dark" effect="float" multiline={true} style={{fontSize: '10px'}}/>
                   </RaisedButton>
-                  :
-                  ''
               }
 
               <Popover

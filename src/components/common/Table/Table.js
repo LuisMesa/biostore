@@ -44,37 +44,40 @@ class Table extends Component {
           <div className="title">
             {this.props.children}
           </div>
-          <MaterialTable
-              height={tableConfig.height}
-              fixedHeader={tableConfig.fixedHeader}
-              fixedFooter={tableConfig.fixedFooter}
-              selectable={tableConfig.selectable}
-              multiSelectable={tableConfig.multiSelectable}
-              onRowSelection={(selectedRows) => this.props.onRowSelection(selectedRows)}
-          >
-            <TableHeader
-                displaySelectAll={tableConfig.showCheckboxes}
-                adjustForCheckbox={tableConfig.showCheckboxes}
-                enableSelectAll={tableConfig.enableSelectAll}
-            >
-              <TableRow>
-                {this.props.columns.map((c, i) => <TableHeaderColumn tooltip={c.name} key={i}>{c.name}</TableHeaderColumn>)}
-              </TableRow>
-            </TableHeader>
-            <TableBody
-                displayRowCheckbox={tableConfig.showCheckboxes}
-                deselectOnClickaway={tableConfig.deselectOnClickaway}
-                showRowHover={tableConfig.showRowHover}
-                stripedRows={tableConfig.stripedRows}
-            >
-              {this.props.data.map((row, index) => (
-                  <TableRow key={index} selected={this.props.selectedRows.indexOf(index) !== -1}>
-                    {this.renderRow(row)}
+          {this.props.expanded ?
+              <MaterialTable
+                  height={tableConfig.height}
+                  fixedHeader={tableConfig.fixedHeader}
+                  fixedFooter={tableConfig.fixedFooter}
+                  selectable={tableConfig.selectable}
+                  multiSelectable={tableConfig.multiSelectable}
+                  onRowSelection={(selectedRows) => this.props.onRowSelection(selectedRows)}
+              >
+                <TableHeader
+                    displaySelectAll={tableConfig.showCheckboxes}
+                    adjustForCheckbox={tableConfig.showCheckboxes}
+                    enableSelectAll={tableConfig.enableSelectAll}
+                >
+                  <TableRow>
+                    {this.props.columns.map((c, i) => <TableHeaderColumn tooltip={c.name} key={i}>{c.name}</TableHeaderColumn>)}
                   </TableRow>
-              ))}
-            </TableBody>
-          </MaterialTable>
-
+                </TableHeader>
+                <TableBody
+                    displayRowCheckbox={tableConfig.showCheckboxes}
+                    deselectOnClickaway={tableConfig.deselectOnClickaway}
+                    showRowHover={tableConfig.showRowHover}
+                    stripedRows={tableConfig.stripedRows}
+                >
+                  {this.props.data.map((row, index) => (
+                      <TableRow key={index} selected={this.props.selectedRows.indexOf(index) !== -1}>
+                        {this.renderRow(row)}
+                      </TableRow>
+                  ))}
+                </TableBody>
+              </MaterialTable>
+              :
+              ''
+          }
         </div>
     );
   }
