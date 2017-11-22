@@ -38,7 +38,8 @@ class AdminOfferTable extends Component {
     amountNewOffer: '',
     unitNewOffer: '',
     priceNewOffer: '',
-    deliveryDateNewOffer: Date.now()
+    deliveryDateNewOffer: Date.now(),
+    expanded: false
   };
 
   handleTouchTap = (event) => {
@@ -85,7 +86,7 @@ class AdminOfferTable extends Component {
     }
   }
 
-  createOffer = async() => {
+  createOffer = async () => {
     const {idProductNewOffer, amountNewOffer, priceNewOffer, deliveryDateNewOffer} = this.state;
     const idProducer = '1';
     const unit = 'Libra';
@@ -110,33 +111,27 @@ class AdminOfferTable extends Component {
 
     return (
         <div className="AdminOffersTable">
-          <Table columns={columns} data={this.props.adminOffers} renderItem={(value, type, index) => this.renderItem(value, type, index)} onRowSelection={this.onRowSelection} selectedRows={this.state.selectedRows}>
+          <Table expanded={this.state.expanded} columns={columns} data={this.props.adminOffers} renderItem={(value, type, index) => this.renderItem(value, type, index)} onRowSelection={this.onRowSelection} selectedRows={this.state.selectedRows}>
             <div>
               <h3>{this.props.name}</h3>
-              {this.props.isCloseAvailable > 1 ?
+              {this.state.expanded ?
                   <RaisedButton
                       style={{display: 'block-inline', float: 'right', marginTop: '3vh', marginRight: '12px', minWidth: '44px'}}
-                      onClick={() => this.props.deleteTable(this.props.name)}
+                      // onClick={() => this.props.deleteTable(this.props.name)}
+                      onClick={() => this.setState({expanded: false})}
                       icon={<RemoveIcon color={pinkA200}/>}
-                      data-tip="Eliminar esta tabla"
+                      data-tip="Minimizar Tabla"
                   >
-                    <ReactTooltip place="bottom" type="dark" effect="float" multiline={true} style={{fontSize: '10px'}}/>
                   </RaisedButton>
                   :
-                  ''
-              }
-
-              {this.props.names.length > 0 ?
                   <RaisedButton
                       style={{display: 'block-inline', float: 'right', marginTop: '3vh', marginRight: '12px', minWidth: '44px'}}
-                      onClick={this.handleTouchTap}
+                      // onClick={this.handleTouchTap}
+                      onClick={() => this.setState({expanded: true})}
                       icon={<AddIcon color={cyan500}/>}
-                      data-tip="Agregar tabla"
+                      data-tip="Expandir Tabla"
                   >
-                    <ReactTooltip place="bottom" type="dark" effect="float" multiline={true} style={{fontSize: '10px'}}/>
                   </RaisedButton>
-                  :
-                  ''
               }
               <Popover
                   open={this.state.popoverOpen}
@@ -165,18 +160,22 @@ class AdminOfferTable extends Component {
               />
             </div>
           </Table>
-          <div className="tableActions">
-            <RaisedButton label="Editar Oferta" primary={true} disabled={this.state.selectedRows.length !== 1} style={{float: 'left', margin: '12px'}}
-                          onClick={() => {
-                            this.setState({offerToUpdate: this.props.adminOffers[(this.state.selectedRows[0])]});
-                            this.setState({priceToUpdate: this.props.adminOffers[(this.state.selectedRows[0])].price});
-                            this.setState({dialogEditOpen: true});
-                          }
-                          }/>
-            <RaisedButton label="Crear Oferta" primary={true} style={{float: 'right', margin: '12px'}}
-                          onClick={() => this.setState({dialogOpen: true})}/>
-            <RaisedButton label="Cancelar" style={{float: 'right', margin: '12px'}}/>
-          </div>
+          {this.state.expanded ?
+              <div className="tableActions">
+                <RaisedButton label="Editar Oferta" primary={true} disabled={this.state.selectedRows.length !== 1} style={{float: 'left', margin: '12px'}}
+                              onClick={() => {
+                                this.setState({offerToUpdate: this.props.adminOffers[(this.state.selectedRows[0])]});
+                                this.setState({priceToUpdate: this.props.adminOffers[(this.state.selectedRows[0])].price});
+                                this.setState({dialogEditOpen: true});
+                              }
+                              }/>
+                <RaisedButton label="Crear Oferta" primary={true} style={{float: 'right', margin: '12px'}}
+                              onClick={() => this.setState({dialogOpen: true})}/>
+                <RaisedButton label="Cancelar" style={{float: 'right', margin: '12px'}}/>
+              </div>
+              :
+              ''
+          }
           <Dialog title='Crear Oferta' open={this.state.dialogOpen}
                   handleClose={() => {
                     this.setState({dialogOpen: false})
@@ -213,7 +212,7 @@ class AdminOfferTable extends Component {
                     maxHeight={200}
                 >
                   {getProductsNameByOffers(this.props.producersOffers).map((name, i) => <MenuItem value={name} key={i} primaryText={name}/>)}
-                </SelectField><br />
+                </SelectField><br/>
                 <TextField
                     hintText="2500"
                     floatingLabelText="Precio sugerido"
@@ -223,7 +222,7 @@ class AdminOfferTable extends Component {
                     }}
                 >
                 </TextField>
-                <br />
+                <br/>
                 <TextField
                     hintText="15"
                     floatingLabelText="Cantidad Disponible"
@@ -234,7 +233,7 @@ class AdminOfferTable extends Component {
                     disabled
                 >
                 </TextField>
-                <br />
+                <br/>
                 <TextField
                     hintText="Libra"
                     floatingLabelText="Unidad"
@@ -245,7 +244,7 @@ class AdminOfferTable extends Component {
                     disabled
                 >
                 </TextField>
-                <br />
+                <br/>
 
                 <TextField
                     hintText="2017-10-20"
@@ -257,7 +256,7 @@ class AdminOfferTable extends Component {
                     disabled
                 >
                 </TextField>
-                <br />
+                <br/>
               </div>
               <div className="extraInfo">
                 <h2>Instrucciones</h2>
@@ -294,7 +293,7 @@ class AdminOfferTable extends Component {
                     value={this.state.offerToUpdate ? this.state.offerToUpdate.name : ''}
                 >
                 </TextField>
-                <br />
+                <br/>
                 <TextField
                     hintText="2500"
                     floatingLabelText="Precio sugerido"
@@ -305,7 +304,7 @@ class AdminOfferTable extends Component {
                     }}
                 >
                 </TextField>
-                <br />
+                <br/>
                 <TextField
                     hintText="15"
                     floatingLabelText="Cantidad Disponible"
@@ -313,7 +312,7 @@ class AdminOfferTable extends Component {
                     disabled
                 >
                 </TextField>
-                <br />
+                <br/>
                 <TextField
                     hintText="Libra"
                     floatingLabelText="Unidad"
@@ -321,7 +320,7 @@ class AdminOfferTable extends Component {
                     disabled
                 >
                 </TextField>
-                <br />
+                <br/>
                 <TextField
                     hintText="2017-10-20"
                     floatingLabelText="Fecha optima de entrega"
@@ -329,7 +328,7 @@ class AdminOfferTable extends Component {
                     disabled
                 >
                 </TextField>
-                <br />
+                <br/>
               </div>
               <div className="extraInfo">
                 <h2>Instrucciones</h2>
@@ -341,6 +340,7 @@ class AdminOfferTable extends Component {
     );
   }
 }
+
 const columns = [
   {name: 'Producto'},
   {name: 'Cantidad'},

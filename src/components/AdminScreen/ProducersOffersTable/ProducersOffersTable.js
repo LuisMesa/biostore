@@ -25,7 +25,8 @@ class ProducersOffersTable extends Component {
     filterDate1: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
     filterDate2: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
     popoverOpen: false,
-    selectedRows: []
+    selectedRows: [],
+    expanded: false
   };
 
   handleChange = (event, index, value) => this.setState({value});
@@ -77,32 +78,27 @@ class ProducersOffersTable extends Component {
   render() {
     return (
         <div className="ProducersOffersTable">
-          <Table columns={columns} data={this.getFilteredData2()} renderItem={(value, type, index) => this.renderItem(value, type, index)} onRowSelection={this.onRowSelection} selectedRows={this.state.selectedRows}>
+          <Table expanded={this.state.expanded} columns={columns} data={this.getFilteredData2()} renderItem={(value, type, index) => this.renderItem(value, type, index)} onRowSelection={this.onRowSelection} selectedRows={this.state.selectedRows}>
             <div>
               <h3>{this.props.name}</h3>
-              {this.props.isCloseAvailable>1?
+              {this.state.expanded ?
                   <RaisedButton
                       style={{display: 'block-inline', float: 'right', marginTop: '3vh', marginRight: '12px', minWidth: '44px'}}
-                      onClick={() => this.props.deleteTable(this.props.name)}
+                      // onClick={() => this.props.deleteTable(this.props.name)}
+                      onClick={() => this.setState({expanded: false})}
                       icon={<RemoveIcon color={pinkA200}/>}
-                      data-tip="Eliminar esta tabla"
+                      data-tip="Minimizar Tabla"
                   >
-                    <ReactTooltip place="bottom" type="dark" effect="float" multiline={true} style={{fontSize:'10px'}}/>
                   </RaisedButton>
                   :
-                  ''
-              }
-              {this.props.names.length > 0 ?
                   <RaisedButton
                       style={{display: 'block-inline', float: 'right', marginTop: '3vh', marginRight: '12px', minWidth: '44px'}}
-                      onClick={this.handleTouchTap}
+                      // onClick={this.handleTouchTap}
+                      onClick={() => this.setState({expanded: true})}
                       icon={<AddIcon color={cyan500}/>}
-                      data-tip="Agregar tabla"
+                      data-tip="Expandir Tabla"
                   >
-                    <ReactTooltip place="bottom" type="dark" effect="float" multiline={true} style={{fontSize:'10px'}}/>
                   </RaisedButton>
-                  :
-                  ''
               }
               <Popover
                   open={this.state.popoverOpen}
@@ -131,43 +127,47 @@ class ProducersOffersTable extends Component {
               />
             </div>
           </Table>
-          <div className="tableActions">
-            <RaisedButton label={"Aceptar Ofertas (" + this.state.selectedRows.length + ")"} primary={true} disabled={this.state.selectedRows.length === 0} style={{float: 'left', margin: '12px'}}
-                          onClick={() => {
-                            const ids = [];
-                            const filteredRows = this.getFilteredData2();
-                            this.state.selectedRows.forEach((index) => {
-                              ids.push(filteredRows[index].id);
-                            });
-                            this.props.setStateSomeProducersOffers(ids, 'Aceptada');
-                            this.setState({selectedRows: []});
-                          }
-                          }/>
-            <RaisedButton label={"Cancelar Ofertas (" + this.state.selectedRows.length + ")"} secondary={true} disabled={this.state.selectedRows.length === 0} style={{float: 'left', margin: '12px'}}
-                          onClick={() => {
-                            const ids = [];
-                            const filteredRows = this.getFilteredData2();
-                            this.state.selectedRows.forEach((index) => {
-                              ids.push(filteredRows[index].id);
-                            });
-                            this.props.setStateSomeProducersOffers(ids, 'Cancelada');
-                            this.setState({selectedRows: []});
-                          }
-                          }/>
-            <RaisedButton label="Guardar" primary={true} style={{float: 'right', margin: '12px'}}
-                          onClick={() => {
-                            const acceptedIds = [];
-                            const canceledIds = [];
-                            this.props.data.map(offer => {
-                              if (offer.editable && offer.state === 'Aceptada')
-                                acceptedIds.push({id: offer.id, state: 'Aceptada'});
-                              else if (offer.editable && offer.state === 'Cancelada')
-                                canceledIds.push({id: offer.id, state: 'Cancelada'})
-                            });
-                            this.props.saveProducersOffers(acceptedIds, canceledIds);
-                          }}/>
-            <RaisedButton label="Cancelar" style={{float: 'right', margin: '12px'}}/>
-          </div>
+          {this.state.expanded ?
+              <div className="tableActions">
+                <RaisedButton label={"Aceptar Ofertas (" + this.state.selectedRows.length + ")"} primary={true} disabled={this.state.selectedRows.length === 0} style={{float: 'left', margin: '12px'}}
+                              onClick={() => {
+                                const ids = [];
+                                const filteredRows = this.getFilteredData2();
+                                this.state.selectedRows.forEach((index) => {
+                                  ids.push(filteredRows[index].id);
+                                });
+                                this.props.setStateSomeProducersOffers(ids, 'Aceptada');
+                                this.setState({selectedRows: []});
+                              }
+                              }/>
+                <RaisedButton label={"Cancelar Ofertas (" + this.state.selectedRows.length + ")"} secondary={true} disabled={this.state.selectedRows.length === 0} style={{float: 'left', margin: '12px'}}
+                              onClick={() => {
+                                const ids = [];
+                                const filteredRows = this.getFilteredData2();
+                                this.state.selectedRows.forEach((index) => {
+                                  ids.push(filteredRows[index].id);
+                                });
+                                this.props.setStateSomeProducersOffers(ids, 'Cancelada');
+                                this.setState({selectedRows: []});
+                              }
+                              }/>
+                <RaisedButton label="Guardar" primary={true} style={{float: 'right', margin: '12px'}}
+                              onClick={() => {
+                                const acceptedIds = [];
+                                const canceledIds = [];
+                                this.props.data.map(offer => {
+                                  if (offer.editable && offer.state === 'Aceptada')
+                                    acceptedIds.push({id: offer.id, state: 'Aceptada'});
+                                  else if (offer.editable && offer.state === 'Cancelada')
+                                    canceledIds.push({id: offer.id, state: 'Cancelada'})
+                                });
+                                this.props.saveProducersOffers(acceptedIds, canceledIds);
+                              }}/>
+                <RaisedButton label="Cancelar" style={{float: 'right', margin: '12px'}}/>
+              </div>
+              :
+              ''
+          }
         </div>
     );
   }

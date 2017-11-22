@@ -29,7 +29,8 @@ class OrdersTable extends Component {
     idProductNewOffer: '1',
     amountNewOffer: '5',
     priceNewOffer: '2000',
-    deliveryDateNewOffer: Date.now()
+    deliveryDateNewOffer: Date.now(),
+    expanded: false
   };
 
   handleTouchTap = (event) => {
@@ -111,32 +112,27 @@ class OrdersTable extends Component {
   render() {
     return (
         <div className="OffersTable" id="OffersTable">
-          <Table columns={columns} data={this.getFilteredData()} renderItem={(value, type, index) => this.renderItem(value, type, index)} onRowSelection={this.onRowSelection} selectedRows={this.state.selectedRows}>
+          <Table expanded={this.state.expanded} columns={columns} data={this.getFilteredData()} renderItem={(value, type, index) => this.renderItem(value, type, index)} onRowSelection={this.onRowSelection} selectedRows={this.state.selectedRows}>
             <div>
               <h3>{this.props.name}</h3>
-              {this.props.isCloseAvailable>1?
+              {this.state.expanded ?
                   <RaisedButton
                       style={{display: 'block-inline', float: 'right', marginTop: '3vh', marginRight: '12px', minWidth: '44px'}}
-                      onClick={() => this.props.deleteTable(this.props.name)}
+                      // onClick={() => this.props.deleteTable(this.props.name)}
+                      onClick={() => this.setState({expanded: false})}
                       icon={<RemoveIcon color={pinkA200}/>}
-                      data-tip="Eliminar esta tabla"
+                      data-tip="Minimizar Tabla"
                   >
-                    <ReactTooltip place="bottom" type="dark" effect="float" multiline={true} style={{fontSize:'10px'}}/>
                   </RaisedButton>
                   :
-                  ''
-              }
-              {this.props.names.length>0?
                   <RaisedButton
                       style={{display: 'block-inline', float: 'right', marginTop: '3vh', marginRight: '12px', minWidth: '44px'}}
-                      onClick={this.handleTouchTap}
+                      // onClick={this.handleTouchTap}
+                      onClick={() => this.setState({expanded: true})}
                       icon={<AddIcon color={cyan500}/>}
-                      data-tip="Agregar tabla"
+                      data-tip="Expandir Tabla"
                   >
-                    <ReactTooltip place="bottom" type="dark" effect="float" multiline={true} style={{fontSize:'10px'}}/>
                   </RaisedButton>
-                  :
-                  ''
               }
 
               <Popover
@@ -166,34 +162,40 @@ class OrdersTable extends Component {
               />
             </div>
           </Table>
-          <div className="tableActions">
-            <RaisedButton label={"Marcar como enviado (" + this.state.selectedRows.length + ")"} primary={true} disabled={this.state.selectedRows.length === 0} style={{float: 'left', margin: '12px'}}
-                          onClick={() => {
-                            const ids = [];
-                            const filteredRows = this.getFilteredData();
-                            this.state.selectedRows.forEach((index) => {
-                              ids.push(filteredRows[index].id);
-                            });
-                            this.props.setStateSomeOrders(ids, 'Aceptada');
-                            this.setState({selectedRows: []});
-                          }
-                          }/>
-            <RaisedButton label="Guardar" primary={true} style={{float: 'right', margin: '12px'}}
-                          onClick={() => {
-                            const acceptedIds = [];
-                            const canceledIds = [];
-                            this.props.orders.map(order => {
-                              if (order.state === 'Aceptada')
-                                acceptedIds.push({id: order.id, state: 'Aceptada'});
-                              {/*else if (order.editable && order.state === 'Cancelada')*/}
-                                {/*canceledIds.push({id: order.id, state: 'Cancelada'})*/}
-                            });
-                            this.props.saveStateSomeOrders(acceptedIds,canceledIds);
-                          }}/>
-            <RaisedButton label="Cancelar" style={{float: 'right', margin: '12px'}}/>
-            {/*<RaisedButton label="Actualizar" primary={true} style={{float: 'right', margin: '12px'}}*/}
-                          {/*onClick={()=>this.props.fetchOrders()}/>*/}
-          </div>
+          {this.state.expanded ?
+              <div className="tableActions">
+                <RaisedButton label={"Marcar como enviado (" + this.state.selectedRows.length + ")"} primary={true} disabled={this.state.selectedRows.length === 0} style={{float: 'left', margin: '12px'}}
+                              onClick={() => {
+                                const ids = [];
+                                const filteredRows = this.getFilteredData();
+                                this.state.selectedRows.forEach((index) => {
+                                  ids.push(filteredRows[index].id);
+                                });
+                                this.props.setStateSomeOrders(ids, 'Aceptada');
+                                this.setState({selectedRows: []});
+                              }
+                              }/>
+                <RaisedButton label="Guardar" primary={true} style={{float: 'right', margin: '12px'}}
+                              onClick={() => {
+                                const acceptedIds = [];
+                                const canceledIds = [];
+                                this.props.orders.map(order => {
+                                  if (order.state === 'Aceptada')
+                                    acceptedIds.push({id: order.id, state: 'Aceptada'});
+                                  {/*else if (order.editable && order.state === 'Cancelada')*/
+                                  }
+                                  {/*canceledIds.push({id: order.id, state: 'Cancelada'})*/
+                                  }
+                                });
+                                this.props.saveStateSomeOrders(acceptedIds, canceledIds);
+                              }}/>
+                <RaisedButton label="Cancelar" style={{float: 'right', margin: '12px'}}/>
+                {/*<RaisedButton label="Actualizar" primary={true} style={{float: 'right', margin: '12px'}}*/}
+                {/*onClick={()=>this.props.fetchOrders()}/>*/}
+              </div>
+              :
+              ''
+          }
         </div>
     );
   }

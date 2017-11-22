@@ -35,7 +35,8 @@ class OffersTable extends Component {
     amountNewOffer: 15,
     unitNewOffer: 'Libra',
     priceNewOffer: 2500,
-    deliveryDateNewOffer: new Date(Date.now() + 1000*60*60*24*5)
+    deliveryDateNewOffer: new Date(Date.now() + 1000*60*60*24*5),
+    expanded: false
   };
 
   handleTouchTap = (event) => {
@@ -100,32 +101,27 @@ class OffersTable extends Component {
   render() {
     return (
         <div className="OffersTable">
-          <Table columns={columns} data={this.getFilteredData(this.props.offers)} renderItem={(value, type, index) => this.renderItem(value, type, index)} onRowSelection={this.onRowSelection} selectedRows={this.state.selectedRows}>
+          <Table expanded={this.state.expanded} columns={columns} data={this.getFilteredData(this.props.offers)} renderItem={(value, type, index) => this.renderItem(value, type, index)} onRowSelection={this.onRowSelection} selectedRows={this.state.selectedRows}>
             <div>
               <h3>{this.props.name}</h3>
-              {this.props.isCloseAvailable>1?
+              {this.state.expanded ?
                   <RaisedButton
                       style={{display: 'block-inline', float: 'right', marginTop: '3vh', marginRight: '12px', minWidth: '44px'}}
-                      onClick={() => this.props.deleteTable(this.props.name)}
+                      // onClick={() => this.props.deleteTable(this.props.name)}
+                      onClick={() => this.setState({expanded: false})}
                       icon={<RemoveIcon color={pinkA200}/>}
-                      data-tip="Eliminar esta tabla"
+                      data-tip="Minimizar Tabla"
                   >
-                    <ReactTooltip place="bottom" type="dark" effect="float" multiline={true} style={{fontSize:'10px'}}/>
                   </RaisedButton>
                   :
-                  ''
-              }
-              {this.props.names.length > 0 ?
                   <RaisedButton
                       style={{display: 'block-inline', float: 'right', marginTop: '3vh', marginRight: '12px', minWidth: '44px'}}
-                      onClick={this.handleTouchTap}
+                      // onClick={this.handleTouchTap}
+                      onClick={() => this.setState({expanded: true})}
                       icon={<AddIcon color={cyan500}/>}
-                      data-tip="Agregar Tabla"
+                      data-tip="Expandir Tabla"
                   >
-                    <ReactTooltip place="bottom" type="dark" effect="float" multiline={true} style={{fontSize:'10px'}}/>
                   </RaisedButton>
-                  :
-                  ''
               }
 
               <Popover
@@ -155,11 +151,15 @@ class OffersTable extends Component {
               />
             </div>
           </Table>
-          <div className="tableActions">
-            <RaisedButton label="Crear Oferta" primary={true} style={{float: 'right', margin: '12px'}}
-                          onClick={() => this.setState({dialogOpen: true})}/>
-            <RaisedButton label="Cancelar" style={{float: 'right', margin: '12px'}}/>
-          </div>
+          {this.state.expanded ?
+              <div className="tableActions">
+                <RaisedButton label="Crear Oferta" primary={true} style={{float: 'right', margin: '12px'}}
+                              onClick={() => this.setState({dialogOpen: true})}/>
+                <RaisedButton label="Cancelar" style={{float: 'right', margin: '12px'}}/>
+              </div>
+              :
+              ''
+          }
           <Dialog title='Crear Oferta' open={this.state.dialogOpen}
                   handleClose={() => {
                     this.setState({dialogOpen: false})
