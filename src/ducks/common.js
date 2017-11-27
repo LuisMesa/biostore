@@ -8,6 +8,7 @@ const ADD_PRODUCT_TO_CART = 'ADD_PRODUCT_TO_CART';
 const GET_PRODUCERS_BY_OFFER = 'GET_PRODUCERS_BY_OFFER';
 const CHANGE_PRODUCT_DETAIL = 'CHANGE_PRODUCT_DETAIL';
 const UPDATE_USER_POSITION = 'UPDATE_USER_POSITION';
+const FETCH_NOTIFICATIONS = 'FETCH_NOTIFICATIONS';
 const NOTIFICATION = 'NOTIFICATION';
 
 export const login = (authData) => async dispatch => {
@@ -150,6 +151,16 @@ export const changeProductDetail = (newProduct) => {
   }
 };
 
+export const fetchNotifications = (user) => async dispatch => {
+  //TODO change/fix the url
+  // const notifications = (await axios.get(BASE_URL + '/adminoffers/')).data;
+  const notifications = [{title:'Hi there!',text: 'It is a new notification :D ', img: '', type: 'OPEN_PRODUCT', payload: '01'}, {title:'Hi there!',text: 'It is a new notification :D ', img: '', type: 'OPEN_PRODUCT', payload: '01'}];
+  dispatch({
+    type: FETCH_NOTIFICATIONS,
+    payload: notifications
+  });
+};
+
 //Reducer's Initial state
 const INITIAL_STATE = {
   user: null,
@@ -163,6 +174,7 @@ const INITIAL_STATE = {
   productDetail: {
     producers: []
   },
+  notifications:[]
 };
 //Reducer
 export default function common(state = INITIAL_STATE, action) {
@@ -183,6 +195,9 @@ export default function common(state = INITIAL_STATE, action) {
     }
     case UPDATE_USER_POSITION: {
       return {...state, userPosition: action.payload};
+    }
+    case FETCH_NOTIFICATIONS: {
+      return {...state, notifications: action.payload}
     }
     case NOTIFICATION: {
       return state;

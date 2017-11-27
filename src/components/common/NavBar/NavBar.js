@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {signUp, login,updateUserPosition} from '../../../ducks/common';
+import {signUp, login, updateUserPosition, fetchNotifications} from '../../../ducks/common';
 import {Link} from 'react-router-dom'
+import * as Push from 'push.js';
 import AppBar from 'material-ui/AppBar';
 import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
@@ -20,22 +21,43 @@ class NavBar extends Component {
       signUpOpen: false
     };
   }
-  componentWillMount(){
+
+  componentWillMount() {
     this.props.updateUserPosition();
   }
 
   handleToggle = () => this.setState({open: !this.state.open});
 
-  register = (newUser) => {
-    this.props.signUp(newUser)
+  register = async (newUser) => {
+    await this.props.signUp(newUser);
+    this.props.fetchNotifications(this.props.user)
   };
 
-  login = (authData) => {
-    this.props.login(authData);
+  login = async (authData) => {
+    await this.props.login(authData);
+    this.props.fetchNotifications(this.props.user)
   };
 
+  notifications = () =>{
+    this.props.notifications.forEach((notification) => {
+      Push.create(notification.title, {
+        body: notification.text,
+        icon: '/icon.png',
+        timeout: 10000,
+        onClick:  () => {
+          window.focus();
+          this.close();
+        },
+        onClose: () =>{
+          console.log('close');
+        }
+      });
+    });
+  };
 
   render() {
+    this.notifications();
+
     return (
         <AppBar className="NavBar" title="BIOSTORE"
                 onLeftIconButtonTouchTap={this.handleToggle}
@@ -68,6 +90,7 @@ class NavBar extends Component {
     )
   }
 }
+
 const styles = {
   navBar: {
     position: 'fixed',
@@ -77,9 +100,11 @@ const styles = {
 };
 
 function mapStateToProps(state) {
-  const {user} = state.common;
+  const {user, notifications} = state.common;
   return {
-    user
+    user,
+    notifications
   }
 }
-export default connect(mapStateToProps, {signUp, login, updateUserPosition})(NavBar);
+
+export default connect(mapStateToProps, {signUp, login, updateUserPosition, fetchNotifications})(NavBar);
