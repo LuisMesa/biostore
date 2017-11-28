@@ -1,14 +1,16 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {fetchOrders, setStateSomeOrders, saveStateSomeOrders} from '../../../ducks/ProducerScreen';
-import ReactTooltip from 'react-tooltip';
 import LockIcon from 'material-ui/svg-icons/action/lock';
 import LockOpenIcon from 'material-ui/svg-icons/action/lock-open';
+import MoneyIcon from 'material-ui/svg-icons/editor/monetization-on';
+import HighLightIcon from 'material-ui/svg-icons/action/highlight-off';
+import ReactTooltip from 'react-tooltip';
 import SendedIcon from 'material-ui/svg-icons/communication/call-made';
 import InfoIcon from 'material-ui/svg-icons/action/info-outline';
 import CheckCircleIcon from 'material-ui/svg-icons/action/check-circle';
 import {DatePicker, MenuItem, Popover, Menu, DropDownMenu} from 'material-ui';
-import {cyan500, pinkA200} from 'material-ui/styles/colors';
+import {cyan500, pinkA200, green500} from 'material-ui/styles/colors';
 import AddIcon from 'material-ui/svg-icons/content/add';
 import RemoveIcon from 'material-ui/svg-icons/content/clear';
 import {TableRowColumn,} from 'material-ui/Table';
@@ -27,7 +29,8 @@ class OrdersTable extends Component {
     idProductNewOffer: '1',
     amountNewOffer: '5',
     priceNewOffer: '2000',
-    deliveryDateNewOffer: Date.now()
+    deliveryDateNewOffer: Date.now(),
+    expanded: false
   };
 
   handleTouchTap = (event) => {
@@ -63,7 +66,7 @@ class OrdersTable extends Component {
       case 'editable':
         return <TableRowColumn key={index}>{value ? <LockIcon style={{paddingLeft: 'calc(50% - 12px)'}}/> : <LockOpenIcon style={{paddingLeft: 'calc(50% - 12px)'}}/>}</TableRowColumn>;
       case 'state':
-        return <TableRowColumn key={index}>{value === 'Pendiente' || value === 'PENDIENTE' ? <InfoIcon style={{paddingLeft: 'calc(50% - 12px)'}}/> : <SendedIcon style={{paddingLeft: 'calc(50% - 12px)'}} color={cyan500}/>}</TableRowColumn>;
+        return <TableRowColumn key={index}>{this.getIcon(value)}</TableRowColumn>;
       case 'createdAt':
         return <TableRowColumn key={index}>{value.toISOString().split('T')[0]}</TableRowColumn>;
       case 'deliveryDate':
@@ -72,6 +75,23 @@ class OrdersTable extends Component {
         break;
       default:
         return <TableRowColumn key={index}>{value + ''}</TableRowColumn>
+    }
+  }
+
+  getIcon(value) {
+    switch (value.toLowerCase()) {
+      case 'pendiente':
+        return <div><InfoIcon style={{paddingLeft: 'calc(50% - 12px)'}} data-tip={'Pendiente'}/><ReactTooltip place="right" type="dark" effect="float"/></div>;
+      case 'cancelada':
+        return <div><HighLightIcon style={{paddingLeft: 'calc(50% - 12px)'}} color={pinkA200} data-tip={'Cancelada'}/><ReactTooltip place="right" type="dark" effect="float"/></div>;
+      // case 'aceptada':
+      //   return <div><CheckCircleIcon style={{paddingLeft: 'calc(50% - 12px)'}} color={cyan500} data-tip={'Aceptada'}/><ReactTooltip place="right" type="dark" effect="float"/></div>;
+      case 'pagada':
+        return <div><MoneyIcon style={{paddingLeft: 'calc(50% - 12px)'}} color={green500} data-tip={'Pagada'}/><ReactTooltip place="right" type="dark" effect="float"/></div>;
+      case 'aceptada':
+        return <div><SendedIcon style={{paddingLeft: 'calc(50% - 12px)'}} color={cyan500} data-tip={'Enviada'}/><ReactTooltip place="right" type="dark" effect="float"/></div>;
+      default:
+        return <div><InfoIcon style={{paddingLeft: 'calc(50% - 12px)'}} data-tip={'Pendiente'}/><ReactTooltip place="right" type="dark" effect="float"/></div>;
     }
   }
 
@@ -92,32 +112,27 @@ class OrdersTable extends Component {
   render() {
     return (
         <div className="OffersTable" id="OffersTable">
-          <Table columns={columns} data={this.getFilteredData()} renderItem={(value, type, index) => this.renderItem(value, type, index)} onRowSelection={this.onRowSelection} selectedRows={this.state.selectedRows}>
+          <Table expanded={this.state.expanded} columns={columns} data={this.getFilteredData()} renderItem={(value, type, index) => this.renderItem(value, type, index)} onRowSelection={this.onRowSelection} selectedRows={this.state.selectedRows}>
             <div>
               <h3>{this.props.name}</h3>
-              {this.props.isCloseAvailable>1?
+              {this.state.expanded ?
                   <RaisedButton
                       style={{display: 'block-inline', float: 'right', marginTop: '3vh', marginRight: '12px', minWidth: '44px'}}
-                      onClick={() => this.props.deleteTable(this.props.name)}
+                      // onClick={() => this.props.deleteTable(this.props.name)}
+                      onClick={() => this.setState({expanded: false})}
                       icon={<RemoveIcon color={pinkA200}/>}
-                      data-tip="Eliminar esta tabla"
+                      data-tip="Minimizar Tabla"
                   >
-                    <ReactTooltip place="bottom" type="dark" effect="float" multiline={true} style={{fontSize:'10px'}}/>
                   </RaisedButton>
                   :
-                  ''
-              }
-              {this.props.names.length>0?
                   <RaisedButton
                       style={{display: 'block-inline', float: 'right', marginTop: '3vh', marginRight: '12px', minWidth: '44px'}}
-                      onClick={this.handleTouchTap}
+                      // onClick={this.handleTouchTap}
+                      onClick={() => this.setState({expanded: true})}
                       icon={<AddIcon color={cyan500}/>}
-                      data-tip="Agregar tabla"
+                      data-tip="Expandir Tabla"
                   >
-                    <ReactTooltip place="bottom" type="dark" effect="float" multiline={true} style={{fontSize:'10px'}}/>
                   </RaisedButton>
-                  :
-                  ''
               }
 
               <Popover
@@ -147,34 +162,40 @@ class OrdersTable extends Component {
               />
             </div>
           </Table>
-          <div className="tableActions">
-            <RaisedButton label={"Marcar como enviado (" + this.state.selectedRows.length + ")"} primary={true} disabled={this.state.selectedRows.length === 0} style={{float: 'left', margin: '12px'}}
-                          onClick={() => {
-                            const ids = [];
-                            const filteredRows = this.getFilteredData();
-                            this.state.selectedRows.forEach((index) => {
-                              ids.push(filteredRows[index].id);
-                            });
-                            this.props.setStateSomeOrders(ids, 'Aceptada');
-                            this.setState({selectedRows: []});
-                          }
-                          }/>
-            <RaisedButton label="Guardar" primary={true} style={{float: 'right', margin: '12px'}}
-                          onClick={() => {
-                            const acceptedIds = [];
-                            const canceledIds = [];
-                            this.props.orders.map(order => {
-                              if (order.state === 'Aceptada')
-                                acceptedIds.push({id: order.id, state: 'Aceptada'});
-                              {/*else if (order.editable && order.state === 'Cancelada')*/}
-                                {/*canceledIds.push({id: order.id, state: 'Cancelada'})*/}
-                            });
-                            this.props.saveStateSomeOrders(acceptedIds,canceledIds);
-                          }}/>
-            <RaisedButton label="Cancelar" style={{float: 'right', margin: '12px'}}/>
-            {/*<RaisedButton label="Actualizar" primary={true} style={{float: 'right', margin: '12px'}}*/}
-                          {/*onClick={()=>this.props.fetchOrders()}/>*/}
-          </div>
+          {this.state.expanded ?
+              <div className="tableActions">
+                <RaisedButton label={"Marcar como enviado (" + this.state.selectedRows.length + ")"} primary={true} disabled={this.state.selectedRows.length === 0} style={{float: 'left', margin: '12px'}}
+                              onClick={() => {
+                                const ids = [];
+                                const filteredRows = this.getFilteredData();
+                                this.state.selectedRows.forEach((index) => {
+                                  ids.push(filteredRows[index].id);
+                                });
+                                this.props.setStateSomeOrders(ids, 'Aceptada');
+                                this.setState({selectedRows: []});
+                              }
+                              }/>
+                <RaisedButton label="Guardar" primary={true} style={{float: 'right', margin: '12px'}}
+                              onClick={() => {
+                                const acceptedIds = [];
+                                const canceledIds = [];
+                                this.props.orders.map(order => {
+                                  if (order.state === 'Aceptada')
+                                    acceptedIds.push({id: order.id, state: 'Aceptada'});
+                                  {/*else if (order.editable && order.state === 'Cancelada')*/
+                                  }
+                                  {/*canceledIds.push({id: order.id, state: 'Cancelada'})*/
+                                  }
+                                });
+                                this.props.saveStateSomeOrders(acceptedIds, canceledIds);
+                              }}/>
+                <RaisedButton label="Cancelar" style={{float: 'right', margin: '12px'}}/>
+                {/*<RaisedButton label="Actualizar" primary={true} style={{float: 'right', margin: '12px'}}*/}
+                {/*onClick={()=>this.props.fetchOrders()}/>*/}
+              </div>
+              :
+              ''
+          }
         </div>
     );
   }

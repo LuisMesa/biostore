@@ -135,10 +135,10 @@ const clearData = (oldData) => {
 };
 
 const clearOrdersData = (oldData) => {
-  console.log(oldData);
-  return oldData.map((item, index) => {
+  // console.log(oldData);
+  return oldData.reverse().map((item, index) => {
     const fixed = {
-      id: item.order.id,
+      id: item.id,
       name: item.offer.productType.title,
       amount: item.count,
       price: item.offer.unit_price,
@@ -146,7 +146,7 @@ const clearOrdersData = (oldData) => {
       // deliveryDate: new Date(item.order.delivery_at),
       deliveryDate: new Date(Date.now()+5*24*60*60*1000),
       address: item.order.shipping_address,
-      state: item.order.state
+      state: item.state
     };
     return fixed;
   })

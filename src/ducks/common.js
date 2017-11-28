@@ -8,6 +8,7 @@ const ADD_PRODUCT_TO_CART = 'ADD_PRODUCT_TO_CART';
 const GET_PRODUCERS_BY_OFFER = 'GET_PRODUCERS_BY_OFFER';
 const CHANGE_PRODUCT_DETAIL = 'CHANGE_PRODUCT_DETAIL';
 const UPDATE_USER_POSITION = 'UPDATE_USER_POSITION';
+const FETCH_NOTIFICATIONS = 'FETCH_NOTIFICATIONS';
 const NOTIFICATION = 'NOTIFICATION';
 
 export const login = (authData) => async dispatch => {
@@ -69,8 +70,9 @@ export const createOrder = (idClient, shippingAddress, delivery_at, items) => as
     create_at: Date.now(),
     delivery_at: delivery_at,
     shipping_address: shippingAddress,
-    consumer_id: 1,
-    order_items: items
+    consumer_id: idClient,
+    order_items: items,
+    paymentType: 1
   };
   await axios.post(BASE_URL + '/createorder/', object).then(response => {
     if (response.data.estado === 'ok') {
@@ -136,7 +138,7 @@ export const updateUserPosition = () => async dispatch => {
         console.log(error);
         dispatch({
           type: NOTIFICATION,
-          payload: 'No se ha podido acceder a la ubicación:'+error
+          payload: 'No se ha podido acceder a la ubicación:' + error
         });
       }),
       options);
@@ -149,12 +151,22 @@ export const changeProductDetail = (newProduct) => {
   }
 };
 
+export const fetchNotifications = (user) => async dispatch => {
+  //TODO change/fix the url
+  // const notifications = (await axios.get(BASE_URL + '/adminoffers/')).data;
+  const notifications = [{title:'Hi there!',text: 'It is a new notification :D ', img: '', type: 'OPEN_PRODUCT', payload: '01'}, {title:'Hi there!',text: 'It is a new notification :D ', img: '', type: 'OPEN_PRODUCT', payload: '01'}];
+  dispatch({
+    type: FETCH_NOTIFICATIONS,
+    payload: notifications
+  });
+};
+
 //Reducer's Initial state
 const INITIAL_STATE = {
   user: null,
-  userPosition:{
-    lat:4.603199,
-    lng:-74.0652
+  userPosition: {
+    lat: 4.603199,
+    lng: -74.0652
   },
   cart: {
     products: []
@@ -162,6 +174,7 @@ const INITIAL_STATE = {
   productDetail: {
     producers: []
   },
+  notifications:[]
 };
 //Reducer
 export default function common(state = INITIAL_STATE, action) {
@@ -182,6 +195,9 @@ export default function common(state = INITIAL_STATE, action) {
     }
     case UPDATE_USER_POSITION: {
       return {...state, userPosition: action.payload};
+    }
+    case FETCH_NOTIFICATIONS: {
+      return {...state, notifications: action.payload}
     }
     case NOTIFICATION: {
       return state;

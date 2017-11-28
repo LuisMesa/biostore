@@ -9,6 +9,7 @@
 .Product .CardMedia .CardTitle {
     padding-top: 0!important;
     padding-bottom: 5px!important;
+    cursor: pointer!important;
 }
 /*title inside CardMedia and  CardTitle*/
 .Product .CardMedia .CardTitle>span:first-child{

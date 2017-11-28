@@ -1,6 +1,16 @@
-.AdminOffersTable .tableActions{
-    width:90vw;
+.AdminOffersTable .tableActions {
+    width: 90vw;
     margin-left: 5vw;
     margin-right: 4vw;
     margin-bottom: 10vh;
+}
+
+.dialogContent {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+}
+
+.dialogContent .extraInfo, .dialogContent .inputsContainer {
+    width: 45%;
 }

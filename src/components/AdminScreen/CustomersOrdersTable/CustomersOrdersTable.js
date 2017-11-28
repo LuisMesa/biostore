@@ -1,14 +1,15 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {fetchCustomerOffers } from '../../../ducks/AdminScreen';
+import {fetchCustomerOrders} from '../../../ducks/AdminScreen';
 import LockIcon from 'material-ui/svg-icons/action/lock';
 import LockOpenIcon from 'material-ui/svg-icons/action/lock-open';
+import MoneyIcon from 'material-ui/svg-icons/editor/monetization-on';
 import ReactTooltip from 'react-tooltip';
 import HighLightIcon from 'material-ui/svg-icons/action/highlight-off';
 import InfoIcon from 'material-ui/svg-icons/action/info-outline';
 import CheckCircleIcon from 'material-ui/svg-icons/action/check-circle';
 import {DatePicker, MenuItem, Popover, Menu, DropDownMenu} from 'material-ui';
-import {cyan500, pinkA200} from 'material-ui/styles/colors';
+import {cyan500, pinkA200, green500} from 'material-ui/styles/colors';
 import AddIcon from 'material-ui/svg-icons/content/add';
 import RemoveIcon from 'material-ui/svg-icons/content/clear';
 import {TableRowColumn,} from 'material-ui/Table';
@@ -27,7 +28,8 @@ class CustomersOrdersTable extends Component {
     idProductNewOffer: '1',
     amountNewOffer: '5',
     priceNewOffer: '2000',
-    deliveryDateNewOffer: Date.now()
+    deliveryDateNewOffer: Date.now(),
+    expanded: false
   };
 
   handleTouchTap = (event) => {
@@ -62,7 +64,7 @@ class CustomersOrdersTable extends Component {
       case 'editable':
         return <TableRowColumn key={index}>{value ? <LockIcon style={{paddingLeft: 'calc(50% - 12px)'}}/> : <LockOpenIcon style={{paddingLeft: 'calc(50% - 12px)'}}/>}</TableRowColumn>;
       case 'state':
-        return <TableRowColumn key={index}>{value === 'Pendiente' || value === 'PENDIENTE' ? <InfoIcon style={{paddingLeft: 'calc(50% - 12px)'}}/> : value === 'Cancelada'|| value === 'CANCELADA' ? <HighLightIcon style={{paddingLeft: 'calc(50% - 12px)'}} color={pinkA200}/> : <CheckCircleIcon style={{paddingLeft: 'calc(50% - 12px)'}} color={cyan500}/>}</TableRowColumn>;
+        return <TableRowColumn key={index}>{this.getIcon(value)}</TableRowColumn>;
       case 'createdAt':
         return <TableRowColumn key={index}>{value.toISOString().split('T')[0]}</TableRowColumn>;
       case 'deliveryDate':
@@ -74,7 +76,23 @@ class CustomersOrdersTable extends Component {
     }
   }
 
-  createOffer = async () => {
+  getIcon(value) {
+    switch (value.toLowerCase()) {
+      case 'pendiente':
+        return <div><InfoIcon style={{paddingLeft: 'calc(50% - 12px)'}} data-tip={'Pendiente'}/><ReactTooltip place="right" type="dark" effect="float"/></div>;
+      case 'cancelada':
+        return <div><HighLightIcon style={{paddingLeft: 'calc(50% - 12px)'}} color={pinkA200} data-tip={'Cancelada'}/><ReactTooltip place="right" type="dark" effect="float"/></div>;
+      case 'aceptada':
+        return <div><CheckCircleIcon style={{paddingLeft: 'calc(50% - 12px)'}} color={cyan500} data-tip={'Aceptada'}/><ReactTooltip place="right" type="dark" effect="float"/></div>;
+      case 'pagada':
+        return <div><MoneyIcon style={{paddingLeft: 'calc(50% - 12px)'}} color={green500} data-tip={'Pagada'}/><ReactTooltip place="right" type="dark" effect="float"/></div>;
+      default:
+        return <div><InfoIcon style={{paddingLeft: 'calc(50% - 12px)'}} data-tip={'Pendiente'}/><ReactTooltip place="right" type="dark" effect="float"/></div>;
+    }
+
+  }
+
+  createOffer = async() => {
     const {idProductNewOffer, amountNewOffer, priceNewOffer, deliveryDateNewOffer} = this.state;
     const idProducer = '1';
     const unit = 'Libra';
@@ -85,38 +103,34 @@ class CustomersOrdersTable extends Component {
   };
 
   componentWillMount() {
-    this.props.fetchCustomerOffers()
+    this.props.fetchCustomerOrders()
   }
 
   render() {
     return (
         <div className="CustomersOrdersTable">
-          <Table columns={columns} data={this.props.customersOrders} renderItem={(value, type, index) => this.renderItem(value, type, index)} onRowSelection={this.onRowSelection} selectedRows={this.state.selectedRows}>
+          <Table expanded={this.state.expanded} columns={columns} data={this.props.customersOrders} renderItem={(value, type, index) => this.renderItem(value, type, index)} onRowSelection={this.onRowSelection} selectedRows={this.state.selectedRows}>
             <div>
               <h3>{this.props.name}</h3>
-              {this.props.isCloseAvailable>1?
+
+              {this.state.expanded ?
                   <RaisedButton
                       style={{display: 'block-inline', float: 'right', marginTop: '3vh', marginRight: '12px', minWidth: '44px'}}
-                      onClick={() => this.props.deleteTable(this.props.name)}
+                      // onClick={() => this.props.deleteTable(this.props.name)}
+                      onClick={() => this.setState({expanded: false})}
                       icon={<RemoveIcon color={pinkA200}/>}
-                      data-tip="Eliminar esta tabla"
+                      data-tip="Minimizar Tabla"
                   >
-                    <ReactTooltip place="bottom" type="dark" effect="float" multiline={true} style={{fontSize:'10px'}}/>
                   </RaisedButton>
                   :
-                  ''
-              }
-              {this.props.names.length>0?
                   <RaisedButton
                       style={{display: 'block-inline', float: 'right', marginTop: '3vh', marginRight: '12px', minWidth: '44px'}}
-                      onClick={this.handleTouchTap}
+                      // onClick={this.handleTouchTap}
+                      onClick={() => this.setState({expanded: true})}
                       icon={<AddIcon color={cyan500}/>}
-                      data-tip="Agregar tabla"
+                      data-tip="Expandir Tabla"
                   >
-                    <ReactTooltip place="bottom" type="dark" effect="float" multiline={true} style={{fontSize:'10px'}}/>
                   </RaisedButton>
-                  :
-                  ''
               }
 
               <Popover
@@ -158,6 +172,7 @@ const columns = [
   {name: 'Entrega'},
   {name: 'Cliente'},
   {name: 'Telefono'},
+  {name: 'Estado'}
 ];
 
 function mapStateToProps(state) {
@@ -168,4 +183,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps, {fetchCustomerOffers})(CustomersOrdersTable);
+export default connect(mapStateToProps, {fetchCustomerOrders})(CustomersOrdersTable);

@@ -8,7 +8,9 @@ class Marker extends Component {
     if (this.props.avatar) {
       return (
           <div data-tip={this.props.tooltip}>
-            <Avatar src={this.props.avatar} onClick={()=>{console.log('click')}}/>
+            <Avatar src={this.props.avatar} onClick={() => {
+              console.log('click')
+            }}/>
             <ReactTooltip place="right" type="dark" effect="float"/>
           </div>
       );

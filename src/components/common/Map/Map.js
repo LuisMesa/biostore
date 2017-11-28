@@ -14,6 +14,7 @@ class Map extends Component {
     return (
         <div className="Map">
           <GoogleMapReact
+              bootstrapURLKeys={{key: "AIzaSyBOtdB291WsccQmPAOTvIpu_7T7ro6vsuM"}}
               options={{
                 styles: [{
                   "featureType": "all",
@@ -24,7 +25,7 @@ class Map extends Component {
                 }]
               }}
               center={{lat: 4.699494, lng: -74.055148}}
-              zoom={15}
+              zoom={10}
               onClick={(event) => this.handleClick(event)}
           >
             {this.props.markers.map((marker, index) => {
