@@ -46,7 +46,7 @@ class NavBar extends Component {
         timeout: 10000,
         onClick:  () => {
           window.focus();
-          this.close();
+          //this.close();
         },
         onClose: () =>{
           console.log('close');
