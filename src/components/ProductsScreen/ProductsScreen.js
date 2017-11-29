@@ -17,6 +17,8 @@ class ProductsScreen extends Component {
     const array = this.props.products.map((product =>{
       return {offer_id:product.id, count: product.amount, idProducer:'1'}
     }));
+    this.props.createOrder(1,'dirección', 1231234, [{offer_id:1, count: 5, idProducer:'1'},{offer_id:2,count:3, idProducer:'2'},]);
+    alert("Gracias por su compra");
     this.props.createOrder(1,'Cll 7a # 5a - 44', (Date.now()+5*24*60*60*1000), array);
   };
 
@@ -30,7 +32,6 @@ class ProductsScreen extends Component {
   }
 }
 function mapStateToProps(state){
-  // console.log('state',state);
   const {products}= state.common.cart;
   const {offers}= state.ProductsScreen;
   const {filters} = state.ProductsScreen;
