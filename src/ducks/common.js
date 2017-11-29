@@ -153,11 +153,28 @@ export const changeProductDetail = (newProduct) => {
 
 export const fetchNotifications = (user) => async dispatch => {
   //TODO change/fix the url
-  // const notifications = (await axios.get(BASE_URL + '/adminoffers/')).data;
-  const notifications = [{title:'Hi there!',text: 'It is a new notification :D ', img: '', type: 'OPEN_PRODUCT', payload: '01'}, {title:'Hi there!',text: 'It is a new notification :D ', img: '', type: 'OPEN_PRODUCT', payload: '01'}];
-  dispatch({
-    type: FETCH_NOTIFICATIONS,
-    payload: notifications
+  const notifications = [(await axios.get(BASE_URL + '/notifications/')).data.data];
+  console.log(notifications);
+  // const notifications = [{title:'Hi there!',text: 'It is a new notification :D ', img: '', type: 'OPEN_PRODUCT', payload: '01'}, {title:'Hi there!',text: 'It is a new notification :D ', img: '', type: 'OPEN_PRODUCT', payload: '01'}];
+  return notifications;
+  // dispatch({
+  //   type: FETCH_NOTIFICATIONS,
+  //   payload: notifications
+  // });
+};
+
+export const createNotification = (notification) => async dispatch => {
+  //TODO change/fix the url
+  // {title:'Hi there!',text: 'It is a new notification :D ', img: '', type: 'OPEN_PRODUCT', payload: '01'}
+  const object = notification;
+  await axios.post(BASE_URL + '/addnotification/', object).then(response => {
+    if (response.data.estado === 'ok') {
+      return true;
+    }
+    else
+      return false;
+  }).catch(error => {
+    console.log(error);
   });
 };
 

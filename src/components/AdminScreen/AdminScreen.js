@@ -9,6 +9,7 @@ import ProducersTable from './ProducersTable/ProducersTable';
 import {fetchProducersOffers, deleteNotification} from '../../ducks/AdminScreen';
 
 import './AdminScreen.css';
+import Notifications from "./Notifications/Notifications";
 
 class AdminScreen extends Component {
   state = {
@@ -110,6 +111,7 @@ class AdminScreen extends Component {
           {this.state.adminOffersTable ? <AdminOffersTable names={this.getAvailableNames()} addTable={this.addTable} name={names[1]} deleteTable={this.deleteTable} isCloseAvailable={true || this.isCloseAvailable()}/> : ''}
           {this.state.customersOrdersTable ? <CustomersOrdersTable names={this.getAvailableNames()} addTable={this.addTable} name={names[2]} deleteTable={this.deleteTable} isCloseAvailable={true || this.isCloseAvailable()}/> : ''}
           {this.state.producersTable ? <ProducersTable names={this.getAvailableNames()} addTable={this.addTable} name={names[3]} deleteTable={this.deleteTable} isCloseAvailable={true || this.isCloseAvailable()}/> : ''}
+          <Notifications/>
         </div>
     );
   }

@@ -30,19 +30,19 @@ class NavBar extends Component {
 
   register = async (newUser) => {
     await this.props.signUp(newUser);
-    this.props.fetchNotifications(this.props.user)
+    this.notifications(await this.props.fetchNotifications(this.props.user))
   };
 
   login = async (authData) => {
     await this.props.login(authData);
-    this.props.fetchNotifications(this.props.user)
+    this.notifications(await this.props.fetchNotifications(this.props.user))
   };
 
-  notifications = () =>{
-    this.props.notifications.forEach((notification) => {
+  notifications = (notifications) =>{
+    notifications.forEach((notification) => {
       Push.create(notification.title, {
         body: notification.text,
-        icon: '/icon.png',
+        icon: notification.img,
         timeout: 10000,
         onClick:  () => {
           window.focus();
@@ -56,8 +56,6 @@ class NavBar extends Component {
   };
 
   render() {
-    this.notifications();
-
     return (
         <AppBar className="NavBar" title="BIOSTORE"
                 onLeftIconButtonTouchTap={this.handleToggle}

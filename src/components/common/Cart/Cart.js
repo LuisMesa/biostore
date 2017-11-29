@@ -34,7 +34,6 @@ class Cart extends Component {
 
   cashPay = () =>{
       this.state.efectivo === true ? this.setState({efectivo:false}) : this.setState({efectivo:true})
-      console.log(this.state.efectivo)
   }
 
   render() {
