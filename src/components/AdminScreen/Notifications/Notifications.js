@@ -63,7 +63,7 @@ class Notifications extends Component {
             </div>
             <div className='Instructions'>
               <h2>Crear Notificación</h2>
-              <div>La notificación que envies será vista por los clientes cuando entrar al sitio web y en su correo</div>
+              <div>La notificación que envies será vista por los clientes cuando entren al sitio web o a su correo</div>
             </div>
             </div>
             <div className='footer'>

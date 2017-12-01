@@ -12,6 +12,7 @@ const DELETE_NOTIFICATION = 'DELETE_NOTIFICATION';
 const CREATE_OFFER = 'CREATE_OFFER';
 const CREATE_PRODUCER = 'CREATE_PRODUCER';
 const UPDATE_OFFER = 'UPDATE_OFFER';
+const CANCEL_CUSTOMER_ORDERS = 'CANCEL_CUSTOMER_ORDERS';
 
 export const fetchProducersOffers = () => async dispatch => {
   const offers = (await axios.get(BASE_URL + '/producersoffers')).data;
@@ -49,6 +50,18 @@ export const setStateSomeProducersOffers = (ids, newState) => {
   };
 };
 
+export const cancelCustomerOrders = (ids) => async dispatch => {
+  const object = {canceledIds: ids.map(id=> {return{id};}), acceptedIds: []};
+  console.log('cancelCustomerOrders',object);
+  await axios.post(BASE_URL + '/updatestateorder/', object).then(response => {
+    dispatch({
+      type: CANCEL_CUSTOMER_ORDERS,
+      payload: {ids}
+    });
+
+  });
+};
+
 export const saveProducersOffers = (acceptedIds, canceledIds) => async dispatch => {
   const object = {acceptedIds, canceledIds};
   await axios.post(BASE_URL + '/saveoffers/', object).then(response => {
@@ -74,7 +87,7 @@ export const saveProducersOffers = (acceptedIds, canceledIds) => async dispatch 
 
 export const updateAdminOffer = (id, price) => async dispatch => {
 
-  const object = {id, precio:price};
+  const object = {id, precio: price};
   await axios.post(BASE_URL + '/editadminoffer/', object).then(response => {
     if (response.data.estado === 'ok') {
       dispatch({
@@ -128,17 +141,14 @@ export const deleteNotification = () => {
 
 export const createAdminOffer = (newOffer) => async dispatch => {
   const object = newOffer;
-  console.log(object);
   await axios.post(BASE_URL + '/addadminoffer/', object).then(response => {
     if (response.data.estado === 'ok') {
-      console.log(1)
       dispatch({
         type: CREATE_OFFER,
         payload: object
       });
     }
     else {
-      console.log(2)
       dispatch({
         type: NOTIFICATION,
         payload: 'El servidor ha rechazado los datos.'
@@ -195,6 +205,17 @@ export default function AdminScreen(state = INITIAL_STATE, action) {
       // const newProducer = {id: index, mail: 'correo@cor@.com', name: 'Quemado', lastName:'Codigo', address: 'Direccion', phone: '12345678',}
       // return {...state, producers: [...state.producers, action.payload]};
       return state;
+    }
+    case CANCEL_CUSTOMER_ORDERS: {
+      const stateCopy = {...state};
+      const newArray = stateCopy.customersOrders.map(order => {
+            if (action.payload.ids.find(id => id === order.id)) {
+              order.state = 'CANCELADA';
+            }
+            return order
+          }
+      );
+      return {...state, customersOrders: newArray}
     }
     case NOTIFICATION: {
       return {...state, notifications: [...state.notifications, action.payload]};
