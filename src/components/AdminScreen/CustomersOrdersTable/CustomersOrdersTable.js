@@ -11,8 +11,8 @@ import CheckCircleIcon from 'material-ui/svg-icons/action/check-circle';
 import DeliveredIcon from 'material-ui/svg-icons/action/card-giftcard'
 import {DatePicker, MenuItem, Popover, Menu, DropDownMenu} from 'material-ui';
 import {cyan500, pinkA200, green500} from 'material-ui/styles/colors';
-import AddIcon from 'material-ui/svg-icons/content/add';
-import RemoveIcon from 'material-ui/svg-icons/content/clear';
+import AddIcon from 'material-ui/svg-icons/action/change-history';
+import RemoveIcon from 'material-ui/svg-icons/action/change-history';
 import {TableRowColumn,} from 'material-ui/Table';
 import RaisedButton from 'material-ui/RaisedButton';
 import Table from '../../common/Table/Table';
@@ -130,7 +130,7 @@ class CustomersOrdersTable extends Component {
                       style={{display: 'block-inline', float: 'right', marginTop: '3vh', marginRight: '12px', minWidth: '44px'}}
                       // onClick={this.handleTouchTap}
                       onClick={() => this.setState({expanded: true})}
-                      icon={<AddIcon color={cyan500}/>}
+                      icon={<AddIcon color={cyan500} style={{"transform":"rotate(180deg)"}}/>}
                       data-tip="Expandir Tabla"
                   >
                   </RaisedButton>
