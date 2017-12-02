@@ -1,0 +1,27 @@
+.Notifications{
+    margin-right: 4vw;
+    margin-left: 5vw;
+}
+.Notifications .container{
+    display: flex;
+    justify-content: center;
+}
+.Notifications .Paper {
+    padding: 16px;
+    width: 50%;
+}
+.Notifications .header{
+    width: 100%;
+}
+.Notifications .body{
+    display: flex;
+    justify-content: space-between;
+}
+.Notifications .body .Instructions{
+    margin-left: 25px;
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+    padding-bottom: 50px;
+}
+

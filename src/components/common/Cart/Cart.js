@@ -28,6 +28,14 @@ class Cart extends Component {
 
   handleToggle = () => this.setState({open: !this.state.open});
 
+  creditCardPay = () =>{
+      alert("Ésta función se encuentra en construcción");
+  }
+
+  cashPay = () =>{
+      this.state.efectivo === true ? this.setState({efectivo:false}) : this.setState({efectivo:true})
+  }
+
   render() {
     return (
 

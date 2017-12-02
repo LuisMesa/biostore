@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {fetchCustomerOrders} from '../../../ducks/AdminScreen';
+import {fetchCustomerOrders, cancelCustomerOrders} from '../../../ducks/AdminScreen';
 import LockIcon from 'material-ui/svg-icons/action/lock';
 import LockOpenIcon from 'material-ui/svg-icons/action/lock-open';
 import MoneyIcon from 'material-ui/svg-icons/editor/monetization-on';
@@ -160,6 +160,22 @@ class CustomersOrdersTable extends Component {
               />
             </div>
           </Table>
+          {this.state.expanded ?
+              <div className="tableActions">
+                <RaisedButton label={"Cancelar Pedidos (" + this.state.selectedRows.length + ")"} secondary={true} disabled={this.state.selectedRows.length === 0} style={{float: 'left', margin: '12px'}}
+                              onClick={() => {
+                                const ids = [];
+                                this.state.selectedRows.forEach((index) => {
+                                  ids.push(this.props.customersOrders[index].id);
+                                });
+                                this.props.cancelCustomerOrders(ids);
+                                this.setState({selectedRows: []});
+                              }
+                              }/>
+              </div>
+              :
+              ''
+          }
         </div>
     );
   }
@@ -183,4 +199,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps, {fetchCustomerOrders})(CustomersOrdersTable);
+export default connect(mapStateToProps, {fetchCustomerOrders, cancelCustomerOrders})(CustomersOrdersTable);
