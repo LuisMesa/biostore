@@ -13,6 +13,7 @@ const CREATE_OFFER = 'CREATE_OFFER';
 const CREATE_PRODUCER = 'CREATE_PRODUCER';
 const UPDATE_OFFER = 'UPDATE_OFFER';
 const CANCEL_CUSTOMER_ORDERS = 'CANCEL_CUSTOMER_ORDERS';
+const MARK_CUSTOMER_ORDERS_AS_DELIVERED = 'MARK_CUSTOMER_ORDERS_AS_DELIVERED';
 
 export const fetchProducersOffers = () => async dispatch => {
   const offers = (await axios.get(BASE_URL + '/producersoffers')).data;
@@ -52,10 +53,22 @@ export const setStateSomeProducersOffers = (ids, newState) => {
 
 export const cancelCustomerOrders = (ids) => async dispatch => {
   const object = {canceledIds: ids.map(id=> {return{id};}), acceptedIds: []};
-  console.log('cancelCustomerOrders',object);
+  // console.log('updateCustomerOrders',object);
   await axios.post(BASE_URL + '/updatestateorder/', object).then(response => {
     dispatch({
       type: CANCEL_CUSTOMER_ORDERS,
+      payload: {ids}
+    });
+
+  });
+};
+
+export const markCustomerOrdersAsDelivered = (ids) => async dispatch => {
+  const object = {acceptedIds: ids.map(id=> {return{id};}), canceledIds: []};
+  // console.log('updateCustomerOrders',object);
+  await axios.post(BASE_URL + '/updatestateorder/', object).then(response => {
+    dispatch({
+        type: MARK_CUSTOMER_ORDERS_AS_DELIVERED,
       payload: {ids}
     });
 
@@ -211,6 +224,17 @@ export default function AdminScreen(state = INITIAL_STATE, action) {
       const newArray = stateCopy.customersOrders.map(order => {
             if (action.payload.ids.find(id => id === order.id)) {
               order.state = 'CANCELADA';
+            }
+            return order
+          }
+      );
+      return {...state, customersOrders: newArray}
+    }
+    case MARK_CUSTOMER_ORDERS_AS_DELIVERED: {
+      const stateCopy = {...state};
+      const newArray = stateCopy.customersOrders.map(order => {
+            if (action.payload.ids.find(id => id === order.id)) {
+              order.state = 'ENTREGADA';
             }
             return order
           }

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {fetchCustomerOrders, cancelCustomerOrders} from '../../../ducks/AdminScreen';
+import {fetchCustomerOrders, cancelCustomerOrders, markCustomerOrdersAsDelivered} from '../../../ducks/AdminScreen';
 import LockIcon from 'material-ui/svg-icons/action/lock';
 import LockOpenIcon from 'material-ui/svg-icons/action/lock-open';
 import MoneyIcon from 'material-ui/svg-icons/editor/monetization-on';
@@ -8,6 +8,7 @@ import ReactTooltip from 'react-tooltip';
 import HighLightIcon from 'material-ui/svg-icons/action/highlight-off';
 import InfoIcon from 'material-ui/svg-icons/action/info-outline';
 import CheckCircleIcon from 'material-ui/svg-icons/action/check-circle';
+import DeliveredIcon from 'material-ui/svg-icons/action/card-giftcard'
 import {DatePicker, MenuItem, Popover, Menu, DropDownMenu} from 'material-ui';
 import {cyan500, pinkA200, green500} from 'material-ui/styles/colors';
 import AddIcon from 'material-ui/svg-icons/content/add';
@@ -84,6 +85,8 @@ class CustomersOrdersTable extends Component {
         return <div><HighLightIcon style={{paddingLeft: 'calc(50% - 12px)'}} color={pinkA200} data-tip={'Cancelada'}/><ReactTooltip place="right" type="dark" effect="float"/></div>;
       case 'aceptada':
         return <div><CheckCircleIcon style={{paddingLeft: 'calc(50% - 12px)'}} color={cyan500} data-tip={'Aceptada'}/><ReactTooltip place="right" type="dark" effect="float"/></div>;
+      case 'entregada':
+        return <div><DeliveredIcon style={{paddingLeft: 'calc(50% - 12px)'}} color={cyan500} data-tip={'Entregada'}/><ReactTooltip place="right" type="dark" effect="float"/></div>;
       case 'pagada':
         return <div><MoneyIcon style={{paddingLeft: 'calc(50% - 12px)'}} color={green500} data-tip={'Pagada'}/><ReactTooltip place="right" type="dark" effect="float"/></div>;
       default:
@@ -162,6 +165,16 @@ class CustomersOrdersTable extends Component {
           </Table>
           {this.state.expanded ?
               <div className="tableActions">
+                <RaisedButton label={"Marcar como Entregado (" + this.state.selectedRows.length + ")"} primary={true } disabled={this.state.selectedRows.length === 0} style={{float: 'left', margin: '12px'}}
+                              onClick={() => {
+                                const ids = [];
+                                this.state.selectedRows.forEach((index) => {
+                                  ids.push(this.props.customersOrders[index].id);
+                                });
+                                this.props.markCustomerOrdersAsDelivered(ids);
+                                this.setState({selectedRows: []});
+                              }
+                              }/>
                 <RaisedButton label={"Cancelar Pedidos (" + this.state.selectedRows.length + ")"} secondary={true} disabled={this.state.selectedRows.length === 0} style={{float: 'left', margin: '12px'}}
                               onClick={() => {
                                 const ids = [];
@@ -199,4 +212,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps, {fetchCustomerOrders, cancelCustomerOrders})(CustomersOrdersTable);
+export default connect(mapStateToProps, {fetchCustomerOrders, cancelCustomerOrders, markCustomerOrdersAsDelivered})(CustomersOrdersTable);
