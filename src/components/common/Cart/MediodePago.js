@@ -4,12 +4,7 @@ import FlatButton from 'material-ui/FlatButton';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 import TextField from 'material-ui/TextField';
 
-/**
- * Dialog with action buttons. The actions are passed in as an array of React objects,
- * in this example [FlatButtons](/#/components/flat-button).
- *
- * You can also close this dialog by clicking outside the dialog, or with the 'Esc' key.
- */
+
 export default class MediodePago extends React.Component {
     state = {
         open: false,
@@ -36,12 +31,12 @@ export default class MediodePago extends React.Component {
     render() {
         const actions = [
             <FlatButton
-                label="Cancel"
+                label="Cancelar"
                 secondary={true}
                 onClick={this.props.handleClose}
             />,
             <FlatButton
-                label="Submit"
+                label="Aceptar"
                 primary={true}
                 keyboardFocused={true}
                 onClick={this.props.handleClose}

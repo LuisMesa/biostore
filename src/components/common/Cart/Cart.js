@@ -87,7 +87,7 @@ class Cart extends Component {
                         />
                         <MediodePago
                             open={this.state.pmOpen}
-                            handleClose={()=>this.setState({pmOpen:false})}
+                            handleClose={()=>this.setState({pmOpen:false, open:false})}
                         />
                     </div>
                   </div>
