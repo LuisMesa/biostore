@@ -39,6 +39,7 @@ class Notifications extends Component {
               <TextField
                   hintText="Frambuesas disponibles"
                   floatingLabelText="Titulo de la notificación"
+                  value={this.state.title}
                   onChange={(event) => {
                     this.setState({title: event.target.value})
                   }}
@@ -48,6 +49,7 @@ class Notifications extends Component {
                   floatingLabelText="Texto de la notificación"
                   multiLine={true}
                   rowsMax={3}
+                  value={this.state.text}
                   onChange={(event) => {
                     this.setState({text: event.target.value})
                   }}

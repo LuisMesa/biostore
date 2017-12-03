@@ -8,7 +8,7 @@ import TextField from 'material-ui/TextField';
 export default class MediodePago extends React.Component {
     state = {
         open: false,
-        tipodepago: "",
+        tipodepago: "cash",
         name: "",
         creditCardNumber: "",
         cci: ""
@@ -33,13 +33,13 @@ export default class MediodePago extends React.Component {
             <FlatButton
                 label="Cancelar"
                 secondary={true}
-                onClick={this.props.handleClose}
+                onClick={this.props.handleCloseBad}
             />,
             <FlatButton
                 label="Aceptar"
                 primary={true}
                 keyboardFocused={true}
-                onClick={this.props.handleClose}
+                onClick={this.props.handleCloseGood}
             />,
         ];
 
@@ -53,7 +53,7 @@ export default class MediodePago extends React.Component {
                     autoScrollBodyContent={true}
                 >
                     <div>
-                        <RadioButtonGroup name="mediodePago" defaultSelected="not_light">
+                        <RadioButtonGroup name="mediodePago" defaultSelected="cash">
                             <RadioButton
                                 value="cash"
                                 label="Efectivo"

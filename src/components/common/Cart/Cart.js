@@ -83,11 +83,12 @@ class Cart extends Component {
                         <FlatButton
                             label="Comprar"
                             primary={true}
-                            onClick={() => {this.setState({pmOpen: !this.state.pmOpen}); this.props.buy()}}
+                            onClick={() => {this.setState({pmOpen: !this.state.pmOpen})}}
                         />
                         <MediodePago
                             open={this.state.pmOpen}
-                            handleClose={()=>this.setState({pmOpen:false, open:false})}
+                            handleCloseGood={()=>{this.setState({pmOpen:false, open:false}); this.props.buy()}}
+                            handleCloseBad={()=>{this.setState({pmOpen:false, open:false});}}
                         />
                     </div>
                   </div>
